@@ -52,7 +52,32 @@ export default function AdminOrders() {
 
   const cleanDigits = (str) => (str || "").replace(/\D/g, "");
 
-  const filteredOrders = orders.filter((o) => {
+  const normalizeStatus = (status) => {
+    if (!status || status === "Pending") return "New";
+    if (status === "Packing") return "Processing";
+    if (status === "Ready for Pickup") return "Ready for Collection";
+    return status;
+  };
+
+  const formatOrderDate = (ord) => {
+    const rawDate = ord.createdAt || ord.created_at || ord.date || ord.timestamp;
+    if (!rawDate) return "Today";
+    const d = new Date(rawDate);
+    if (isNaN(d.getTime())) return "Recently";
+    return d.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    });
+  };
+
+  const normalizedOrders = orders.map((o) => ({
+    ...o,
+    status: normalizeStatus(o.status),
+    payment_status: o.payment_status || "Pending"
+  }));
+
+  const filteredOrders = normalizedOrders.filter((o) => {
     if (statusFilter !== "all" && o.status !== statusFilter) return false;
     if (paymentFilter !== "all" && (o.payment_status || "Pending") !== paymentFilter) return false;
 
@@ -208,7 +233,7 @@ export default function AdminOrders() {
                           #{ord.id || ord.order_id}
                         </div>
                         <div style={{ fontSize: "0.74rem", color: "#94A3B8", marginTop: "2px" }}>
-                          {new Date(ord.created_at).toLocaleDateString()}
+                          {formatOrderDate(ord)}
                         </div>
                       </td>
 
