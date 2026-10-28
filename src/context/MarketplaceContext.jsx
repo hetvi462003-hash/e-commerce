@@ -461,6 +461,8 @@ export const MarketplaceProvider = ({ children }) => {
         type: effectiveFulfillment === "Island Courier Delivery" ? "COD" : "PICKUP",
         customer_name: orderData.customer_name,
         customer_phone: orderData.customer_phone,
+        target_whatsapp: orderData.target_whatsapp || targetWhatsApp,
+        country_code: orderData.country_code,
         customer_email: orderData.customer_email,
         delivery_address: orderData.delivery_address,
         special_notes: orderData.special_notes,
@@ -480,12 +482,6 @@ export const MarketplaceProvider = ({ children }) => {
 
     if (orderData.customer_phone) {
       setCustomerPhoneSession(orderData.customer_phone);
-      updateCustomerProfile({
-        name: orderData.customer_name,
-        phone: orderData.customer_phone,
-        email: orderData.customer_email,
-        address: orderData.delivery_address
-      });
     }
 
     return newOrdersCreated;

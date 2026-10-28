@@ -36,29 +36,17 @@ export default function CheckoutPage({ setActiveTab }) {
   // Fulfillment Selection: 'Collection at Stall' or 'Island Courier Delivery'
   const [fulfillmentType, setFulfillmentType] = useState("Collection at Stall");
 
-  // Form Fields - Pre-fill from active customer session if available
+  // Form Fields - Start clean and empty for every order (no sticky dummy data)
   const [countryCode, setCountryCode] = useState("+91"); // Default to +91 India for live testing
-  const [customerName, setCustomerName] = useState(customerProfile?.name || "");
-  const [customerPhone, setCustomerPhone] = useState(customerPhoneSession || customerProfile?.phone || "");
-  const [customerEmail, setCustomerEmail] = useState(customerProfile?.email || "");
-  const [deliveryAddress, setDeliveryAddress] = useState(customerProfile?.address || "");
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
+  const [deliveryAddress, setDeliveryAddress] = useState("");
   const [specialNotes, setSpecialNotes] = useState("");
 
   // Post-submission WhatsApp Modal state
   const [confirmedOrder, setConfirmedOrder] = useState(null);
   const [copied, setCopied] = useState(false);
-
-  // Sync if customerProfile updates
-  React.useEffect(() => {
-    if (customerProfile) {
-      if (customerProfile.name) setCustomerName(customerProfile.name);
-      if (customerProfile.phone) setCustomerPhone(customerProfile.phone);
-      if (customerProfile.email) setCustomerEmail(customerProfile.email);
-      if (customerProfile.address) setDeliveryAddress(customerProfile.address);
-    } else if (customerPhoneSession) {
-      setCustomerPhone(customerPhoneSession);
-    }
-  }, [customerProfile, customerPhoneSession]);
 
   if (cart.length === 0 && !confirmedOrder) {
     return (
@@ -91,25 +79,26 @@ export default function CheckoutPage({ setActiveTab }) {
     }
 
     const cleanRawPhone = customerPhone.trim();
+    const digitsOnly = cleanRawPhone.replace(/\D/g, "");
+
+    // Calculate exact WhatsApp recipient so ANY entered number opens in WhatsApp
+    let waRecipient = digitsOnly;
+    if (countryCode === "+91") {
+      waRecipient = digitsOnly.length === 10 ? `91${digitsOnly}` : (digitsOnly.startsWith("91") ? digitsOnly : `91${digitsOnly}`);
+    } else {
+      waRecipient = digitsOnly.length === 7 ? `1345${digitsOnly}` : (digitsOnly.startsWith("345") ? `1${digitsOnly}` : digitsOnly);
+    }
+
     const formattedPhone = cleanRawPhone.startsWith("+")
       ? cleanRawPhone
       : `${countryCode} ${cleanRawPhone}`;
-
-    // Persist profile in session
-    if (updateCustomerProfile) {
-      updateCustomerProfile({
-        name: customerName.trim(),
-        phone: formattedPhone,
-        email: customerEmail.trim(),
-        address: deliveryAddress.trim()
-      });
-    }
 
     const createdOrders = placeOrder({
       fulfillment_type: fulfillmentType,
       type: fulfillmentType === "Island Courier Delivery" ? "COD" : "PICKUP",
       customer_name: customerName.trim(),
       customer_phone: formattedPhone,
+      target_whatsapp: waRecipient,
       country_code: countryCode,
       customer_email: customerEmail.trim(),
       delivery_address: deliveryAddress.trim(),
@@ -345,46 +334,6 @@ export default function CheckoutPage({ setActiveTab }) {
         <p style={{ color: "#64748B", fontSize: "0.95rem" }}>
           Submit your order request directly via WhatsApp to our central Cayman team. Choose between <strong>Collection at Stall</strong> or <strong>Grand Cayman Courier Delivery</strong>.
         </p>
-
-        {customerPhoneSession && (
-          <div
-            style={{
-              background: "#F0FDF4",
-              border: "1px solid #BBF7D0",
-              borderRadius: "14px",
-              padding: "0.75rem 1.25rem",
-              marginTop: "1rem",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              gap: "0.5rem"
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#166534", fontSize: "0.86rem", fontWeight: 700 }}>
-              <CheckCircle2 size={18} color="#16a34a" />
-              <span>
-                Contact pre-filled for: <strong style={{ color: "#0F172A" }}>{customerProfile?.name ? `${customerProfile.name} (${customerPhoneSession})` : customerPhoneSession}</strong>
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={clearCustomerSession}
-              style={{
-                background: "#FFFFFF",
-                border: "1px solid #CBD5E1",
-                color: "#64748B",
-                fontSize: "0.75rem",
-                fontWeight: 700,
-                padding: "0.3rem 0.65rem",
-                borderRadius: "8px",
-                cursor: "pointer"
-              }}
-            >
-              Log Out / Switch
-            </button>
-          </div>
-        )}
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2.5rem", alignItems: "flex-start" }}>
@@ -466,19 +415,20 @@ export default function CheckoutPage({ setActiveTab }) {
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.5rem" }}>
               
               {/* Full Name */}
+              {/* Full Name */}
               <div>
-                <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.35rem", display: "block" }}>
-                  Full Name *
+                <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "#1E293B", marginBottom: "0.4rem", display: "block" }}>
+                  Customer Full Name *
                 </label>
                 <input
                   type="text"
                   required
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
-                  placeholder="e.g. David Sterling"
+                  placeholder="e.g. Enter your full name"
                   style={{
                     width: "100%",
-                    padding: "0.75rem 1rem",
+                    padding: "0.8rem 1rem",
                     borderRadius: "12px",
                     border: "1.5px solid #CBD5E1",
                     fontSize: "0.95rem"
@@ -486,71 +436,76 @@ export default function CheckoutPage({ setActiveTab }) {
                 />
               </div>
 
-              {/* Phone & Email */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-                <div>
-                  <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.35rem", display: "block" }}>
-                    WhatsApp Phone Number *
-                  </label>
-                  <div style={{ display: "flex", gap: "0.5rem" }}>
-                    <select
-                      value={countryCode}
-                      onChange={(e) => setCountryCode(e.target.value)}
-                      style={{
-                        padding: "0.75rem 0.5rem",
-                        borderRadius: "12px",
-                        border: "1.5px solid #CBD5E1",
-                        fontSize: "0.85rem",
-                        background: "#F8FAFC",
-                        color: "#0F172A",
-                        fontWeight: 700,
-                        cursor: "pointer",
-                        outline: "none"
-                      }}
-                    >
-                      <option value="+91">🇮🇳 +91 (India - Live Test)</option>
-                      <option value="+1 (345)">🇰🇾 +1 (345) (Cayman)</option>
-                    </select>
-                    <input
-                      type="tel"
-                      required
-                      value={customerPhone}
-                      onChange={(e) => setCustomerPhone(e.target.value)}
-                      placeholder={countryCode === "+91" ? "98765 43210" : "926-5544"}
-                      style={{
-                        flex: 1,
-                        padding: "0.75rem 1rem",
-                        borderRadius: "12px",
-                        border: "1.5px solid #CBD5E1",
-                        fontSize: "0.95rem"
-                      }}
-                    />
-                  </div>
-                  <span style={{ fontSize: "0.74rem", color: countryCode === "+91" ? "#00A896" : "#64748B", marginTop: "4px", display: "block", fontWeight: countryCode === "+91" ? 700 : 400 }}>
-                    {countryCode === "+91"
-                      ? "🇮🇳 Testing Mode: WhatsApp order chat will open directly with this number!"
-                      : "🇰🇾 Cayman area code +1 (345)"}
-                  </span>
-                </div>
-
-                <div>
-                  <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.35rem", display: "block" }}>
-                    Email Address (Optional)
-                  </label>
-                  <input
-                    type="email"
-                    value={customerEmail}
-                    onChange={(e) => setCustomerEmail(e.target.value)}
-                    placeholder="david@example.ky"
+              {/* WhatsApp Phone Number (Full Width with compact country selector) */}
+              <div>
+                <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "#1E293B", marginBottom: "0.4rem", display: "block" }}>
+                  WhatsApp Phone Number *
+                </label>
+                <div style={{ display: "flex", gap: "0.6rem", alignItems: "stretch" }}>
+                  <select
+                    value={countryCode}
+                    onChange={(e) => setCountryCode(e.target.value)}
                     style={{
-                      width: "100%",
-                      padding: "0.75rem 1rem",
+                      width: "125px",
+                      minWidth: "125px",
+                      flexShrink: 0,
+                      padding: "0.8rem 0.5rem",
                       borderRadius: "12px",
                       border: "1.5px solid #CBD5E1",
-                      fontSize: "0.95rem"
+                      fontSize: "0.92rem",
+                      background: "#F8FAFC",
+                      color: "#0F172A",
+                      fontWeight: 700,
+                      cursor: "pointer"
+                    }}
+                  >
+                    <option value="+91">🇮🇳 +91 (IN)</option>
+                    <option value="+1345">🇰🇾 +1 345 (KY)</option>
+                  </select>
+                  <input
+                    type="tel"
+                    required
+                    value={customerPhone}
+                    onChange={(e) => setCustomerPhone(e.target.value)}
+                    placeholder={countryCode === "+91" ? "Enter 10-digit WhatsApp number (e.g. 9825012345)" : "Enter Cayman phone (e.g. 9265544)"}
+                    style={{
+                      flex: 1,
+                      minWidth: 0,
+                      width: "100%",
+                      padding: "0.8rem 1rem",
+                      borderRadius: "12px",
+                      border: "1.5px solid #CBD5E1",
+                      fontSize: "1rem",
+                      fontWeight: 600,
+                      color: "#0F172A"
                     }}
                   />
                 </div>
+                <span style={{ fontSize: "0.78rem", color: "#00A896", marginTop: "5px", display: "block", fontWeight: 700 }}>
+                  {countryCode === "+91"
+                    ? "✅ Live Testing: Enter ANY 10-digit Indian number. WhatsApp will open directly with this number!"
+                    : "🇰🇾 Cayman area code +1 (345)"}
+                </span>
+              </div>
+
+              {/* Email Address */}
+              <div>
+                <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "#1E293B", marginBottom: "0.4rem", display: "block" }}>
+                  Email Address (Optional)
+                </label>
+                <input
+                  type="email"
+                  value={customerEmail}
+                  onChange={(e) => setCustomerEmail(e.target.value)}
+                  placeholder="e.g. customer@example.com"
+                  style={{
+                    width: "100%",
+                    padding: "0.8rem 1rem",
+                    borderRadius: "12px",
+                    border: "1.5px solid #CBD5E1",
+                    fontSize: "0.95rem"
+                  }}
+                />
               </div>
 
               {/* Delivery Address (if Delivery selected) */}
@@ -645,8 +600,8 @@ export default function CheckoutPage({ setActiveTab }) {
               <ArrowRight size={18} />
             </button>
 
-            <div style={{ textAlign: "center", fontSize: "0.76rem", color: "#64748B", marginTop: "0.75rem" }}>
-              A formatted message will be generated to send to our team at <strong>{CENTRAL_MARKETPLACE_PHONE_DISPLAY}</strong>.
+            <div style={{ textAlign: "center", fontSize: "0.82rem", color: "#64748B", marginTop: "0.85rem" }}>
+              💬 Order will open directly in WhatsApp with: <strong style={{ color: "#0A192F" }}>{customerPhone ? `${countryCode} ${customerPhone}` : "your entered WhatsApp number"}</strong>
             </div>
 
           </form>
