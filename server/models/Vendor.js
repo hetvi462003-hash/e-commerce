@@ -38,7 +38,7 @@ const vendorSchema = new mongoose.Schema(
     accepts_cod: { type: Boolean, default: true },
     policies: {
       return_policy: { type: String, default: "7-day return policy for unused items in original packaging." },
-      pickup_policy: { type: String, default: "Held for 48 hours with customer 4-digit PIN." },
+      pickup_policy: { type: String, default: "Items held at stall counter for collection. Please mention your order reference (#CB-XXXX) upon arrival." },
       shipping_policy: { type: String, default: "Island-wide Grand Cayman courier delivery." }
     },
     payout_instructions: {

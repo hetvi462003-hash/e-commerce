@@ -45,7 +45,7 @@ export const INITIAL_VENDORS = [
     bio: "Authentic hand-carved Caymanite jewelry, woven palm art, and locally crafted island souvenirs.",
     policies: {
       return_policy: "7-day return policy for unused items with original receipt.",
-      pickup_policy: "Holds reserved items for 48 hours. Please present 4-digit PIN or QR code upon arrival.",
+      pickup_policy: "Holds reserved items for 48 hours. Please mention your order reference upon arrival.",
       shipping_policy: "Curbside pickup & local island delivery available across Grand Cayman."
     },
     social_connections: {
@@ -80,7 +80,7 @@ export const INITIAL_VENDORS = [
     bio: "Premium snorkeling gear, eco-friendly beachwear, reef-safe sunscreen, and paddleboard accessories.",
     policies: {
       return_policy: "14-day exchange policy for unworn apparel & sealed gear.",
-      pickup_policy: "Store pickup available daily 8 AM - 7 PM with 4-digit PIN.",
+      pickup_policy: "Store pickup available daily 8 AM - 7 PM with order reference.",
       shipping_policy: "Free Seven Mile Beach resort delivery on orders above $50 KYD."
     },
     social_connections: {
@@ -150,7 +150,7 @@ export const INITIAL_VENDORS = [
     bio: "Duty-free Swiss timepieces, fine Larimar silver jewelry, custom nautical pendants, and luxury sunglasses.",
     policies: {
       return_policy: "30-day international warranty and 7-day money back guarantee.",
-      pickup_policy: "Express cruise port pickup booth available with 4-digit PIN & QR.",
+      pickup_policy: "Express cruise port pickup booth available with WhatsApp order confirmation.",
       shipping_policy: "Courier delivery to all Grand Cayman hotels & condos."
     },
     social_connections: {
