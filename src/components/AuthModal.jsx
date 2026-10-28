@@ -40,13 +40,8 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
   useEffect(() => {
     if (defaultRole) {
       setSelectedRole(defaultRole);
-      if (defaultRole === "admin") {
-        setEmail("admin@caymanbazaar.ky");
-        setPassword("admin2026");
-      } else if (defaultRole === "vendor") {
-        setEmail("elena@georgetowngems.ky");
-        setPassword("merchant123");
-      }
+      setEmail("");
+      setPassword("");
     }
   }, [defaultRole, isOpen]);
 
@@ -264,8 +259,8 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
               {selectedRole === "admin"
                 ? "Restricted security portal for marketplace administrators."
                 : selectedRole === "vendor"
-                ? "Manage your island stall, inventory, wallet & order fulfillment."
-                : "Access your island orders, 48-Hour PIN pickup passes & express checkout."}
+                ? "Manage your island stall catalog, inventory & WhatsApp orders."
+                : "Track your island orders, stall collections & delivery status."}
             </p>
           </div>
 
@@ -343,7 +338,7 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
         {selectedRole === "vendor" && vendorMode === "register" ? (
           <form onSubmit={handleRegisterVendor} style={{ padding: "1.25rem 1.75rem 1.75rem" }}>
             <div style={{ background: "rgba(0, 229, 201, 0.08)", border: "1px solid rgba(0, 229, 201, 0.25)", padding: "0.75rem 1rem", borderRadius: "12px", marginBottom: "1.25rem", fontSize: "0.82rem", color: "#E0F2FE" }}>
-              🌴 <strong>Join Grand Cayman's Artisan Network</strong>. Instant setup, 10% fair commission, 48-Hour PIN pickup hold pass, and $100 KYD initial wallet credit included!
+              🌴 <strong>Join Grand Cayman's Artisan Marketplace</strong>. Register your storefront, manage products, and receive direct WhatsApp customer orders.
             </div>
 
             {/* Store Name & Owner Name */}
@@ -598,38 +593,6 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
               </div>
             )}
 
-            {/* Quick 1-Click Demo Stall Login for Testing */}
-            {selectedRole === "vendor" && (
-              <div style={{ marginBottom: "1rem", background: "rgba(0, 229, 201, 0.08)", border: "1px solid rgba(0, 229, 201, 0.25)", padding: "0.6rem 0.85rem", borderRadius: "10px" }}>
-                <div style={{ fontSize: "0.74rem", color: "#00E5C9", fontWeight: 800, marginBottom: "0.35rem" }}>
-                  ⚡ Quick Demo Stall Login (1-Click):
-                </div>
-                <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
-                  <button
-                    type="button"
-                    onClick={() => { setEmail("elena@georgetowngems.ky"); setPassword("merchant123"); }}
-                    style={{ background: email === "elena@georgetowngems.ky" ? "#00E5C9" : "rgba(255,255,255,0.08)", color: email === "elena@georgetowngems.ky" ? "#0A192F" : "#FFFFFF", border: "none", borderRadius: "6px", padding: "0.3rem 0.6rem", fontSize: "0.75rem", fontWeight: 700, cursor: "pointer" }}
-                  >
-                    💎 Georgetown Gems
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => { setEmail("chef@rumpointgourmet.ky"); setPassword("merchant123"); }}
-                    style={{ background: email === "chef@rumpointgourmet.ky" ? "#00E5C9" : "rgba(255,255,255,0.08)", color: email === "chef@rumpointgourmet.ky" ? "#0A192F" : "#FFFFFF", border: "none", borderRadius: "6px", padding: "0.3rem 0.6rem", fontSize: "0.75rem", fontWeight: 700, cursor: "pointer" }}
-                  >
-                    🌶️ Rum Point
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => { setEmail("sarah@caymanartisans.ky"); setPassword("merchant123"); }}
-                    style={{ background: email === "sarah@caymanartisans.ky" ? "#00E5C9" : "rgba(255,255,255,0.08)", color: email === "sarah@caymanartisans.ky" ? "#0A192F" : "#FFFFFF", border: "none", borderRadius: "6px", padding: "0.3rem 0.6rem", fontSize: "0.75rem", fontWeight: 700, cursor: "pointer" }}
-                  >
-                    🎨 Artisan Hub
-                  </button>
-                </div>
-              </div>
-            )}
-
             {/* Email / Identifier Input */}
             <div style={{ marginBottom: "1rem" }}>
               <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.4rem", fontWeight: 600 }}>
@@ -653,7 +616,7 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
                     selectedRole === "admin"
                       ? "admin@caymanbazaar.ky"
                       : selectedRole === "vendor"
-                      ? "e.g. sarah@caymanartisans.ky or your registered email"
+                      ? "e.g. elena@georgetowngems.ky"
                       : "e.g. +1 (345) 949-0000 or shopper@gmail.com"
                   }
                   value={email}
@@ -687,7 +650,7 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
                 <input
                   type="password"
                   required={selectedRole !== "customer"}
-                  placeholder="••••••••••••"
+                  placeholder="Enter your secure password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   style={{

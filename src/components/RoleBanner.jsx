@@ -285,7 +285,7 @@ export default function RoleBanner({ setActiveTab }) {
           {/* Right: Balance & Actions */}
           <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
             <div style={{ fontSize: "0.78rem", color: "#94A3B8" }}>
-              Wallet: <strong style={{ color: "#00E5C9" }}>${activeVendor?.wallet_balance?.toFixed(2)} KYD</strong>
+              Take-Rate: <strong style={{ color: "#00E5C9" }}>{Number((activeVendor?.commission_rate || 0.1) * 100).toFixed(0)}% Flat</strong>
             </div>
 
             <button

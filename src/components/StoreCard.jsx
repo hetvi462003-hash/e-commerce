@@ -2,8 +2,6 @@ import React from "react";
 import { CheckCircle2, Star, MapPin, Clock, ArrowRight, ShieldCheck, ShoppingBag, MessageCircle } from "lucide-react";
 
 export default function StoreCard({ vendor, onVisitStore }) {
-  const isLowBalance = vendor.wallet_balance <= 0;
-
   return (
     <div className="virtual-stall-card" onClick={() => onVisitStore(vendor)} style={{ cursor: "pointer" }}>
       
@@ -98,7 +96,7 @@ export default function StoreCard({ vendor, onVisitStore }) {
         {/* Stall Perks (Reserve / COD) */}
         <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "1.1rem" }}>
           <span style={{ fontSize: "0.74rem", color: "#B45309", background: "#FEF3C7", padding: "0.24rem 0.65rem", borderRadius: "8px", fontWeight: 800, border: "1px solid #FDE68A" }}>
-            ⚡ 48h PIN Reserve
+            🛍️ WhatsApp Reserve
           </span>
           <span style={{ fontSize: "0.74rem", color: "#00B49F", background: "#CCFBF1", padding: "0.24rem 0.65rem", borderRadius: "8px", fontWeight: 800, border: "1px solid #99F6E4" }}>
             💵 Island COD
