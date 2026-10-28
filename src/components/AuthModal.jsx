@@ -42,20 +42,26 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
       setSelectedRole(defaultRole);
       if (defaultRole === "admin") {
         setEmail("admin@caymanbazaar.ky");
+        setPassword("admin2026");
+      } else if (defaultRole === "vendor") {
+        setEmail("elena@georgetowngems.ky");
+        setPassword("merchant123");
       }
     }
   }, [defaultRole, isOpen]);
 
-  // Pre-fill shopper profile and email/phone if active session exists
+  // Pre-fill shopper profile ONLY if selectedRole is customer
   useEffect(() => {
-    if (customerProfile?.name && !customerName) {
-      setCustomerName(customerProfile.name);
+    if (selectedRole === "customer") {
+      if (customerProfile?.name && !customerName) {
+        setCustomerName(customerProfile.name);
+      }
+      const savedContact = customerPhoneSession || customerProfile?.email || customerProfile?.phone;
+      if (savedContact && !email) {
+        setEmail(savedContact);
+      }
     }
-    const savedContact = customerPhoneSession || customerProfile?.email || customerProfile?.phone;
-    if (savedContact && !email) {
-      setEmail(savedContact);
-    }
-  }, [customerProfile, customerPhoneSession]);
+  }, [customerProfile, customerPhoneSession, selectedRole]);
 
   // New Vendor Registration Fields
   const [regStoreName, setRegStoreName] = useState("");
@@ -588,6 +594,38 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
                       fontSize: "0.88rem"
                     }}
                   />
+                </div>
+              </div>
+            )}
+
+            {/* Quick 1-Click Demo Stall Login for Testing */}
+            {selectedRole === "vendor" && (
+              <div style={{ marginBottom: "1rem", background: "rgba(0, 229, 201, 0.08)", border: "1px solid rgba(0, 229, 201, 0.25)", padding: "0.6rem 0.85rem", borderRadius: "10px" }}>
+                <div style={{ fontSize: "0.74rem", color: "#00E5C9", fontWeight: 800, marginBottom: "0.35rem" }}>
+                  ⚡ Quick Demo Stall Login (1-Click):
+                </div>
+                <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+                  <button
+                    type="button"
+                    onClick={() => { setEmail("elena@georgetowngems.ky"); setPassword("merchant123"); }}
+                    style={{ background: email === "elena@georgetowngems.ky" ? "#00E5C9" : "rgba(255,255,255,0.08)", color: email === "elena@georgetowngems.ky" ? "#0A192F" : "#FFFFFF", border: "none", borderRadius: "6px", padding: "0.3rem 0.6rem", fontSize: "0.75rem", fontWeight: 700, cursor: "pointer" }}
+                  >
+                    💎 Georgetown Gems
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setEmail("chef@rumpointgourmet.ky"); setPassword("merchant123"); }}
+                    style={{ background: email === "chef@rumpointgourmet.ky" ? "#00E5C9" : "rgba(255,255,255,0.08)", color: email === "chef@rumpointgourmet.ky" ? "#0A192F" : "#FFFFFF", border: "none", borderRadius: "6px", padding: "0.3rem 0.6rem", fontSize: "0.75rem", fontWeight: 700, cursor: "pointer" }}
+                  >
+                    🌶️ Rum Point
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setEmail("sarah@caymanartisans.ky"); setPassword("merchant123"); }}
+                    style={{ background: email === "sarah@caymanartisans.ky" ? "#00E5C9" : "rgba(255,255,255,0.08)", color: email === "sarah@caymanartisans.ky" ? "#0A192F" : "#FFFFFF", border: "none", borderRadius: "6px", padding: "0.3rem 0.6rem", fontSize: "0.75rem", fontWeight: 700, cursor: "pointer" }}
+                  >
+                    🎨 Artisan Hub
+                  </button>
                 </div>
               </div>
             )}
