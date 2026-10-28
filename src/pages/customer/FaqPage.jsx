@@ -1,5 +1,5 @@
 import React from "react";
-import { HelpCircle, Clock, DollarSign, Wallet, ShieldCheck, MessageSquare, Store, Truck } from "lucide-react";
+import { HelpCircle, Clock, DollarSign, ShieldCheck, MessageSquare, Store, Truck } from "lucide-react";
 
 export default function FaqPage() {
   return (

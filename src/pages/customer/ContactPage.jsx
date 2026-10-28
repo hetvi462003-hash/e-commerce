@@ -210,7 +210,7 @@ export default function ContactPage({ setActiveTab }) {
                     <option value="order_pickup">WhatsApp Order & Stall Collection</option>
                     <option value="cod_delivery">Island Courier Delivery</option>
                     <option value="vendor_onboarding">Register as Cayman Stall Vendor</option>
-                    <option value="commission_wallet">Vendor Wallet & Commissions</option>
+                    <option value="vendor_invoicing">Vendor Commissions & Invoicing</option>
                     <option value="general">General Support / Feedback</option>
                   </select>
                 </div>

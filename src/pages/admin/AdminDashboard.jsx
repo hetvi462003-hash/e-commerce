@@ -3,7 +3,6 @@ import { useMarketplace } from "../../context/MarketplaceContext";
 import {
   ShieldCheck,
   Store,
-  Wallet,
   Package,
   TrendingUp,
   CheckCircle2,
@@ -16,15 +15,13 @@ import {
   Layers,
   Sparkles,
   MapPin,
-  Megaphone,
   FileSpreadsheet,
-  AlertTriangle,
   Compass,
   Star
 } from "lucide-react";
 
 export default function AdminDashboard({ setActiveTab }) {
-  const { vendors, orders, ledger, ads, reviews = [], formatPrice, showToast } = useMarketplace();
+  const { vendors, orders, reviews = [], formatPrice, showToast } = useMarketplace();
 
   // Metrics Calculations
   const completedOrders = orders.filter((o) => o.status === "Completed");
@@ -39,10 +36,6 @@ export default function AdminDashboard({ setActiveTab }) {
   const pendingApprovalsCount = vendors.filter((v) => v.status === "pending_approval").length;
   const activeVendorsCount = vendors.filter((v) => v.status === "active").length;
   const verifiedVendorsCount = vendors.filter((v) => v.verified).length;
-
-  const totalWalletDeposits = ledger
-    .filter((l) => l.type === "CREDIT_TOPUP")
-    .reduce((acc, l) => acc + l.amount, 0);
 
   // District distribution calculation
   const districtCounts = {};
@@ -92,7 +85,7 @@ export default function AdminDashboard({ setActiveTab }) {
                 Governance & Executive Command
               </h1>
               <p style={{ color: "#94A3B8", fontSize: "1.02rem", maxWidth: "680px", lineHeight: 1.5 }}>
-                Master oversight for Grand Cayman multi-vendor stalls, automated 10% commission ledgers, physical 48H hold pass logistics, and merchant approvals.
+                Master oversight for Grand Cayman multi-vendor stalls, WhatsApp orders, merchant onboarding approvals, and monthly performance reports.
               </p>
             </div>
 
@@ -233,7 +226,7 @@ export default function AdminDashboard({ setActiveTab }) {
               {formatPrice(totalCommissionsEarned)}
             </div>
             <div style={{ marginTop: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.78rem", color: "#94A3B8" }}>
-              <span>Auto-settled via Vendor Wallets</span>
+              <span>Platform take-rate earned from fulfilled customer orders</span>
             </div>
           </div>
 
@@ -356,9 +349,9 @@ export default function AdminDashboard({ setActiveTab }) {
               </div>
             </div>
 
-            {/* Action 2: Wallet Ledger Audit */}
+            {/* Action 2: Customer Reviews Moderation */}
             <div
-              onClick={() => setActiveTab("admin-ledger")}
+              onClick={() => setActiveTab("admin-reviews")}
               style={{
                 background: "rgba(15, 23, 42, 0.7)",
                 border: "1px solid rgba(255, 255, 255, 0.1)",
@@ -380,20 +373,20 @@ export default function AdminDashboard({ setActiveTab }) {
             >
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
                 <div style={{ background: "rgba(245, 158, 11, 0.12)", color: "#FBBF24", padding: "0.6rem", borderRadius: "12px", display: "inline-flex" }}>
-                  <Wallet size={22} />
+                  <Star size={22} fill="#FBBF24" />
                 </div>
                 <span style={{ color: "#94A3B8", fontSize: "0.78rem", fontWeight: 600 }}>
-                  {ledger.length} Audit Entries
+                  {reviews.length} Total Reviews
                 </span>
               </div>
               <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#FFFFFF", marginBottom: "0.35rem" }}>
-                Financial Wallet Ledgers
+                Customer Reviews & Ratings
               </h3>
               <p style={{ fontSize: "0.84rem", color: "#94A3B8", lineHeight: 1.5, marginBottom: "1rem" }}>
-                Live trace of every vendor deposit, automatic 10% commission deduction, and withdrawal request.
+                Moderate shopper feedback, inspect artisan star ratings, and remove inappropriate review content.
               </p>
               <div style={{ color: "#FBBF24", fontSize: "0.82rem", fontWeight: 800, display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
-                Audit Platform Ledger <ArrowRight size={14} />
+                Moderate Reviews <ArrowRight size={14} />
               </div>
             </div>
 
@@ -428,13 +421,13 @@ export default function AdminDashboard({ setActiveTab }) {
                 </span>
               </div>
               <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#FFFFFF", marginBottom: "0.35rem" }}>
-                Global Order & Pickup Stream
+                Global Order & Transaction Stream
               </h3>
               <p style={{ fontSize: "0.84rem", color: "#94A3B8", lineHeight: 1.5, marginBottom: "1rem" }}>
-                Inspect live statuses, 4-digit PIN verification codes, COD courier dispatch logs, and delivery receipts.
+                Inspect live statuses, filter by vendor or district, track payment states, and download CSV summaries.
               </p>
               <div style={{ color: "#38BDF8", fontSize: "0.82rem", fontWeight: 800, display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
-                Inspect Active Stream <ArrowRight size={14} />
+                Inspect Orders Stream <ArrowRight size={14} />
               </div>
             </div>
 
@@ -476,88 +469,6 @@ export default function AdminDashboard({ setActiveTab }) {
               </p>
               <div style={{ color: "#10B981", fontSize: "0.82rem", fontWeight: 800, display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
                 Generate Financial Reports <ArrowRight size={14} />
-              </div>
-            </div>
-
-            {/* Action 5: Sponsored Ads Placements */}
-            <div
-              onClick={() => setActiveTab("admin-ads")}
-              style={{
-                background: "rgba(15, 23, 42, 0.7)",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                borderRadius: "18px",
-                padding: "1.5rem",
-                cursor: "pointer",
-                transition: "all 0.25s ease"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#EC4899";
-                e.currentTarget.style.transform = "translateY(-3px)";
-                e.currentTarget.style.boxShadow = "0 12px 25px rgba(236, 72, 153, 0.15)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
-                <div style={{ background: "rgba(236, 72, 153, 0.12)", color: "#EC4899", padding: "0.6rem", borderRadius: "12px", display: "inline-flex" }}>
-                  <Megaphone size={22} />
-                </div>
-                <span style={{ color: "#94A3B8", fontSize: "0.78rem", fontWeight: 600 }}>
-                  Sponsored Boosts
-                </span>
-              </div>
-              <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#FFFFFF", marginBottom: "0.35rem" }}>
-                Sponsored Ads Governance
-              </h3>
-              <p style={{ fontSize: "0.84rem", color: "#94A3B8", lineHeight: 1.5, marginBottom: "1rem" }}>
-                Audit artisan CPC advertising campaigns, manage hero featured placements, and track daily ad click rates.
-              </p>
-              <div style={{ color: "#EC4899", fontSize: "0.82rem", fontWeight: 800, display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
-                Review Active Ads <ArrowRight size={14} />
-              </div>
-            </div>
-
-            {/* Action 6: Disputes Center */}
-            <div
-              onClick={() => setActiveTab("admin-disputes")}
-              style={{
-                background: "rgba(15, 23, 42, 0.7)",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                borderRadius: "18px",
-                padding: "1.5rem",
-                cursor: "pointer",
-                transition: "all 0.25s ease"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#EF4444";
-                e.currentTarget.style.transform = "translateY(-3px)";
-                e.currentTarget.style.boxShadow = "0 12px 25px rgba(239, 68, 68, 0.15)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
-                <div style={{ background: "rgba(239, 68, 68, 0.12)", color: "#EF4444", padding: "0.6rem", borderRadius: "12px", display: "inline-flex" }}>
-                  <AlertTriangle size={22} />
-                </div>
-                <span style={{ color: "#94A3B8", fontSize: "0.78rem", fontWeight: 600 }}>
-                  Claims Desk
-                </span>
-              </div>
-              <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#FFFFFF", marginBottom: "0.35rem" }}>
-                Dispute Arbitration Center
-              </h3>
-              <p style={{ fontSize: "0.84rem", color: "#94A3B8", lineHeight: 1.5, marginBottom: "1rem" }}>
-                Mediate buyer-merchant discrepancies, issue 1-click order voiding or refunds, and handle damaged COD courier claims.
-              </p>
-              <div style={{ color: "#EF4444", fontSize: "0.82rem", fontWeight: 800, display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
-                Access Arbitration Center <ArrowRight size={14} />
               </div>
             </div>
 

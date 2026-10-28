@@ -22,8 +22,6 @@ import ContactPage from "./pages/customer/ContactPage";
 import VendorDashboard from "./pages/vendor/VendorDashboard";
 import VendorProducts from "./pages/vendor/VendorProducts";
 import VendorOrders from "./pages/vendor/VendorOrders";
-import VendorWallet from "./pages/vendor/VendorWallet";
-import VendorSocial from "./pages/vendor/VendorSocial";
 import VendorProfile from "./pages/vendor/VendorProfile";
 import VendorReviews from "./pages/vendor/VendorReviews";
 
@@ -31,8 +29,6 @@ import VendorReviews from "./pages/vendor/VendorReviews";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminVendors from "./pages/admin/AdminVendors";
 import AdminOrders from "./pages/admin/AdminOrders";
-import AdminWalletLedger from "./pages/admin/AdminWalletLedger";
-import AdminDisputes from "./pages/admin/AdminDisputes";
 import AdminReports from "./pages/admin/AdminReports";
 import AdminReviews from "./pages/admin/AdminReviews";
 
@@ -132,8 +128,6 @@ function MainApp() {
             {activeTab === "vendor-dashboard" && <VendorDashboard setActiveTab={setActiveTab} />}
             {activeTab === "vendor-products" && <VendorProducts />}
             {activeTab === "vendor-orders" && <VendorOrders />}
-            {activeTab === "vendor-wallet" && <VendorWallet />}
-            {activeTab === "vendor-social" && <VendorSocial />}
             {activeTab === "vendor-profile" && <VendorProfile />}
             {activeTab === "vendor-reviews" && <VendorReviews />}
           </>
@@ -145,9 +139,7 @@ function MainApp() {
             {activeTab === "admin-dashboard" && <AdminDashboard setActiveTab={setActiveTab} />}
             {activeTab === "admin-vendors" && <AdminVendors />}
             {activeTab === "admin-orders" && <AdminOrders />}
-            {activeTab === "admin-ledger" && <AdminWalletLedger />}
             {activeTab === "admin-reviews" && <AdminReviews />}
-            {activeTab === "admin-disputes" && <AdminDisputes />}
             {activeTab === "admin-reports" && <AdminReports />}
           </>
         )}

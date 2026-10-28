@@ -78,7 +78,7 @@ export default function AdminVendors() {
           </div>
           <h1 style={{ fontSize: "2.2rem", color: "#0F172A", marginBottom: "0.2rem" }}>Vendor Directory & Verifications</h1>
           <p style={{ color: "#64748B", fontSize: "0.95rem" }}>
-            Verify Cayman Island merchant licenses, audit pre-paid wallet balances, and approve new applicant stalls.
+            Verify Cayman Island merchant licenses, manage commission rates, and approve new applicant stalls.
           </p>
         </div>
 
@@ -189,14 +189,13 @@ export default function AdminVendors() {
               <th style={{ padding: "1rem" }}>Vendor Store</th>
               <th style={{ padding: "1rem" }}>Owner / Contact</th>
               <th style={{ padding: "1rem" }}>District</th>
-              <th style={{ padding: "1rem" }}>Wallet Balance</th>
+              <th style={{ padding: "1rem" }}>Commission Rate</th>
               <th style={{ padding: "1rem" }}>Status</th>
               <th style={{ padding: "1rem", textAlign: "right" }}>Actions / Verification</th>
             </tr>
           </thead>
           <tbody>
             {vendors.map((v) => {
-              const isSuspended = v.wallet_balance <= 0;
               const isPending = v.status === "pending_approval";
               return (
                 <tr key={v.id} style={{ borderBottom: "1px solid #F1F5F9" }}>
@@ -219,8 +218,8 @@ export default function AdminVendors() {
                     <MapPin size={13} color="#00A896" style={{ marginRight: "4px" }} /> {v.district}
                   </td>
 
-                  <td style={{ padding: "1rem", fontWeight: 800, color: isSuspended ? "#DC2626" : "#00A896" }}>
-                    ${Number(v.wallet_balance || 0).toFixed(2)} KYD
+                  <td style={{ padding: "1rem", fontWeight: 800, color: "#00A896" }}>
+                    {Number((v.commission_rate || 0.1) * 100).toFixed(0)}% Flat Take
                   </td>
 
                   <td style={{ padding: "1rem" }}>
@@ -228,8 +227,8 @@ export default function AdminVendors() {
                       <span style={{ background: "#FEF3C7", color: "#B45309", padding: "0.25rem 0.65rem", borderRadius: "999px", fontSize: "0.75rem", fontWeight: 800, border: "1px solid #FCD34D" }}>
                         ⏳ Pending Approval
                       </span>
-                    ) : isSuspended ? (
-                      <span className="badge badge-out-stock">Wallet Suspended</span>
+                    ) : v.status === "inactive" ? (
+                      <span className="badge badge-out-stock">Inactive</span>
                     ) : (
                       <span className="badge badge-stock">Active</span>
                     )}
@@ -468,12 +467,12 @@ export default function AdminVendors() {
 
               <div style={{ marginBottom: "1.5rem" }}>
                 <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
-                  Initial Starting Pre-Paid Wallet ($KYD)
+                  Platform Commission Rate (%)
                 </label>
                 <input
                   type="number"
-                  value={formData.wallet_balance}
-                  onChange={(e) => setFormData({ ...formData, wallet_balance: Number(e.target.value) })}
+                  value={formData.commission_rate ? formData.commission_rate * 100 : 10}
+                  onChange={(e) => setFormData({ ...formData, commission_rate: Number(e.target.value) / 100 })}
                   style={{
                     width: "100%",
                     background: "#050B14",

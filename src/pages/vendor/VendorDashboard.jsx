@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import { useMarketplace } from "../../context/MarketplaceContext";
 import {
   LayoutDashboard,
-  Wallet,
   Package,
   Clock,
-  QrCode,
   DollarSign,
   TrendingUp,
   CheckCircle2,
@@ -15,14 +13,7 @@ import {
   ExternalLink,
   ShieldCheck,
   Store,
-  Share2,
-  Megaphone,
-  MapPin,
-  Sparkles,
-  Phone,
-  User,
   ShoppingBag,
-  KeyRound,
   Star,
   MessageSquare
 } from "lucide-react";
@@ -34,11 +25,9 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
     products,
     reviews = [],
     formatPrice,
-    verifyAndCompletePickup,
     showToast
   } = useMarketplace();
 
-  const [pinInput, setPinInput] = useState("");
   const [orderFilter, setOrderFilter] = useState("all"); // 'all' | 'pickup' | 'cod'
 
   if (!activeVendor) return null;
@@ -59,22 +48,7 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
     .filter((o) => o.status === "Completed")
     .reduce((acc, o) => acc + o.total_amount, 0);
 
-  const handleVerifyPinSubmit = (e) => {
-    e.preventDefault();
-    if (!pinInput || pinInput.length < 4) {
-      showToast("Please enter a valid 4-digit PIN code.", "warning");
-      return;
-    }
-    const success = verifyAndCompletePickup(pinInput.trim());
-    if (success) {
-      setPinInput("");
-    }
-  };
-
-  const walletBalance = Number(activeVendor?.wallet_balance ?? 145.5);
-  const isSuspended = walletBalance <= 0;
-  const isNearDepletion = walletBalance > 0 && walletBalance < 25;
-  const isLowBalance = isSuspended || isNearDepletion;
+  const vendorReviews = reviews.filter((r) => r.vendor_id === activeVendor.id);
 
   const filteredOrders = vendorOrders.filter((o) => {
     if (orderFilter === "pickup") return o.type === "PICKUP";
@@ -173,7 +147,7 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
                 {activeVendor.store_name}
               </h1>
               <p style={{ color: "#94A3B8", fontSize: "1rem", maxWidth: "620px", lineHeight: 1.5 }}>
-                {activeVendor.bio || "Manage your island storefront catalog, verify 4-digit pickup PIN codes at your counter, and track courier dispatches."}
+                {activeVendor.bio || "Manage your island storefront catalog, process incoming customer WhatsApp orders, and fulfill local deliveries."}
               </p>
             </div>
 
@@ -200,7 +174,7 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
               </button>
 
               <button
-                onClick={() => setActiveTab("vendor-wallet")}
+                onClick={() => setActiveTab("vendor-profile")}
                 style={{
                   background: "rgba(245, 158, 11, 0.15)",
                   border: "1px solid rgba(245, 158, 11, 0.4)",
@@ -215,8 +189,8 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
                   fontSize: "0.86rem"
                 }}
               >
-                <Wallet size={16} />
-                <span>Wallet: ${walletBalance.toFixed(2)} KYD</span>
+                <Store size={16} />
+                <span>Stall Profile & Info</span>
               </button>
 
               <button
@@ -287,21 +261,21 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
             </div>
           </div>
 
-          {/* Wallet Balance */}
+          {/* Customer Reviews & Rating */}
           <div style={{ background: "rgba(15, 23, 42, 0.7)", border: "1px solid rgba(245, 158, 11, 0.3)", borderRadius: "20px", padding: "1.75rem", boxShadow: "0 10px 30px rgba(0,0,0,0.3)" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
               <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "#FBBF24", textTransform: "uppercase" }}>
-                Stall Wallet Balance
+                Customer Ratings
               </span>
               <div style={{ background: "rgba(245, 158, 11, 0.2)", color: "#FBBF24", width: "38px", height: "38px", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Wallet size={20} />
+                <Star size={20} fill="#FBBF24" />
               </div>
             </div>
             <div style={{ fontSize: "2.2rem", fontWeight: 900, color: "#FBBF24" }}>
-              ${walletBalance.toFixed(2)} <span style={{ fontSize: "1rem", color: "#94A3B8" }}>KYD</span>
+              {activeVendor.rating ? Number(activeVendor.rating).toFixed(1) : "5.0"} <span style={{ fontSize: "1rem", color: "#94A3B8" }}>★ / 5.0</span>
             </div>
             <div style={{ marginTop: "0.6rem", fontSize: "0.78rem", color: "#94A3B8" }}>
-              Vendor account ledger & commission tracking
+              {vendorReviews.length} verified customer reviews received
             </div>
           </div>
 

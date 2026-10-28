@@ -113,17 +113,17 @@ export default function AdminReports() {
             ${platformCommissions.toFixed(2)} KYD
           </div>
           <div style={{ fontSize: "0.78rem", color: "#00A896", marginTop: "0.4rem" }}>
-            Automated wallet deductions
+            Earned from fulfilled orders
           </div>
         </div>
 
         <div style={{ background: "#FFFFFF", padding: "1.5rem", borderRadius: "20px", border: "1px solid #E2E8F0", boxShadow: "var(--shadow-sm)" }}>
-          <div style={{ fontSize: "0.8rem", color: "#64748B", fontWeight: 600, textTransform: "uppercase" }}>Pre-Paid Wallet Float</div>
+          <div style={{ fontSize: "0.8rem", color: "#64748B", fontWeight: 600, textTransform: "uppercase" }}>Registered Vendors</div>
           <div style={{ fontSize: "2rem", fontWeight: 900, color: "#F59E0B", marginTop: "0.2rem" }}>
-            ${vendors.reduce((acc, v) => acc + (v.wallet_balance || 0), 0).toFixed(2)} KYD
+            {vendors.length} Active
           </div>
           <div style={{ fontSize: "0.78rem", color: "#B45309", marginTop: "0.4rem" }}>
-            Vendor balances held in escrow
+            Licensed Island Artisans
           </div>
         </div>
 

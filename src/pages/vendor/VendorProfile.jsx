@@ -109,14 +109,14 @@ export default function VendorProfile() {
         </div>
 
         <div>
-          <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.3rem", display: "block" }}>Payout Instructions & Bank Details (for Wallet Top-ups & Settlements)</label>
+          <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.3rem", display: "block" }}>Vendor Bank Details (for Direct Customer Transfers & Settlements)</label>
           <input
             type="text"
             value={payoutInstructions}
             onChange={(e) => setPayoutInstructions(e.target.value)}
             placeholder="e.g. Butterfield Bank / Cayman National Bank, Branch, Account #"
           />
-          <small style={{ color: "#64748B", fontSize: "0.78rem" }}>Used by Platform Admin for wire transfers and monthly wallet invoice reconciliations.</small>
+          <small style={{ color: "#64748B", fontSize: "0.78rem" }}>Shared with customers choosing Bank Transfer payment on WhatsApp, and used for monthly administrative settlements.</small>
         </div>
 
         <div>

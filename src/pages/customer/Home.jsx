@@ -450,8 +450,7 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
                 Self-Managed Vendor Stalls
               </h3>
               <p style={{ fontSize: "0.9rem", color: "#4A5B73", lineHeight: 1.6 }}>
-                Local businesses register their own digital stall booth on CaymanBazaar. They manage inventory, sync social feeds, 
-                verify customer PINs at their physical counter, and operate with automated pre-paid wallet commissions.
+                Local businesses register their own digital stall booth on CaymanBazaar. They manage catalog inventory, receive direct WhatsApp checkout orders, and coordinate local island fulfillment.
               </p>
             </div>
           </div>

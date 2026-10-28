@@ -337,49 +337,12 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                   border: activeTab === "vendor-orders" ? "1px solid rgba(0, 229, 201, 0.4)" : "1px solid transparent"
                 }}
               >
-                <Clock size={15} /> Orders & Holds
+                <Package size={15} /> Orders
                 {vendorPendingOrders > 0 && (
                   <span style={{ background: "#F59E0B", color: "#FFFFFF", fontSize: "0.72rem", borderRadius: "10px", padding: "0.15rem 0.45rem", fontWeight: 900 }}>
                     {vendorPendingOrders}
                   </span>
                 )}
-              </button>
-
-              <button
-                onClick={() => setActiveTab("vendor-wallet")}
-                style={{
-                  background: activeTab === "vendor-wallet" ? "rgba(0, 229, 201, 0.18)" : "transparent",
-                  color: activeTab === "vendor-wallet" ? "#00E5C9" : "#CBD5E1",
-                  fontWeight: 800,
-                  fontSize: "0.86rem",
-                  padding: "0.5rem 0.85rem",
-                  borderRadius: "10px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  border: activeTab === "vendor-wallet" ? "1px solid rgba(0, 229, 201, 0.4)" : "1px solid transparent"
-                }}
-              >
-                <Wallet size={15} /> Wallet (${activeVendor?.wallet_balance?.toFixed(2)} KYD)
-              </button>
-
-
-              <button
-                onClick={() => setActiveTab("vendor-social")}
-                style={{
-                  background: activeTab === "vendor-social" ? "rgba(0, 229, 201, 0.18)" : "transparent",
-                  color: activeTab === "vendor-social" ? "#00E5C9" : "#CBD5E1",
-                  fontWeight: 800,
-                  fontSize: "0.86rem",
-                  padding: "0.5rem 0.85rem",
-                  borderRadius: "10px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  border: activeTab === "vendor-social" ? "1px solid rgba(0, 229, 201, 0.4)" : "1px solid transparent"
-                }}
-              >
-                <Share2 size={15} /> Social Sync
               </button>
 
               <button
@@ -397,7 +360,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                   border: activeTab === "vendor-profile" ? "1px solid rgba(0, 229, 201, 0.4)" : "1px solid transparent"
                 }}
               >
-                <Settings size={15} /> Stall Settings
+                <Settings size={15} /> Stall Profile
               </button>
 
               <button
@@ -464,26 +427,6 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
               </button>
 
               <button
-                onClick={() => setActiveTab("admin-ledger")}
-                style={{
-                  background: activeTab === "admin-ledger" ? "rgba(245, 158, 11, 0.22)" : "transparent",
-                  color: activeTab === "admin-ledger" ? "#FBBF24" : "#CBD5E1",
-                  fontWeight: 800,
-                  fontSize: "0.84rem",
-                  padding: "0.45rem 0.8rem",
-                  borderRadius: "10px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  border: activeTab === "admin-ledger" ? "1px solid rgba(245, 158, 11, 0.45)" : "1px solid transparent",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease"
-                }}
-              >
-                <Wallet size={14} /> Ledger
-              </button>
-
-              <button
                 onClick={() => setActiveTab("admin-orders")}
                 style={{
                   background: activeTab === "admin-orders" ? "rgba(245, 158, 11, 0.22)" : "transparent",
@@ -526,26 +469,6 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                     {flaggedCount}
                   </span>
                 )}
-              </button>
-
-              <button
-                onClick={() => setActiveTab("admin-disputes")}
-                style={{
-                  background: activeTab === "admin-disputes" ? "rgba(239, 68, 68, 0.22)" : "transparent",
-                  color: activeTab === "admin-disputes" ? "#F87171" : "#CBD5E1",
-                  fontWeight: 800,
-                  fontSize: "0.84rem",
-                  padding: "0.45rem 0.8rem",
-                  borderRadius: "10px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  border: activeTab === "admin-disputes" ? "1px solid rgba(239, 68, 68, 0.45)" : "1px solid transparent",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease"
-                }}
-              >
-                <AlertTriangle size={14} /> Disputes
               </button>
 
               <button
@@ -753,11 +676,9 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
               <>
                 <button onClick={() => { setActiveTab("vendor-dashboard"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#00E5C9", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><LayoutDashboard size={15} /> Dashboard</button>
                 <button onClick={() => { setActiveTab("vendor-products"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Package size={15} /> Products</button>
-                <button onClick={() => { setActiveTab("vendor-orders"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Clock size={15} /> Orders & Holds</button>
-                <button onClick={() => { setActiveTab("vendor-wallet"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Wallet size={15} /> Wallet</button>
+                <button onClick={() => { setActiveTab("vendor-orders"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Package size={15} /> Orders</button>
+                <button onClick={() => { setActiveTab("vendor-profile"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Settings size={15} /> Stall Profile</button>
                 <button onClick={() => { setActiveTab("vendor-reviews"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Star size={15} /> Reviews</button>
-                <button onClick={() => { setActiveTab("vendor-social"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Share2 size={15} /> Social</button>
-                <button onClick={() => { setActiveTab("vendor-profile"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Settings size={15} /> Settings</button>
               </>
             )}
 
@@ -765,10 +686,8 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
               <>
                 <button onClick={() => { setActiveTab("admin-dashboard"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#FBBF24", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><LayoutDashboard size={15} /> Overview</button>
                 <button onClick={() => { setActiveTab("admin-vendors"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Store size={15} /> Vendors</button>
-                <button onClick={() => { setActiveTab("admin-ledger"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Wallet size={15} /> Ledger</button>
                 <button onClick={() => { setActiveTab("admin-orders"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Package size={15} /> Orders</button>
                 <button onClick={() => { setActiveTab("admin-reviews"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Star size={15} /> Reviews</button>
-                <button onClick={() => { setActiveTab("admin-disputes"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><AlertTriangle size={15} /> Disputes</button>
                 <button onClick={() => { setActiveTab("admin-reports"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><BarChart3 size={15} /> Reports</button>
               </>
             )}
