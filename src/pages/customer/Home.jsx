@@ -23,7 +23,8 @@ import {
   Eye,
   X,
   Palmtree,
-  Camera
+  Camera,
+  MessageSquare
 } from "lucide-react";
 
 export default function Home({ setActiveTab, setSelectedVendor, setSelectedProduct }) {
@@ -151,7 +152,7 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
             textShadow: "0 2px 8px rgba(0,0,0,0.5)"
           }}>
             Discover artisanal Caymanite gems, Tortuga rum cakes & Seven Mile beach boutiques.
-            Reserve online with a <strong>4-Digit PIN</strong> for physical counter pickup, or request <strong>Cash on Delivery ($KYD / $USD)</strong> to your resort.
+            Order online with fast <strong>WhatsApp Checkout</strong> for stall collection or request <strong>Island Courier Delivery ($KYD / $USD)</strong> to your residence or resort.
           </p>
 
           {/* Spacious Luxury Search Bar */}
@@ -338,14 +339,14 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
                 boxSizing: "border-box"
               }}
             >
-              <div style={{ display: "inline-block", background: "#FEF3C7", color: "#B45309", padding: "0.22rem 0.65rem", borderRadius: "999px", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "1rem" }}>
-                PILLAR 01 • ZERO UPFRONT PAYMENT
+              <div style={{ display: "inline-block", background: "#E6FBF2", color: "#00A896", padding: "0.22rem 0.65rem", borderRadius: "999px", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "1rem" }}>
+                PILLAR 01 • DIRECT WHATSAPP COMMERCE
               </div>
               <div
                 className="pillar-icon-box"
                 style={{
-                  background: "linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)",
-                  color: "#B45309",
+                  background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+                  color: "#FFFFFF",
                   width: "60px",
                   height: "60px",
                   borderRadius: "18px",
@@ -353,17 +354,16 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
                   alignItems: "center",
                   justifyContent: "center",
                   marginBottom: "1.25rem",
-                  boxShadow: "0 8px 18px rgba(245, 158, 11, 0.25)"
+                  boxShadow: "0 8px 18px rgba(37, 211, 102, 0.3)"
                 }}
               >
-                <QrCode size={30} />
+                <MessageSquare size={30} />
               </div>
               <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.45rem", marginBottom: "0.6rem", color: "#0A1C36", fontWeight: 800 }}>
-                Reserve for Stall Pickup
+                WhatsApp Direct Checkout
               </h3>
               <p style={{ fontSize: "0.9rem", color: "#4A5B73", lineHeight: 1.6 }}>
-                Instant hold! Receive a <strong>4-Digit PIN Code + QR Pass</strong> without paying online. 
-                The vendor holds the item at their Cayman physical stall for <strong>48 hours</strong>. Show your PIN, inspect the item, and complete payment on the spot.
+                Order with confidence! Submit itemized order requests via <strong>WhatsApp</strong> with automatic reference numbers (#CB-XXXX). Coordinate collection or delivery directly with Cayman shops with no card processing fees.
               </p>
             </div>
           </div>

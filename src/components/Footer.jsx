@@ -43,12 +43,12 @@ export default function Footer({ setActiveTab }) {
               </li>
               <li>
                 <a href="#orders" onClick={(e) => { e.preventDefault(); setActiveTab("my-orders"); }}>
-                  My Orders & Pickup Passes
+                  My Orders & Status
                 </a>
               </li>
               <li>
                 <a href="#faq" onClick={(e) => { e.preventDefault(); setActiveTab("faq"); }}>
-                  FAQ / Pickup Policy
+                  FAQ / Order Policy
                 </a>
               </li>
               <li>
@@ -65,11 +65,11 @@ export default function Footer({ setActiveTab }) {
             <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", fontSize: "0.85rem", color: "#94A3B8" }}>
               <div style={{ display: "flex", gap: "0.6rem" }}>
                 <Clock size={18} color="#00A896" style={{ flexShrink: 0, marginTop: "2px" }} />
-                <span><strong>Reserve for Pickup:</strong> Holds reserved items for 24-48 hours. Present your 4-digit PIN code at store clerk.</span>
+                <span><strong>WhatsApp Checkout:</strong> Itemized order request (#CB-XXXX) sent directly to our team via WhatsApp.</span>
               </div>
               <div style={{ display: "flex", gap: "0.6rem" }}>
                 <ShieldCheck size={18} color="#E5A93C" style={{ flexShrink: 0, marginTop: "2px" }} />
-                <span><strong>Cash on Delivery (COD):</strong> Pay in cash ($KYD / $USD) upon courier delivery anywhere on Grand Cayman.</span>
+                <span><strong>Stall Collection / Courier:</strong> Collect in person at the stall counter or request courier delivery.</span>
               </div>
             </div>
           </div>

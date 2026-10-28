@@ -23,7 +23,6 @@ import VendorDashboard from "./pages/vendor/VendorDashboard";
 import VendorProducts from "./pages/vendor/VendorProducts";
 import VendorOrders from "./pages/vendor/VendorOrders";
 import VendorWallet from "./pages/vendor/VendorWallet";
-import VendorAds from "./pages/vendor/VendorAds";
 import VendorSocial from "./pages/vendor/VendorSocial";
 import VendorProfile from "./pages/vendor/VendorProfile";
 import VendorReviews from "./pages/vendor/VendorReviews";
@@ -35,7 +34,6 @@ import AdminOrders from "./pages/admin/AdminOrders";
 import AdminWalletLedger from "./pages/admin/AdminWalletLedger";
 import AdminDisputes from "./pages/admin/AdminDisputes";
 import AdminReports from "./pages/admin/AdminReports";
-import AdminAds from "./pages/admin/AdminAds";
 import AdminReviews from "./pages/admin/AdminReviews";
 
 function MainApp() {
@@ -135,7 +133,6 @@ function MainApp() {
             {activeTab === "vendor-products" && <VendorProducts />}
             {activeTab === "vendor-orders" && <VendorOrders />}
             {activeTab === "vendor-wallet" && <VendorWallet />}
-            {activeTab === "vendor-ads" && <VendorAds />}
             {activeTab === "vendor-social" && <VendorSocial />}
             {activeTab === "vendor-profile" && <VendorProfile />}
             {activeTab === "vendor-reviews" && <VendorReviews />}
@@ -152,10 +149,10 @@ function MainApp() {
             {activeTab === "admin-reviews" && <AdminReviews />}
             {activeTab === "admin-disputes" && <AdminDisputes />}
             {activeTab === "admin-reports" && <AdminReports />}
-            {activeTab === "admin-ads" && <AdminAds />}
           </>
         )}
       </main>
+
 
       {/* Slide-over Cart Drawer */}
       <CartDrawer

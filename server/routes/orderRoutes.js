@@ -7,43 +7,40 @@ import WalletLedger from "../models/WalletLedger.js";
 const router = express.Router();
 
 // Helper: Handle commission deduction on order completion
+// Helper: Record commission for reporting without punitive auto-suspension
 export const processOrderCommission = async (order) => {
-  const vendor = await Vendor.findOne({ vendor_id: order.vendor_id });
-  if (!vendor) return;
+  try {
+    const vendor = await Vendor.findOne({ vendor_id: order.vendor_id });
+    if (!vendor) return;
 
-  const commission = order.commission_amount || Number((order.total_amount * (vendor.commission_rate || 0.10)).toFixed(2));
-  const newBalance = Number((vendor.wallet_balance - commission).toFixed(2));
-  const isSuspended = newBalance <= 0;
-
-  vendor.wallet_balance = newBalance;
-  if (isSuspended) {
-    vendor.status = "inactive";
+    const commission = order.commission_amount || Number((order.total_amount * (vendor.commission_rate || 0.10)).toFixed(2));
+    
+    // Create Ledger record for sales tracking
+    const ledger_id = `LED-${Math.floor(1000 + Math.random() * 9000)}`;
+    const ledgerEntry = new WalletLedger({
+      ledger_id,
+      vendor_id: vendor.vendor_id,
+      type: "COMMISSION_DEDUCTION",
+      description: `Platform Fee (${Number((vendor.commission_rate || 0.10) * 100).toFixed(0)}%) for Order #${order.order_id}`,
+      amount: -commission,
+      order_id: order.order_id
+    });
+    await ledgerEntry.save();
+  } catch (err) {
+    console.warn("Commission ledger log skipped:", err.message);
   }
-  await vendor.save();
-
-  // Create Ledger record
-  const ledger_id = `LED-${Math.floor(1000 + Math.random() * 9000)}`;
-  const ledgerEntry = new WalletLedger({
-    ledger_id,
-    vendor_id: vendor.vendor_id,
-    type: "COMMISSION_DEDUCTION",
-    description: `Platform Commission (10%) for Order #${order.order_id}`,
-    amount: -commission,
-    order_id: order.order_id
-  });
-  await ledgerEntry.save();
 };
 
 // GET all orders
 router.get("/", async (req, res) => {
   try {
-    const { vendor_id, customer_phone, status, type } = req.query;
+    const { vendor_id, customer_phone, status, fulfillment_type } = req.query;
     const filter = {};
 
     if (vendor_id) filter.vendor_id = vendor_id;
     if (customer_phone) filter.customer_phone = customer_phone;
     if (status) filter.status = status;
-    if (type) filter.type = type;
+    if (fulfillment_type) filter.fulfillment_type = fulfillment_type;
 
     const orders = await Order.find(filter).sort({ createdAt: -1 });
     res.json({ success: true, count: orders.length, data: orders });
@@ -63,23 +60,25 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// POST place order (Flow A: COD & Flow B: Reserve for Store Pickup with 4-Digit PIN)
+// POST place order via WhatsApp checkout flow
 router.post("/", async (req, res) => {
   try {
     const {
-      type, // 'COD' | 'PICKUP'
+      fulfillment_type, // 'Collection at Stall' | 'Island Courier Delivery'
+      type, // legacy fallback
       customer_name,
       customer_phone,
       customer_email,
       delivery_address,
       special_notes,
-      send_whatsapp,
       items // [{ product_id, title, price, qty, variations, image }]
     } = req.body;
 
     if (!items || items.length === 0) {
       return res.status(400).json({ success: false, message: "Cart items are required" });
     }
+
+    const effectiveFulfillment = fulfillment_type || (type === "COD" ? "Island Courier Delivery" : "Collection at Stall");
 
     // Group items by vendor
     const vendorGrouped = {};
@@ -91,7 +90,10 @@ router.post("/", async (req, res) => {
     }
 
     const createdOrders = [];
-    const baseOrderId = `ORD-${Math.floor(1000 + Math.random() * 9000)}`;
+    const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+    const baseOrderId = `CB-${randomSuffix}`;
+
+    const CENTRAL_WHATSAPP = "13459492299";
 
     let index = 1;
     for (const vId of Object.keys(vendorGrouped)) {
@@ -103,10 +105,30 @@ router.post("/", async (req, res) => {
       const commissionRate = vendor?.commission_rate || 0.10;
       const commissionAmount = Number((subTotal * commissionRate).toFixed(2));
 
-      // Pickup PIN generation
-      const pin_code = type === "PICKUP" ? Math.floor(1000 + Math.random() * 9000).toString() : null;
-      const qr_code = type === "PICKUP" ? `CAYMAN-PICKUP-${subOrderId}-${pin_code}` : null;
-      const hold_until = type === "PICKUP" ? new Date(Date.now() + 48 * 3600 * 1000) : null;
+      // Build WhatsApp Pre-filled message
+      const itemsListText = vendorItems
+        .map((ci) => `• ${ci.qty}x ${ci.title} ($${Number(ci.price).toFixed(2)} KYD)`)
+        .join("\n");
+
+      const waText = 
+`*New Order Request - Cayman Bazaar*
+Order Ref: #${subOrderId}
+Store: ${vendor?.store_name || "Cayman Island Stall"}
+
+*Customer Details:*
+Name: ${customer_name}
+Phone: ${customer_phone}
+${customer_email ? `Email: ${customer_email}\n` : ""}Fulfillment: ${effectiveFulfillment}
+${effectiveFulfillment === "Island Courier Delivery" ? `Delivery Address: ${delivery_address || "Provided via chat"}\n` : `Pickup Stall: ${vendor?.address || vendor?.store_name}\n`}
+*Items Ordered:*
+${itemsListText}
+
+*Total Due:* $${subTotal.toFixed(2)} KYD
+${special_notes ? `\n*Notes:* ${special_notes}` : ""}
+
+Please confirm receipt and let me know the collection / delivery ETA. Thank you!`;
+
+      const whatsappUrl = `https://wa.me/${CENTRAL_WHATSAPP}?text=${encodeURIComponent(waText)}`;
 
       const newOrder = new Order({
         order_id: subOrderId,
@@ -115,26 +137,29 @@ router.post("/", async (req, res) => {
         customer_name,
         customer_phone,
         customer_email,
-        type,
+        fulfillment_type: effectiveFulfillment,
+        type: effectiveFulfillment === "Island Courier Delivery" ? "COD" : "PICKUP",
         items: vendorItems.map((ci) => ({
           product_id: ci.product_id,
           title: ci.title,
           price: ci.price,
           qty: ci.qty,
           variations: ci.variations || {},
-          image: ci.image || ""
+          image: ci.image || "",
+          vendor_id: vId
         })),
         total_amount: subTotal,
         commission_amount: commissionAmount,
         currency: "KYD",
-        status: "Pending",
-        pin_code,
-        qr_code,
-        hold_until,
-        delivery_address: type === "COD" ? delivery_address : null,
-        pickup_location: type === "PICKUP" ? (vendor?.address || `${vendor?.district}, Grand Cayman`) : null,
+        status: "New", // 9 Client statuses: New, Contacted, Confirmed, Awaiting Payment, Processing, Ready for Collection, Out for Delivery, Completed, Cancelled
+        payment_status: "Pending", // Pending, Partially Paid, Paid, Refunded
+        payment_method: effectiveFulfillment === "Island Courier Delivery" ? "Cash on Delivery" : "Cash on Collection",
+        delivery_address: effectiveFulfillment === "Island Courier Delivery" ? delivery_address : null,
+        pickup_location: effectiveFulfillment === "Collection at Stall" ? (vendor?.address || `${vendor?.district}, Grand Cayman`) : null,
         special_notes,
-        send_whatsapp: send_whatsapp !== undefined ? send_whatsapp : true
+        whatsapp_message: waText,
+        whatsapp_url: whatsappUrl,
+        send_whatsapp: true
       });
 
       const savedOrder = await newOrder.save();
@@ -162,19 +187,28 @@ router.post("/", async (req, res) => {
   }
 });
 
-// PATCH update order status
+// PATCH update order status & payment details
 router.patch("/:id/status", async (req, res) => {
   try {
-    const { status } = req.body;
+    const { status, payment_status, payment_method } = req.body;
     const order = await Order.findOne({ order_id: req.params.id });
     if (!order) return res.status(404).json({ success: false, message: "Order not found" });
 
-    const previousStatus = order.status;
-    order.status = status;
+    if (status) {
+      const previousStatus = order.status;
+      order.status = status;
+      if (status === "Completed" && previousStatus !== "Completed") {
+        order.completion_time = new Date();
+        await processOrderCommission(order);
+      }
+    }
 
-    if (status === "Completed" && previousStatus !== "Completed") {
-      order.completion_time = new Date();
-      await processOrderCommission(order);
+    if (payment_status) {
+      order.payment_status = payment_status;
+    }
+
+    if (payment_method) {
+      order.payment_method = payment_method;
     }
 
     await order.save();
@@ -184,45 +218,5 @@ router.patch("/:id/status", async (req, res) => {
   }
 });
 
-// POST store clerk physical pickup verification via 4-digit PIN terminal
-router.post("/verify-pin", async (req, res) => {
-  try {
-    const { pin_code, vendor_id } = req.body;
-
-    if (!pin_code || pin_code.trim().length !== 4) {
-      return res.status(400).json({ success: false, message: "Valid 4-digit PIN is required" });
-    }
-
-    const filter = {
-      type: "PICKUP",
-      pin_code: pin_code.trim(),
-      status: { $ne: "Completed" }
-    };
-    if (vendor_id) filter.vendor_id = vendor_id;
-
-    const order = await Order.findOne(filter);
-    if (!order) {
-      return res.status(404).json({
-        success: false,
-        message: "No active pickup reservation found for this 4-Digit PIN. Please re-check code."
-      });
-    }
-
-    // Complete order & deduct platform commission
-    order.status = "Completed";
-    order.completion_time = new Date();
-    await order.save();
-
-    await processOrderCommission(order);
-
-    res.json({
-      success: true,
-      message: `4-Digit PIN verified! Order #${order.order_id} completed successfully. 10% platform commission deducted from vendor wallet.`,
-      data: order
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-});
-
 export default router;
+

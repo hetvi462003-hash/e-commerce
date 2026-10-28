@@ -50,7 +50,7 @@ export default function ContactPage({ setActiveTab }) {
           Contact CaymanBazaar
         </h1>
         <p style={{ color: "#64748B", fontSize: "1.05rem", maxWidth: "620px", margin: "0 auto", lineHeight: 1.6 }}>
-          Have questions regarding stall pickup holds, 4-digit PIN verification, resort COD delivery, or vendor onboarding? Our island concierge team is here to assist.
+          Have questions regarding WhatsApp order requests, stall collection, courier delivery, or vendor onboarding? Our island concierge team is here to assist.
         </p>
       </div>
 
@@ -92,7 +92,7 @@ export default function ContactPage({ setActiveTab }) {
                 <div>
                   <div style={{ fontSize: "0.82rem", textTransform: "uppercase", fontWeight: 700, color: "#64748B" }}>Instant WhatsApp Concierge</div>
                   <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#0F172A", marginTop: "0.15rem" }}>+1 (345) 926-PASS (7277)</div>
-                  <div style={{ fontSize: "0.85rem", color: "#64748B" }}>Fast-track PIN verification & hold questions</div>
+                  <div style={{ fontSize: "0.85rem", color: "#64748B" }}>Instant order coordination & customer support</div>
                 </div>
               </div>
 
@@ -207,8 +207,8 @@ export default function ContactPage({ setActiveTab }) {
                     onChange={(e) => setFormData({ ...formData, inquiryType: e.target.value })}
                     style={{ width: "100%", padding: "0.8rem 1rem", borderRadius: "12px", border: "1.5px solid #CBD5E1", fontSize: "0.9rem", background: "#FFFFFF" }}
                   >
-                    <option value="order_pickup">Store Pickup & 4-Digit PIN Pass</option>
-                    <option value="cod_delivery">Cash on Delivery (COD) Delivery</option>
+                    <option value="order_pickup">WhatsApp Order & Stall Collection</option>
+                    <option value="cod_delivery">Island Courier Delivery</option>
                     <option value="vendor_onboarding">Register as Cayman Stall Vendor</option>
                     <option value="commission_wallet">Vendor Wallet & Commissions</option>
                     <option value="general">General Support / Feedback</option>

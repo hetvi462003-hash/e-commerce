@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import { useMarketplace } from "../../context/MarketplaceContext";
-import QrCodeModal from "../../components/QrCodeModal";
 import {
   ShoppingBag,
-  DollarSign,
-  Clock,
-  ShieldCheck,
-  CheckCircle2,
+  Store,
+  Truck,
   MapPin,
   Phone,
   User,
   Mail,
   ArrowRight,
-  QrCode,
-  Store,
-  Smartphone
+  MessageSquare,
+  CheckCircle2,
+  Copy,
+  Check,
+  ExternalLink,
+  AlertTriangle,
+  Clock,
+  Sparkles
 } from "lucide-react";
 
 export default function CheckoutPage({ setActiveTab }) {
@@ -27,19 +29,23 @@ export default function CheckoutPage({ setActiveTab }) {
     customerPhoneSession,
     customerProfile,
     updateCustomerProfile,
-    clearCustomerSession
+    clearCustomerSession,
+    CENTRAL_MARKETPLACE_PHONE_DISPLAY
   } = useMarketplace();
 
-  // Selected Checkout Type: 'PICKUP' or 'COD'
-  const [checkoutType, setCheckoutType] = useState("PICKUP");
+  // Fulfillment Selection: 'Collection at Stall' or 'Island Courier Delivery'
+  const [fulfillmentType, setFulfillmentType] = useState("Collection at Stall");
 
-  // Form Fields - Auto-fill from customerProfile or active session (clean for first-time guests)
+  // Form Fields - Pre-fill from active customer session if available
   const [customerName, setCustomerName] = useState(customerProfile?.name || "");
   const [customerPhone, setCustomerPhone] = useState(customerPhoneSession || customerProfile?.phone || "");
   const [customerEmail, setCustomerEmail] = useState(customerProfile?.email || "");
   const [deliveryAddress, setDeliveryAddress] = useState(customerProfile?.address || "");
   const [specialNotes, setSpecialNotes] = useState("");
-  const [sendWhatsApp, setSendWhatsApp] = useState(true);
+
+  // Post-submission WhatsApp Modal state
+  const [confirmedOrder, setConfirmedOrder] = useState(null);
+  const [copied, setCopied] = useState(false);
 
   // Sync if customerProfile updates
   React.useEffect(() => {
@@ -53,15 +59,14 @@ export default function CheckoutPage({ setActiveTab }) {
     }
   }, [customerProfile, customerPhoneSession]);
 
-  // Order Complete Modal state
-  const [completedOrder, setCompletedOrder] = useState(null);
-
-  if (cart.length === 0 && !completedOrder) {
+  if (cart.length === 0 && !confirmedOrder) {
     return (
       <div className="container" style={{ padding: "4rem 1.5rem", textAlign: "center" }}>
         <ShoppingBag size={54} color="#CBD5E1" style={{ marginBottom: "1rem" }} />
-        <h2 style={{ color: "#0F172A", marginBottom: "0.5rem" }}>Your Bag is Empty</h2>
-        <p style={{ color: "#64748B", marginBottom: "1.5rem" }}>Add items from Cayman vendor stores before proceeding to checkout.</p>
+        <h2 style={{ color: "#0F172A", marginBottom: "0.5rem" }}>Your Shopping Bag is Empty</h2>
+        <p style={{ color: "#64748B", marginBottom: "1.5rem" }}>
+          Browse island stalls across Grand Cayman and add items before proceeding to checkout.
+        </p>
         <button onClick={() => setActiveTab("categories")} className="btn-primary">
           Browse Catalog <ArrowRight size={16} />
         </button>
@@ -74,17 +79,17 @@ export default function CheckoutPage({ setActiveTab }) {
   const handleSubmitOrder = (e) => {
     e.preventDefault();
 
-    if (!customerName || !customerPhone) {
-      showToast("Please enter your name and phone number.", "warning");
+    if (!customerName.trim() || !customerPhone.trim()) {
+      showToast("Please enter your Name and WhatsApp phone number.", "warning");
       return;
     }
 
-    if (checkoutType === "COD" && !deliveryAddress) {
-      showToast("Please enter delivery address for COD delivery.", "warning");
+    if (fulfillmentType === "Island Courier Delivery" && !deliveryAddress.trim()) {
+      showToast("Please enter your Grand Cayman delivery address.", "warning");
       return;
     }
 
-    // Persist real customer profile so repeat visits remember credentials (Amazon style)
+    // Persist profile in session
     if (updateCustomerProfile) {
       updateCustomerProfile({
         name: customerName.trim(),
@@ -95,38 +100,237 @@ export default function CheckoutPage({ setActiveTab }) {
     }
 
     const createdOrders = placeOrder({
-      type: checkoutType,
-      customer_name: customerName,
-      customer_phone: customerPhone,
-      customer_email: customerEmail,
-      delivery_address: deliveryAddress,
-      special_notes: specialNotes
+      fulfillment_type: fulfillmentType,
+      type: fulfillmentType === "Island Courier Delivery" ? "COD" : "PICKUP",
+      customer_name: customerName.trim(),
+      customer_phone: customerPhone.trim(),
+      customer_email: customerEmail.trim(),
+      delivery_address: deliveryAddress.trim(),
+      special_notes: specialNotes.trim()
     });
 
     if (createdOrders && createdOrders.length > 0) {
-      const firstOrder = createdOrders[0];
-      setCompletedOrder(firstOrder);
+      const primaryOrder = createdOrders[0];
+      setConfirmedOrder(primaryOrder);
+
+      // Attempt automatic WhatsApp tab launch
+      if (primaryOrder.whatsapp_url) {
+        try {
+          window.open(primaryOrder.whatsapp_url, "_blank");
+        } catch (err) {
+          console.warn("Popup blocked or mobile tab switch needed");
+        }
+      }
+    }
+  };
+
+  const handleCopyMessage = () => {
+    if (confirmedOrder?.whatsapp_message) {
+      navigator.clipboard.writeText(confirmedOrder.whatsapp_message);
+      setCopied(true);
+      showToast("Order message copied to clipboard!", "success");
+      setTimeout(() => setCopied(false), 3000);
     }
   };
 
   return (
     <div className="container" style={{ padding: "2.5rem 1.5rem", paddingBottom: "5rem" }}>
       
-      {/* Interactive PIN / QR Pass Modal upon Order Completion */}
-      {completedOrder && (
-        <QrCodeModal
-          order={completedOrder}
-          onClose={() => {
-            setCompletedOrder(null);
-            setActiveTab("my-orders");
+      {/* 🟢 WHATSAPP ORDER SUBMITTED CONFIRMATION MODAL */}
+      {confirmedOrder && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(10, 25, 47, 0.85)",
+            backdropFilter: "blur(10px)",
+            WebkitBackdropFilter: "blur(10px)",
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "1.25rem"
           }}
-        />
+        >
+          <div
+            style={{
+              background: "#FFFFFF",
+              borderRadius: "24px",
+              maxWidth: "580px",
+              width: "100%",
+              padding: "2.25rem 2rem",
+              boxShadow: "0 25px 60px rgba(0, 0, 0, 0.4)",
+              position: "relative",
+              border: "1.5px solid #E2E8F0",
+              maxHeight: "92vh",
+              overflowY: "auto"
+            }}
+          >
+            {/* Header */}
+            <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+              <div
+                style={{
+                  width: "66px",
+                  height: "66px",
+                  borderRadius: "50%",
+                  background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#FFFFFF",
+                  boxShadow: "0 10px 25px rgba(37, 211, 102, 0.4)",
+                  marginBottom: "1rem"
+                }}
+              >
+                <MessageSquare size={34} />
+              </div>
+
+              <div style={{ display: "inline-block", background: "#E6FBF2", color: "#00A896", fontSize: "0.82rem", fontWeight: 800, padding: "0.25rem 0.8rem", borderRadius: "999px", marginBottom: "0.5rem" }}>
+                ORDER CREATED: #{confirmedOrder.id || confirmedOrder.order_id}
+              </div>
+
+              <h2 style={{ fontSize: "1.65rem", fontWeight: 900, color: "#0A192F", margin: 0 }}>
+                Order Sent to WhatsApp!
+              </h2>
+            </div>
+
+            {/* ⚠️ CRITICAL INSTRUCTION (Section 6.2 SOW Requirement) */}
+            <div
+              style={{
+                background: "#FEF3C7",
+                border: "1.5px solid #F59E0B",
+                borderRadius: "16px",
+                padding: "1rem 1.25rem",
+                marginBottom: "1.5rem",
+                display: "flex",
+                gap: "0.85rem",
+                alignItems: "flex-start"
+              }}
+            >
+              <AlertTriangle size={22} color="#D97706" style={{ flexShrink: 0, marginTop: "2px" }} />
+              <div style={{ fontSize: "0.88rem", color: "#92400E", lineHeight: 1.5 }}>
+                <strong style={{ color: "#78350F", display: "block", marginBottom: "2px", fontSize: "0.92rem" }}>
+                  Action Required: Click "Send" in WhatsApp
+                </strong>
+                You must click <strong>Send</strong> in WhatsApp to transmit this order request. 
+                Opening WhatsApp alone does not confirm or send your order to our team.
+              </div>
+            </div>
+
+            {/* Order Details Card */}
+            <div
+              style={{
+                background: "#F8FAFC",
+                borderRadius: "16px",
+                border: "1px solid #E2E8F0",
+                padding: "1.25rem",
+                marginBottom: "1.5rem",
+                fontSize: "0.88rem"
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+                <span style={{ color: "#64748B" }}>Order Reference:</span>
+                <strong style={{ color: "#0A192F" }}>#{confirmedOrder.id}</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+                <span style={{ color: "#64748B" }}>Customer:</span>
+                <strong style={{ color: "#0A192F" }}>{confirmedOrder.customer_name} ({confirmedOrder.customer_phone})</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+                <span style={{ color: "#64748B" }}>Fulfillment:</span>
+                <strong style={{ color: "#00A896" }}>{confirmedOrder.fulfillment_type}</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", borderTop: "1px solid #E2E8F0", paddingTop: "0.6rem", marginTop: "0.6rem" }}>
+                <span style={{ color: "#0A192F", fontWeight: 700 }}>Total Due:</span>
+                <strong style={{ color: "#00A896", fontSize: "1.05rem" }}>{formatPrice(confirmedOrder.total_amount)}</strong>
+              </div>
+            </div>
+
+            {/* CTAs */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              <a
+                href={confirmedOrder.whatsapp_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  background: "#25D366",
+                  color: "#FFFFFF",
+                  textDecoration: "none",
+                  fontWeight: 800,
+                  fontSize: "1rem",
+                  padding: "0.95rem 1.25rem",
+                  borderRadius: "14px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.5rem",
+                  boxShadow: "0 6px 20px rgba(37, 211, 102, 0.4)",
+                  cursor: "pointer"
+                }}
+              >
+                <MessageSquare size={20} />
+                <span>Open WhatsApp to Send Order</span>
+                <ExternalLink size={16} />
+              </a>
+
+              <button
+                type="button"
+                onClick={handleCopyMessage}
+                style={{
+                  background: copied ? "#F0FDF4" : "#FFFFFF",
+                  border: copied ? "1.5px solid #22C55E" : "1.5px solid #CBD5E1",
+                  color: copied ? "#16A34A" : "#475569",
+                  fontWeight: 700,
+                  fontSize: "0.88rem",
+                  padding: "0.75rem 1rem",
+                  borderRadius: "14px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.45rem",
+                  cursor: "pointer"
+                }}
+              >
+                {copied ? <Check size={18} color="#16A34A" /> : <Copy size={18} />}
+                <span>{copied ? "Copied Order Text!" : "Copy WhatsApp Message Text"}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setConfirmedOrder(null);
+                  setActiveTab("my-orders");
+                }}
+                style={{
+                  background: "#0A192F",
+                  color: "#FFFFFF",
+                  fontWeight: 700,
+                  fontSize: "0.88rem",
+                  padding: "0.8rem 1rem",
+                  borderRadius: "14px",
+                  border: "none",
+                  cursor: "pointer",
+                  marginTop: "0.25rem"
+                }}
+              >
+                Track in My Orders ➔
+              </button>
+            </div>
+
+          </div>
+        </div>
       )}
 
-      <div style={{ marginBottom: "1.75rem" }}>
-        <h1 style={{ fontSize: "2.2rem", color: "#0F172A", marginBottom: "0.4rem" }}>Marketplace Checkout</h1>
+      {/* Page Header */}
+      <div style={{ marginBottom: "2rem" }}>
+        <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "#00A896", fontSize: "0.82rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.3rem" }}>
+          <MessageSquare size={16} /> WhatsApp Checkout Flow
+        </div>
+        <h1 style={{ fontSize: "2.2rem", color: "#0A192F", fontWeight: 900, marginBottom: "0.35rem" }}>
+          Complete Your Order
+        </h1>
         <p style={{ color: "#64748B", fontSize: "0.95rem" }}>
-          Choose between <strong>Reserve for Store Pickup (4-Digit PIN)</strong> or <strong>Cash on Delivery (COD)</strong>.
+          Submit your order request directly via WhatsApp to our central Cayman team. Choose between <strong>Collection at Stall</strong> or <strong>Grand Cayman Courier Delivery</strong>.
         </p>
 
         {customerPhoneSession && (
@@ -144,11 +348,10 @@ export default function CheckoutPage({ setActiveTab }) {
               gap: "0.5rem"
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#166534", fontSize: "0.88rem", fontWeight: 700 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#166534", fontSize: "0.86rem", fontWeight: 700 }}>
               <CheckCircle2 size={18} color="#16a34a" />
               <span>
-                Welcome back! Your contact & delivery details are pre-filled for:{" "}
-                <strong style={{ color: "#0F172A" }}>{customerProfile?.name ? `${customerProfile.name} (${customerPhoneSession})` : customerPhoneSession}</strong>
+                Contact pre-filled for: <strong style={{ color: "#0F172A" }}>{customerProfile?.name ? `${customerProfile.name} (${customerPhoneSession})` : customerPhoneSession}</strong>
               </span>
             </div>
             <button
@@ -173,235 +376,305 @@ export default function CheckoutPage({ setActiveTab }) {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2.5rem", alignItems: "flex-start" }}>
         
-        {/* Left: Payment & Pickup Selection Form */}
+        {/* Left: Customer Info & Fulfillment Selector */}
         <div>
-          
-          {/* Method Selector Tabs */}
-          <div style={{ background: "#E2E8F0", padding: "4px", borderRadius: "16px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px", marginBottom: "2rem" }}>
-            <button
-              type="button"
-              onClick={() => setCheckoutType("PICKUP")}
-              style={{
-                background: checkoutType === "PICKUP" ? "#FFFFFF" : "transparent",
-                color: checkoutType === "PICKUP" ? "#00A896" : "#64748B",
-                padding: "0.85rem 1rem",
-                borderRadius: "12px",
-                fontWeight: checkoutType === "PICKUP" ? 800 : 600,
-                fontSize: "0.9rem",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.5rem",
-                boxShadow: checkoutType === "PICKUP" ? "var(--shadow-sm)" : "none"
-              }}
-            >
-              <Clock size={18} /> Reserve for Store Pickup
-            </button>
 
-            <button
-              type="button"
-              onClick={() => setCheckoutType("COD")}
-              style={{
-                background: checkoutType === "COD" ? "#FFFFFF" : "transparent",
-                color: checkoutType === "COD" ? "#0F4C81" : "#64748B",
-                padding: "0.85rem 1rem",
-                borderRadius: "12px",
-                fontWeight: checkoutType === "COD" ? 800 : 600,
-                fontSize: "0.9rem",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.5rem",
-                boxShadow: checkoutType === "COD" ? "var(--shadow-sm)" : "none"
-              }}
-            >
-              <DollarSign size={18} /> Cash on Delivery (COD)
-            </button>
+          {/* Fulfillment Toggle (Collection vs Delivery) */}
+          <div style={{ marginBottom: "1.75rem" }}>
+            <label style={{ fontSize: "0.85rem", fontWeight: 800, color: "#0A192F", display: "block", marginBottom: "0.6rem" }}>
+              Select Fulfillment Preference *
+            </label>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+              
+              {/* Option 1: Stall Collection */}
+              <div
+                onClick={() => setFulfillmentType("Collection at Stall")}
+                style={{
+                  background: fulfillmentType === "Collection at Stall" ? "#F0FDFA" : "#FFFFFF",
+                  border: fulfillmentType === "Collection at Stall" ? "2px solid #00A896" : "1.5px solid #E2E8F0",
+                  borderRadius: "16px",
+                  padding: "1.1rem 1rem",
+                  cursor: "pointer",
+                  transition: "all 0.2s ease",
+                  boxShadow: fulfillmentType === "Collection at Stall" ? "0 4px 15px rgba(0, 168, 150, 0.15)" : "none"
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.35rem" }}>
+                  <Store size={20} color={fulfillmentType === "Collection at Stall" ? "#00A896" : "#64748B"} />
+                  <strong style={{ fontSize: "0.92rem", color: fulfillmentType === "Collection at Stall" ? "#0A192F" : "#334155" }}>
+                    Collection at Stall
+                  </strong>
+                </div>
+                <div style={{ fontSize: "0.78rem", color: "#64748B", lineHeight: 1.4 }}>
+                  Pick up directly from the vendor's physical stall or shop counter on Grand Cayman.
+                </div>
+                <div style={{ marginTop: "0.5rem", fontSize: "0.76rem", color: "#00A896", fontWeight: 800 }}>
+                  FREE PICKUP
+                </div>
+              </div>
+
+              {/* Option 2: Island Courier Delivery */}
+              <div
+                onClick={() => setFulfillmentType("Island Courier Delivery")}
+                style={{
+                  background: fulfillmentType === "Island Courier Delivery" ? "#F0FDFA" : "#FFFFFF",
+                  border: fulfillmentType === "Island Courier Delivery" ? "2px solid #00A896" : "1.5px solid #E2E8F0",
+                  borderRadius: "16px",
+                  padding: "1.1rem 1rem",
+                  cursor: "pointer",
+                  transition: "all 0.2s ease",
+                  boxShadow: fulfillmentType === "Island Courier Delivery" ? "0 4px 15px rgba(0, 168, 150, 0.15)" : "none"
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.35rem" }}>
+                  <Truck size={20} color={fulfillmentType === "Island Courier Delivery" ? "#00A896" : "#64748B"} />
+                  <strong style={{ fontSize: "0.92rem", color: fulfillmentType === "Island Courier Delivery" ? "#0A192F" : "#334155" }}>
+                    Island Courier
+                  </strong>
+                </div>
+                <div style={{ fontSize: "0.78rem", color: "#64748B", lineHeight: 1.4 }}>
+                  Dispatched by courier to your residence, condo, hotel, or resort on Grand Cayman.
+                </div>
+                <div style={{ marginTop: "0.5rem", fontSize: "0.76rem", color: "#16A34A", fontWeight: 800 }}>
+                  ISLAND-WIDE
+                </div>
+              </div>
+
+            </div>
           </div>
 
-          <form onSubmit={handleSubmitOrder} style={{ background: "#FFFFFF", borderRadius: "20px", border: "1.5px solid #E2E8F0", padding: "1.75rem", boxShadow: "var(--shadow-sm)" }}>
-            
-            {/* Pickup Info Alert */}
-            {checkoutType === "PICKUP" ? (
-              <div style={{ background: "#FEF3C7", border: "1px solid #FDE68A", color: "#92400E", borderRadius: "12px", padding: "1rem", marginBottom: "1.5rem", fontSize: "0.85rem", lineHeight: 1.5 }}>
-                <div style={{ fontWeight: 800, fontSize: "0.9rem", marginBottom: "0.3rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                  <QrCode size={18} color="#D97706" /> How Reserve for Pickup Works:
-                </div>
-                1. Submit your reservation below (no credit card required now).<br />
-                2. You will instantly receive a <strong>4-Digit PIN Code + QR Pass</strong>.<br />
-                3. The store will hold your item for <strong>24-48 hours</strong>.<br />
-                4. Visit store desk, show your PIN/QR, inspect item & complete payment!
-              </div>
-            ) : (
-              <div style={{ background: "#EFF6FF", border: "1px solid #BFDBFE", color: "#1E40AF", borderRadius: "12px", padding: "1rem", marginBottom: "1.5rem", fontSize: "0.85rem", lineHeight: 1.5 }}>
-                <div style={{ fontWeight: 800, fontSize: "0.9rem", marginBottom: "0.3rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                  <DollarSign size={18} color="#1D4ED8" /> Cash on Delivery (COD) Info:
-                </div>
-                Your order will be packed by the vendor and dispatched via Grand Cayman courier. 
-                You pay in cash ($KYD / $USD) directly to the delivery driver upon arrival.
-              </div>
-            )}
-
-            {/* Customer Information */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem", flexWrap: "wrap", gap: "0.5rem" }}>
-              <h3 style={{ fontSize: "1.1rem", color: "#0F172A", margin: 0 }}>Contact Details</h3>
-              {customerPhoneSession && (
-                <div style={{ fontSize: "0.78rem", background: "#F0FDF4", border: "1px solid #BBF7D0", color: "#166534", padding: "0.25rem 0.65rem", borderRadius: "8px", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
-                  <ShieldCheck size={14} color="#166534" />
-                  <span>Verified Session: <strong>{customerPhoneSession}</strong></span>
-                </div>
-              )}
-            </div>
+          {/* Customer Details Form */}
+          <form onSubmit={handleSubmitOrder} style={{ background: "#FFFFFF", borderRadius: "20px", border: "1.5px solid #E2E8F0", padding: "1.75rem", boxShadow: "0 4px 20px rgba(0,0,0,0.04)" }}>
+            <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0A192F", marginBottom: "1.25rem" }}>
+              Customer Details
+            </h3>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.5rem" }}>
+              
+              {/* Full Name */}
               <div>
-                <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.3rem", display: "block" }}>Full Name *</label>
+                <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.35rem", display: "block" }}>
+                  Full Name *
+                </label>
                 <input
                   type="text"
                   required
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
                   placeholder="e.g. David Sterling"
+                  style={{
+                    width: "100%",
+                    padding: "0.75rem 1rem",
+                    borderRadius: "12px",
+                    border: "1.5px solid #CBD5E1",
+                    fontSize: "0.95rem"
+                  }}
                 />
               </div>
 
+              {/* Phone & Email */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
                 <div>
-                  <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.3rem", display: "block" }}>Phone Number *</label>
+                  <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.35rem", display: "block" }}>
+                    WhatsApp Phone Number *
+                  </label>
                   <input
-                    type="text"
+                    type="tel"
                     required
                     value={customerPhone}
                     onChange={(e) => setCustomerPhone(e.target.value)}
-                    placeholder="+1 (345) 000-0000"
+                    placeholder="+1 (345) 926-5544"
+                    style={{
+                      width: "100%",
+                      padding: "0.75rem 1rem",
+                      borderRadius: "12px",
+                      border: "1.5px solid #CBD5E1",
+                      fontSize: "0.95rem"
+                    }}
                   />
+                  <span style={{ fontSize: "0.74rem", color: "#64748B", marginTop: "3px", display: "block" }}>
+                    Cayman area code +1 (345)
+                  </span>
                 </div>
 
                 <div>
-                  <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.3rem", display: "block" }}>Email Address</label>
+                  <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.35rem", display: "block" }}>
+                    Email Address (Optional)
+                  </label>
                   <input
                     type="email"
                     value={customerEmail}
                     onChange={(e) => setCustomerEmail(e.target.value)}
-                    placeholder="david@example.com"
+                    placeholder="david@example.ky"
+                    style={{
+                      width: "100%",
+                      padding: "0.75rem 1rem",
+                      borderRadius: "12px",
+                      border: "1.5px solid #CBD5E1",
+                      fontSize: "0.95rem"
+                    }}
                   />
                 </div>
               </div>
 
-              {checkoutType === "COD" && (
+              {/* Delivery Address (if Delivery selected) */}
+              {fulfillmentType === "Island Courier Delivery" && (
                 <div>
-                  <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.3rem", display: "block" }}>Grand Cayman Delivery Address *</label>
+                  <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.35rem", display: "block" }}>
+                    Grand Cayman Delivery Address *
+                  </label>
                   <textarea
                     rows={3}
                     required
                     value={deliveryAddress}
                     onChange={(e) => setDeliveryAddress(e.target.value)}
-                    placeholder="Resort Name, Room Number, Street, District..."
+                    placeholder="Resort Name, Room/Condo #, Street, District (e.g. Westin Resort, Room 314, Seven Mile Beach)"
+                    style={{
+                      width: "100%",
+                      padding: "0.75rem 1rem",
+                      borderRadius: "12px",
+                      border: "1.5px solid #CBD5E1",
+                      fontSize: "0.95rem",
+                      fontFamily: "inherit"
+                    }}
                   />
                 </div>
               )}
 
+              {/* Order Notes */}
               <div>
-                <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.3rem", display: "block" }}>Special Instructions / Notes</label>
+                <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.35rem", display: "block" }}>
+                  Special Instructions / Requests
+                </label>
                 <input
                   type="text"
                   value={specialNotes}
                   onChange={(e) => setSpecialNotes(e.target.value)}
-                  placeholder="e.g. Preferred pickup date or delivery instructions..."
+                  placeholder="e.g. Preferred collection time, gift packaging..."
+                  style={{
+                    width: "100%",
+                    padding: "0.75rem 1rem",
+                    borderRadius: "12px",
+                    border: "1.5px solid #CBD5E1",
+                    fontSize: "0.95rem"
+                  }}
                 />
               </div>
 
-              {/* Instant WhatsApp / SMS PIN Delivery Checkbox */}
-              <div style={{
-                background: "#F0FDF4",
-                border: "1.5px solid #BBF7D0",
-                borderRadius: "14px",
-                padding: "0.9rem 1.1rem",
-                display: "flex",
-                alignItems: "flex-start",
-                gap: "0.75rem",
-                cursor: "pointer"
-              }}
-              onClick={() => setSendWhatsApp(!sendWhatsApp)}
-              >
-                <input
-                  type="checkbox"
-                  checked={sendWhatsApp}
-                  onChange={(e) => setSendWhatsApp(e.target.checked)}
-                  style={{ width: "18px", height: "18px", accentColor: "#00A896", cursor: "pointer", marginTop: "2px" }}
-                />
-                <div>
-                  <div style={{ fontSize: "0.86rem", fontWeight: 800, color: "#166534", display: "flex", alignItems: "center", gap: "0.35rem" }}>
-                    <Smartphone size={15} /> Instant WhatsApp & SMS Pass Alert
-                  </div>
-                  <div style={{ fontSize: "0.78rem", color: "#4B5563", marginTop: "2px", lineHeight: 1.4 }}>
-                    Send my 4-Digit Pickup PIN code & live dispatch tracking directly to <strong>{customerPhone}</strong> via Twilio/WhatsApp.
-                  </div>
-                </div>
-              </div>
             </div>
 
+            {/* Offline Payment Information */}
+            <div
+              style={{
+                background: "#F8FAFC",
+                border: "1px solid #E2E8F0",
+                borderRadius: "14px",
+                padding: "1rem",
+                marginBottom: "1.5rem",
+                fontSize: "0.82rem",
+                color: "#475569",
+                lineHeight: 1.5
+              }}
+            >
+              <div style={{ fontWeight: 800, color: "#0A192F", marginBottom: "0.25rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                💵 Payment Arranged Upon Order Confirmation
+              </div>
+              Online credit card processing is excluded for initial launch. 
+              You can pay via <strong>Cash on Collection</strong>, <strong>Cash on Delivery</strong>, or <strong>Local Cayman Bank Transfer</strong> (Butterfield / CNB) directly with the store.
+            </div>
+
+            {/* Submit Button */}
             <button
               type="submit"
-              className={checkoutType === "PICKUP" ? "btn-gold" : "btn-primary"}
-              style={{ width: "100%", padding: "0.9rem 1rem", fontSize: "1rem", borderRadius: "14px" }}
+              style={{
+                width: "100%",
+                background: "#25D366",
+                color: "#FFFFFF",
+                border: "none",
+                padding: "1rem 1.25rem",
+                fontSize: "1.05rem",
+                fontWeight: 900,
+                borderRadius: "16px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.6rem",
+                boxShadow: "0 8px 25px rgba(37, 211, 102, 0.4)",
+                transition: "all 0.2s ease"
+              }}
             >
-              {checkoutType === "PICKUP" ? (
-                <>
-                  <QrCode size={20} /> Generate 4-Digit PIN & Reserve
-                </>
-              ) : (
-                <>
-                  <DollarSign size={20} /> Confirm Cash on Delivery Order
-                </>
-              )}
+              <MessageSquare size={22} />
+              <span>Submit Order via WhatsApp</span>
+              <ArrowRight size={18} />
             </button>
 
+            <div style={{ textAlign: "center", fontSize: "0.76rem", color: "#64748B", marginTop: "0.75rem" }}>
+              A formatted message will be generated to send to our team at <strong>{CENTRAL_MARKETPLACE_PHONE_DISPLAY}</strong>.
+            </div>
+
           </form>
+
         </div>
 
-        {/* Right: Order Summary */}
+        {/* Right: Order Summary Breakdown */}
         <div>
-          <div style={{ background: "#FFFFFF", borderRadius: "20px", border: "1.5px solid #E2E8F0", padding: "1.5rem", boxShadow: "var(--shadow-sm)" }}>
-            <h3 style={{ fontSize: "1.1rem", color: "#0F172A", marginBottom: "1rem" }}>Order Summary</h3>
+          <div style={{ background: "#FFFFFF", borderRadius: "20px", border: "1.5px solid #E2E8F0", padding: "1.75rem", boxShadow: "0 4px 20px rgba(0,0,0,0.04)" }}>
+            <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0A192F", marginBottom: "1.25rem" }}>
+              Order Summary ({cart.reduce((sum, item) => sum + item.qty, 0)} items)
+            </h3>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.5rem", maxHeight: "320px", overflowY: "auto" }}>
+            {/* Item List */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.5rem", maxHeight: "360px", overflowY: "auto" }}>
               {cart.map((item, idx) => (
                 <div key={idx} style={{ display: "flex", gap: "0.85rem", alignItems: "center", borderBottom: "1px solid #F1F5F9", paddingBottom: "0.85rem" }}>
-                  <img src={item.product.images[0]} alt={item.product.title} style={{ width: "54px", height: "54px", borderRadius: "10px", objectFit: "cover" }} />
+                  <img
+                    src={item.product.images[0]}
+                    alt={item.product.title}
+                    style={{ width: "56px", height: "56px", borderRadius: "12px", objectFit: "cover" }}
+                  />
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0F172A" }}>{item.product.title}</div>
-                    <div style={{ fontSize: "0.78rem", color: "#64748B" }}>Vendor: {item.product.vendor_name}</div>
-                    <div style={{ fontSize: "0.78rem", color: "#64748B" }}>Qty: {item.qty}</div>
+                    <div style={{ fontSize: "0.88rem", fontWeight: 700, color: "#0A192F", lineHeight: 1.3 }}>
+                      {item.product.title}
+                    </div>
+                    <div style={{ fontSize: "0.76rem", color: "#00A896", fontWeight: 600, marginTop: "2px" }}>
+                      {item.product.vendor_name}
+                    </div>
+                    <div style={{ fontSize: "0.78rem", color: "#64748B" }}>
+                      Qty: <strong>{item.qty}</strong>
+                    </div>
                   </div>
-                  <div style={{ fontSize: "0.9rem", fontWeight: 800, color: "#0F172A" }}>
+                  <div style={{ fontSize: "0.95rem", fontWeight: 800, color: "#0A192F" }}>
                     {formatPrice(item.product.price * item.qty)}
                   </div>
                 </div>
               ))}
             </div>
 
+            {/* Calculations */}
             <div style={{ borderTop: "1.5px solid #E2E8F0", paddingTop: "1rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.88rem", color: "#64748B" }}>
                 <span>Subtotal:</span>
                 <span>{formatPrice(grandTotalKYD)}</span>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.88rem", color: "#64748B" }}>
-                <span>Pickup / COD Courier:</span>
-                <span style={{ color: "#166534", fontWeight: 700 }}>FREE</span>
+                <span>Fulfillment ({fulfillmentType === "Collection at Stall" ? "Stall Pickup" : "Courier"}):</span>
+                <span style={{ color: "#16A34A", fontWeight: 700 }}>FREE</span>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.88rem", color: "#64748B" }}>
-                <span>Island Sales Tax (Duty-Free):</span>
-                <span style={{ color: "#00A896", fontWeight: 700 }}>$0.00 (0%)</span>
+                <span>Cayman Islands Sales Tax:</span>
+                <span style={{ color: "#00A896", fontWeight: 700 }}>$0.00 (Duty-Free)</span>
               </div>
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "1.3rem", fontWeight: 800, color: "#0F172A", paddingTop: "0.5rem", borderTop: "1px solid #F1F5F9" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "1.35rem", fontWeight: 900, color: "#0A192F", paddingTop: "0.6rem", borderTop: "1px solid #F1F5F9" }}>
                 <span>Total Due:</span>
                 <span style={{ color: "#00A896" }}>{formatPrice(grandTotalKYD)}</span>
               </div>
             </div>
 
-            <div style={{ marginTop: "1.5rem", background: "#F0FDF4", border: "1px solid #BBF7D0", borderRadius: "12px", padding: "0.85rem", fontSize: "0.8rem", color: "#166534", lineHeight: 1.4 }}>
-              🔒 <strong>100% Confidential Order</strong>: Your order history, items purchased, and 4-digit pickup PIN are strictly private. No other shoppers or visitors on the marketplace can ever see your purchases.
+            {/* Trust badge */}
+            <div style={{ marginTop: "1.5rem", background: "#F0FDF4", border: "1px solid #BBF7D0", borderRadius: "12px", padding: "0.9rem", fontSize: "0.8rem", color: "#166534", lineHeight: 1.4 }}>
+              🌴 <strong>Direct Island Merchant Fulfillment</strong>: Your order is sent directly to Cayman Bazaar's concierge and fulfilled by verified Grand Cayman artisans and shops.
             </div>
 
           </div>

@@ -240,8 +240,8 @@ export default function ProductDetailPage({ product, setActiveTab, setSelectedVe
               <span><strong>Pickup Location:</strong> {vendorObj?.address || `${vendorObj?.district || "Georgetown"}, Grand Cayman`}</span>
             </div>
             <div style={{ display: "flex", gap: "0.6rem", fontSize: "0.85rem", color: "#334155" }}>
-              <ShieldCheck size={18} color="#E5A93C" style={{ flexShrink: 0 }} />
-              <span><strong>4-Digit PIN Hold:</strong> Reserved for 24-48 hours upon ordering.</span>
+              <ShieldCheck size={18} color="#00A896" style={{ flexShrink: 0 }} />
+              <span><strong>WhatsApp Checkout:</strong> Direct merchant ordering with #CB-XXXX reference.</span>
             </div>
             <div style={{ display: "flex", gap: "0.6rem", fontSize: "0.85rem", color: "#334155" }}>
               <DollarSign size={18} color="#0284C7" style={{ flexShrink: 0 }} />

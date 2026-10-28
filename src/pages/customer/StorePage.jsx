@@ -204,7 +204,7 @@ export default function StorePage({ vendor, setActiveTab, setSelectedProduct }) 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.75rem" }}>
           <div>
             <h2 style={{ fontSize: "1.8rem", color: "#0A2540", fontWeight: 900 }}>Stall Catalog ({vendorProducts.length})</h2>
-            <p style={{ fontSize: "0.88rem", color: "#64748B" }}>Browse items available for immediate 4-digit PIN pickup or COD courier delivery</p>
+            <p style={{ fontSize: "0.88rem", color: "#64748B" }}>Browse items available for WhatsApp order checkout, stall collection, or courier delivery</p>
           </div>
           <span style={{ background: "#E0F2FE", color: "#0284C7", padding: "0.35rem 0.9rem", borderRadius: "999px", fontSize: "0.82rem", fontWeight: 800 }}>
             In-Stock Catalog

@@ -40,7 +40,7 @@ export const api = {
   getOrders: (params = "") => request(`/orders${params}`),
   getOrderById: (id) => request(`/orders/${id}`),
   placeOrder: (orderData) => request("/orders", { method: "POST", body: JSON.stringify(orderData) }),
-  updateOrderStatus: (id, status) => request(`/orders/${id}/status`, { method: "PATCH", body: JSON.stringify({ status }) }),
+  updateOrderStatus: (id, updates) => request(`/orders/${id}/status`, { method: "PATCH", body: JSON.stringify(typeof updates === "string" ? { status: updates } : updates) }),
   verifyPickupPin: (pin_code, vendor_id) => request("/orders/verify-pin", { method: "POST", body: JSON.stringify({ pin_code, vendor_id }) }),
 
   // Wallet

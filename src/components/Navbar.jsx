@@ -70,7 +70,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
         }}>
           <span>🌴 <strong style={{ color: "#00E5C9" }}>Grand Cayman</strong> Island-Wide Courier Delivery</span>
           <span style={{ opacity: 0.4 }}>•</span>
-          <span>⚡ <strong style={{ color: "#FBBF24" }}>48H Stall Hold Pass</strong> with 4-Digit PIN & QR</span>
+          <span>⚡ <strong style={{ color: "#25D366" }}>WhatsApp Checkout</strong> & Stall Collection</span>
           <span style={{ opacity: 0.4 }}>•</span>
           <span>🛡️ <strong style={{ color: "#FFFFFF" }}>100% Verified Local Artisans</strong></span>
           <span style={{ opacity: 0.4 }}>•</span>
@@ -363,23 +363,6 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                 <Wallet size={15} /> Wallet (${activeVendor?.wallet_balance?.toFixed(2)} KYD)
               </button>
 
-              <button
-                onClick={() => setActiveTab("vendor-ads")}
-                style={{
-                  background: activeTab === "vendor-ads" ? "rgba(0, 229, 201, 0.18)" : "transparent",
-                  color: activeTab === "vendor-ads" ? "#00E5C9" : "#CBD5E1",
-                  fontWeight: 800,
-                  fontSize: "0.86rem",
-                  padding: "0.5rem 0.85rem",
-                  borderRadius: "10px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  border: activeTab === "vendor-ads" ? "1px solid rgba(0, 229, 201, 0.4)" : "1px solid transparent"
-                }}
-              >
-                <Megaphone size={15} /> Sponsored Ads
-              </button>
 
               <button
                 onClick={() => setActiveTab("vendor-social")}
@@ -585,25 +568,6 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                 <BarChart3 size={14} /> Reports
               </button>
 
-              <button
-                onClick={() => setActiveTab("admin-ads")}
-                style={{
-                  background: activeTab === "admin-ads" ? "rgba(245, 158, 11, 0.22)" : "transparent",
-                  color: activeTab === "admin-ads" ? "#FBBF24" : "#CBD5E1",
-                  fontWeight: 800,
-                  fontSize: "0.84rem",
-                  padding: "0.45rem 0.8rem",
-                  borderRadius: "10px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  border: activeTab === "admin-ads" ? "1px solid rgba(245, 158, 11, 0.45)" : "1px solid transparent",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease"
-                }}
-              >
-                <Megaphone size={14} /> Ads
-              </button>
             </nav>
           )}
 
@@ -792,7 +756,6 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                 <button onClick={() => { setActiveTab("vendor-orders"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Clock size={15} /> Orders & Holds</button>
                 <button onClick={() => { setActiveTab("vendor-wallet"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Wallet size={15} /> Wallet</button>
                 <button onClick={() => { setActiveTab("vendor-reviews"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Star size={15} /> Reviews</button>
-                <button onClick={() => { setActiveTab("vendor-ads"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Megaphone size={15} /> Ads</button>
                 <button onClick={() => { setActiveTab("vendor-social"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Share2 size={15} /> Social</button>
                 <button onClick={() => { setActiveTab("vendor-profile"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Settings size={15} /> Settings</button>
               </>
@@ -807,7 +770,6 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                 <button onClick={() => { setActiveTab("admin-reviews"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Star size={15} /> Reviews</button>
                 <button onClick={() => { setActiveTab("admin-disputes"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><AlertTriangle size={15} /> Disputes</button>
                 <button onClick={() => { setActiveTab("admin-reports"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><BarChart3 size={15} /> Reports</button>
-                <button onClick={() => { setActiveTab("admin-ads"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Megaphone size={15} /> Ads</button>
               </>
             )}
           </div>

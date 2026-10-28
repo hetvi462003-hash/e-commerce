@@ -266,28 +266,6 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
           </div>
         )}
 
-        {isSuspended && (
-          <div style={{ background: "rgba(239, 68, 68, 0.15)", border: "1px solid #EF4444", color: "#FCA5A5", padding: "1.25rem 1.5rem", borderRadius: "16px", marginBottom: "2rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-              <AlertCircle size={30} style={{ color: "#EF4444", flexShrink: 0 }} />
-              <div>
-                <h4 style={{ fontSize: "1rem", fontWeight: 800, color: "#FFFFFF", marginBottom: "0.2rem" }}>
-                  Stall Auto-Suspended (Wallet Balance $0.00)
-                </h4>
-                <p style={{ fontSize: "0.84rem", color: "#CBD5E1", lineHeight: 1.4 }}>
-                  Under platform policy, your stall items are temporarily hidden because your wallet credit is exhausted. Top up now to restore.
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={() => setActiveTab("vendor-wallet")}
-              style={{ background: "#EF4444", color: "#FFFFFF", border: "none", padding: "0.6rem 1.25rem", borderRadius: "10px", fontWeight: 800, cursor: "pointer", fontSize: "0.85rem" }}
-            >
-              Restore Stall (Top Up)
-            </button>
-          </div>
-        )}
-
         {/* 2. GLASSMORPHIC STALL METRICS */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem", marginBottom: "2.5rem" }}>
           
@@ -310,38 +288,38 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
           </div>
 
           {/* Wallet Balance */}
-          <div style={{ background: "rgba(15, 23, 42, 0.7)", border: `1px solid ${isLowBalance ? "rgba(239, 68, 68, 0.4)" : "rgba(245, 158, 11, 0.3)"}`, borderRadius: "20px", padding: "1.75rem", boxShadow: "0 10px 30px rgba(0,0,0,0.3)" }}>
+          <div style={{ background: "rgba(15, 23, 42, 0.7)", border: "1px solid rgba(245, 158, 11, 0.3)", borderRadius: "20px", padding: "1.75rem", boxShadow: "0 10px 30px rgba(0,0,0,0.3)" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
-              <span style={{ fontSize: "0.82rem", fontWeight: 700, color: isLowBalance ? "#FCA5A5" : "#FBBF24", textTransform: "uppercase" }}>
-                Stall Wallet Credit
+              <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "#FBBF24", textTransform: "uppercase" }}>
+                Stall Wallet Balance
               </span>
-              <div style={{ background: isLowBalance ? "rgba(239, 68, 68, 0.2)" : "rgba(245, 158, 11, 0.2)", color: isLowBalance ? "#EF4444" : "#FBBF24", width: "38px", height: "38px", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div style={{ background: "rgba(245, 158, 11, 0.2)", color: "#FBBF24", width: "38px", height: "38px", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Wallet size={20} />
               </div>
             </div>
-            <div style={{ fontSize: "2.2rem", fontWeight: 900, color: isLowBalance ? "#EF4444" : "#FBBF24" }}>
+            <div style={{ fontSize: "2.2rem", fontWeight: 900, color: "#FBBF24" }}>
               ${walletBalance.toFixed(2)} <span style={{ fontSize: "1rem", color: "#94A3B8" }}>KYD</span>
             </div>
             <div style={{ marginTop: "0.6rem", fontSize: "0.78rem", color: "#94A3B8" }}>
-              Automatic 10% deduction per completed order
+              Vendor account ledger & commission tracking
             </div>
           </div>
 
-          {/* Active Pickup Holds */}
+          {/* Active Orders */}
           <div style={{ background: "rgba(15, 23, 42, 0.7)", border: "1px solid rgba(14, 165, 233, 0.3)", borderRadius: "20px", padding: "1.75rem", boxShadow: "0 10px 30px rgba(0,0,0,0.3)" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
               <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "#38BDF8", textTransform: "uppercase" }}>
-                48H Counter Pickup Holds
+                Active Orders
               </span>
               <div style={{ background: "rgba(14, 165, 233, 0.15)", color: "#38BDF8", width: "38px", height: "38px", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Clock size={20} />
               </div>
             </div>
             <div style={{ fontSize: "2.2rem", fontWeight: 900, color: "#FFFFFF" }}>
-              {pendingPickupOrders.length} <span style={{ fontSize: "1rem", color: "#64748B" }}>Held</span>
+              {vendorOrders.filter(o => o.status !== "Completed" && o.status !== "Cancelled").length} <span style={{ fontSize: "1rem", color: "#64748B" }}>In Progress</span>
             </div>
             <div style={{ marginTop: "0.6rem", fontSize: "0.78rem", color: "#38BDF8", fontWeight: 700 }}>
-              Awaiting 4-digit PIN presentation at stall counter
+              WhatsApp orders awaiting fulfillment
             </div>
           </div>
 
@@ -365,7 +343,7 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
 
         </div>
 
-        {/* 3. PHYSICAL STORE CLERK COUNTER PIN TERMINAL */}
+        {/* 3. WHATSAPP ORDER MANAGEMENT ACTION HERO */}
         <div
           style={{
             background: "linear-gradient(135deg, #091A33 0%, #0D2C4D 50%, #0A1C36 100%)",
@@ -379,74 +357,43 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
           }}
         >
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "2rem" }}>
-            <div style={{ maxWidth: "560px" }}>
+            <div style={{ maxWidth: "580px" }}>
               <div style={{ display: "inline-flex", alignItems: "center", gap: "0.45rem", background: "rgba(0, 229, 201, 0.15)", color: "#00E5C9", padding: "0.3rem 0.85rem", borderRadius: "999px", fontSize: "0.78rem", fontWeight: 800, textTransform: "uppercase", marginBottom: "0.75rem" }}>
-                <KeyRound size={14} /> Physical Stall Counter PIN Terminal
+                <MessageSquare size={14} /> WhatsApp Direct Fulfillment
               </div>
               <h3 style={{ fontSize: "1.6rem", fontWeight: 800, color: "#FFFFFF", marginBottom: "0.5rem" }}>
-                Instant Pickup Hold Verification
+                Manage WhatsApp Order Requests
               </h3>
               <p style={{ color: "#CBD5E1", fontSize: "0.92rem", lineHeight: 1.55 }}>
-                When an island shopper arrives at your stall counter, ask for their <strong>4-Digit Pickup PIN</strong> or scan their digital QR Pass. 
-                Entering the code releases the held merchandise, completes the order, and updates your wallet automatically.
+                When shoppers submit items from your stall, orders are placed in the central system and sent via WhatsApp. 
+                Use the dedicated Orders portal to contact customers directly, advance fulfillment status (Processing, Ready for Collection, Out for Delivery), and mark orders Completed.
               </p>
             </div>
 
-            <form
-              onSubmit={handleVerifyPinSubmit}
+            <button
+              type="button"
+              onClick={() => setActiveTab("vendor-orders")}
               style={{
-                background: "rgba(5, 11, 20, 0.8)",
-                border: "1px solid rgba(0, 229, 201, 0.3)",
-                padding: "1rem",
-                borderRadius: "18px",
-                display: "flex",
+                background: "linear-gradient(135deg, #00E5C9 0%, #00A896 100%)",
+                color: "#050B14",
+                fontWeight: 900,
+                border: "none",
+                padding: "0.9rem 1.6rem",
+                borderRadius: "14px",
+                fontSize: "1rem",
+                cursor: "pointer",
+                boxShadow: "0 6px 20px rgba(0, 229, 201, 0.4)",
+                display: "inline-flex",
                 alignItems: "center",
-                gap: "0.85rem",
-                boxShadow: "0 10px 25px rgba(0, 0, 0, 0.5)"
+                gap: "0.5rem"
               }}
             >
-              <input
-                type="text"
-                maxLength={4}
-                value={pinInput}
-                onChange={(e) => setPinInput(e.target.value)}
-                placeholder="4-DIGIT PIN"
-                style={{
-                  width: "160px",
-                  fontSize: "1.4rem",
-                  fontWeight: 900,
-                  letterSpacing: "0.22em",
-                  textAlign: "center",
-                  background: "#050B14",
-                  color: "#00E5C9",
-                  border: "1.5px solid rgba(0, 229, 201, 0.5)",
-                  borderRadius: "12px",
-                  padding: "0.65rem 0.5rem"
-                }}
-              />
-              <button
-                type="submit"
-                style={{
-                  background: "linear-gradient(135deg, #00E5C9 0%, #00A896 100%)",
-                  color: "#050B14",
-                  fontWeight: 900,
-                  border: "none",
-                  padding: "0.75rem 1.4rem",
-                  borderRadius: "12px",
-                  fontSize: "0.92rem",
-                  cursor: "pointer",
-                  boxShadow: "0 4px 15px rgba(0, 229, 201, 0.4)",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.4rem"
-                }}
-              >
-                <CheckCircle2 size={18} />
-                <span>Verify & Release</span>
-              </button>
-            </form>
+              <Package size={20} />
+              <span>Go to Orders Portal ➔</span>
+            </button>
           </div>
         </div>
+
 
         {/* 4. RECENT ORDERS QUEUE */}
         <div style={{ background: "rgba(15, 23, 42, 0.7)", borderRadius: "20px", border: "1px solid rgba(255, 255, 255, 0.1)", padding: "1.75rem", boxShadow: "0 15px 35px rgba(0,0,0,0.3)" }}>

@@ -10,6 +10,69 @@ import {
 } from "../data/mockData";
 import api from "../services/api";
 
+export const ORDER_STATUSES = [
+  "New",
+  "Contacted",
+  "Confirmed",
+  "Awaiting Payment",
+  "Processing",
+  "Ready for Collection",
+  "Out for Delivery",
+  "Completed",
+  "Cancelled"
+];
+
+export const PAYMENT_STATUSES = [
+  "Pending",
+  "Partially Paid",
+  "Paid",
+  "Refunded"
+];
+
+export const PAYMENT_METHODS = [
+  "Cash on Collection",
+  "Cash on Delivery",
+  "Local Bank Transfer",
+  "Other"
+];
+
+export const CENTRAL_MARKETPLACE_WHATSAPP = "13459492299";
+export const CENTRAL_MARKETPLACE_PHONE_DISPLAY = "+1 (345) 949-2299";
+
+export const formatWhatsAppOrderMessage = ({
+  orderId,
+  customerName,
+  customerPhone,
+  customerEmail,
+  fulfillmentType,
+  deliveryAddress,
+  pickupLocation,
+  vendorName,
+  items,
+  totalAmount,
+  specialNotes
+}) => {
+  const itemsList = (items || [])
+    .map((item) => `• ${item.qty}x ${item.title} ($${Number(item.price * item.qty).toFixed(2)} KYD)`)
+    .join("\n");
+
+  return `*New Order Request - Cayman Bazaar*
+Order Ref: #${orderId}
+Store: ${vendorName || "Cayman Island Marketplace"}
+
+*Customer Details:*
+Name: ${customerName}
+Phone: ${customerPhone}
+${customerEmail ? `Email: ${customerEmail}\n` : ""}Fulfillment: ${fulfillmentType}
+${fulfillmentType === "Island Courier Delivery" ? `Delivery Address: ${deliveryAddress || "To be provided via chat"}\n` : `Pickup Location: ${pickupLocation || "Vendor Stall Counter"}\n`}
+*Items Ordered:*
+${itemsList}
+
+*Total Due:* $${Number(totalAmount).toFixed(2)} KYD
+${specialNotes ? `\n*Notes / Requests:* ${specialNotes}\n` : ""}
+Please confirm receipt and let me know the collection / delivery ETA. Thank you!`;
+};
+
 const MarketplaceContext = createContext();
 
 export const MarketplaceProvider = ({ children }) => {
@@ -251,12 +314,13 @@ export const MarketplaceProvider = ({ children }) => {
 
   const clearCart = () => setCart([]);
 
-  // Create Order Flow
+  // Create WhatsApp Checkout Order Flow
   const placeOrder = (orderData) => {
-    // orderData: { type: 'COD' | 'PICKUP', items: [...], customer_name, customer_phone, customer_email, delivery_address / pickup_location }
-    const orderId = `ORD-${Math.floor(1000 + Math.random() * 9000)}`;
-    const randomPin = Math.floor(1000 + Math.random() * 9000).toString();
-    const qrString = `CAYMAN-PICKUP-${orderId}-${randomPin}`;
+    // orderData: { fulfillment_type, customer_name, customer_phone, customer_email, delivery_address, special_notes }
+    const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+    const orderId = `CB-${randomSuffix}`;
+
+    const effectiveFulfillment = orderData.fulfillment_type || (orderData.type === "COD" ? "Island Courier Delivery" : "Collection at Stall");
 
     // Group items by vendor to create distinct sub-orders if multiple vendors in cart
     const vendorGrouped = {};
@@ -279,31 +343,54 @@ export const MarketplaceProvider = ({ children }) => {
       const commRate = vendorObj?.commission_rate || 0.10;
       const commissionAmount = Number((subTotal * commRate).toFixed(2));
 
+      const formattedItems = itemsList.map((ci) => ({
+        product_id: ci.product.id,
+        title: ci.product.title,
+        price: ci.product.price,
+        qty: ci.qty,
+        variations: ci.variations,
+        image: ci.product.images[0],
+        vendor_id: vId
+      }));
+
+      const waMessage = formatWhatsAppOrderMessage({
+        orderId: subOrderId,
+        customerName: orderData.customer_name,
+        customerPhone: orderData.customer_phone,
+        customerEmail: orderData.customer_email,
+        fulfillmentType: effectiveFulfillment,
+        deliveryAddress: orderData.delivery_address,
+        pickupLocation: vendorObj?.address || vendorObj?.store_name,
+        vendorName: vendorObj?.store_name || "Cayman Vendor",
+        items: formattedItems,
+        totalAmount: subTotal,
+        specialNotes: orderData.special_notes
+      });
+
+      const waUrl = `https://wa.me/${CENTRAL_MARKETPLACE_WHATSAPP}?text=${encodeURIComponent(waMessage)}`;
+
       const newOrder = {
         id: subOrderId,
+        order_id: subOrderId,
         customer_name: orderData.customer_name,
         customer_phone: orderData.customer_phone,
-        customer_email: orderData.customer_email,
-        type: orderData.type, // 'COD' or 'PICKUP'
+        customer_email: orderData.customer_email || "",
+        fulfillment_type: effectiveFulfillment,
+        type: effectiveFulfillment === "Island Courier Delivery" ? "COD" : "PICKUP",
         vendor_id: vId,
         vendor_name: vendorObj?.store_name || "Cayman Vendor",
-        items: itemsList.map((ci) => ({
-          product_id: ci.product.id,
-          title: ci.product.title,
-          price: ci.product.price,
-          qty: ci.qty,
-          variations: ci.variations,
-          image: ci.product.images[0]
-        })),
+        items: formattedItems,
         total_amount: subTotal,
         commission_amount: commissionAmount,
         currency: "KYD",
-        status: "Pending", // Pending -> Packing -> Ready for Pickup / Out for Delivery -> Completed
-        pin_code: orderData.type === "PICKUP" ? randomPin : null,
-        qr_code: orderData.type === "PICKUP" ? qrString : null,
-        hold_until: orderData.type === "PICKUP" ? new Date(Date.now() + 48 * 3600 * 1000).toISOString() : null,
-        delivery_address: orderData.type === "COD" ? orderData.delivery_address : null,
-        pickup_location: orderData.type === "PICKUP" ? vendorObj?.address : null,
+        status: "New", // 9 Client statuses: New, Contacted, Confirmed, Awaiting Payment, Processing, Ready for Collection, Out for Delivery, Completed, Cancelled
+        payment_status: "Pending", // Pending, Partially Paid, Paid, Refunded
+        payment_method: effectiveFulfillment === "Island Courier Delivery" ? "Cash on Delivery" : "Cash on Collection",
+        delivery_address: effectiveFulfillment === "Island Courier Delivery" ? orderData.delivery_address : null,
+        pickup_location: effectiveFulfillment === "Collection at Stall" ? (vendorObj?.address || `${vendorObj?.district}, Grand Cayman`) : null,
+        special_notes: orderData.special_notes || "",
+        whatsapp_message: waMessage,
+        whatsapp_url: waUrl,
         created_at: new Date().toISOString()
       };
 
@@ -329,18 +416,18 @@ export const MarketplaceProvider = ({ children }) => {
 
     setOrders((prev) => [...newOrdersCreated, ...prev]);
     clearCart();
-    showToast(`Order placed successfully! Reference: ${orderId}`, "success");
+    showToast(`Order #${orderId} generated! Opening WhatsApp...`, "success");
 
     // Sync to MongoDB backend in background
     try {
       api.placeOrder({
-        type: orderData.type,
+        fulfillment_type: effectiveFulfillment,
+        type: effectiveFulfillment === "Island Courier Delivery" ? "COD" : "PICKUP",
         customer_name: orderData.customer_name,
         customer_phone: orderData.customer_phone,
         customer_email: orderData.customer_email,
         delivery_address: orderData.delivery_address,
         special_notes: orderData.special_notes,
-        send_whatsapp: orderData.send_whatsapp,
         items: cart.map((ci) => ({
           product_id: ci.product.id,
           title: ci.product.title,
@@ -368,85 +455,52 @@ export const MarketplaceProvider = ({ children }) => {
     return newOrdersCreated;
   };
 
-  // Vendor Status update & Wallet deduction on Completed
-  const updateOrderStatus = (orderId, newStatus) => {
+  // Vendor & Admin Status and Payment update
+  const updateOrderStatus = (orderId, newStatus, paymentStatus, paymentMethod) => {
     let targetOrder = null;
 
     setOrders((prev) =>
       prev.map((o) => {
-        if (o.id === orderId) {
-          targetOrder = { ...o, status: newStatus };
+        if (o.id === orderId || o.order_id === orderId) {
+          targetOrder = {
+            ...o,
+            ...(newStatus ? { status: newStatus } : {}),
+            ...(paymentStatus ? { payment_status: paymentStatus } : {}),
+            ...(paymentMethod ? { payment_method: paymentMethod } : {})
+          };
           return targetOrder;
         }
         return o;
       })
     );
 
-    if (newStatus === "Completed" && targetOrder) {
-      handleOrderCompletion(targetOrder);
-    } else {
-      showToast(`Order ${orderId} updated to '${newStatus}'`);
-    }
+    const statusMsg = newStatus ? `Status: ${newStatus}` : "";
+    const payMsg = paymentStatus ? `Payment: ${paymentStatus}` : "";
+    showToast(`Order #${orderId} updated! ${statusMsg} ${payMsg}`.trim());
 
     // Persist status change to MongoDB
     try {
-      api.updateOrderStatus(orderId, newStatus);
+      api.updateOrderStatus(orderId, {
+        ...(newStatus ? { status: newStatus } : {}),
+        ...(paymentStatus ? { payment_status: paymentStatus } : {}),
+        ...(paymentMethod ? { payment_method: paymentMethod } : {})
+      });
     } catch (e) {}
   };
 
-  // Handle Order Completion & Deduct Wallet Commission
-  const handleOrderCompletion = (orderObj) => {
-    const vId = orderObj.vendor_id;
-    const commAmt = orderObj.commission_amount || 0;
-
-    // Deduct from vendor wallet
-    setVendors((prevVendors) =>
-      prevVendors.map((v) => {
-        if (v.id === vId) {
-          const newBal = Number((v.wallet_balance - commAmt).toFixed(2));
-          // If wallet <= 0, hide vendor products rule
-          const isSuspended = newBal <= 0;
-          if (isSuspended) {
-            showToast(`Warning: Vendor ${v.store_name} wallet balance is $${newBal} KYD. Products automatically hidden until top-up!`, "error");
-          }
-          return {
-            ...v,
-            wallet_balance: newBal,
-            status: isSuspended ? "inactive" : v.status
-          };
-        }
-        return v;
-      })
-    );
-
-    // Record in Wallet Ledger
-    const ledgerEntry = {
-      id: `LED-${Math.floor(1000 + Math.random() * 9000)}`,
-      vendor_id: vId,
-      type: "COMMISSION_DEDUCTION",
-      description: `Commission deduction (${(orderObj.commission_amount / orderObj.total_amount * 100).toFixed(0)}%) for Order ${orderObj.id}`,
-      amount: -commAmt,
-      order_id: orderObj.id,
-      created_at: new Date().toISOString()
-    };
-    setLedger((prev) => [ledgerEntry, ...prev]);
-
-    showToast(`Order ${orderObj.id} Completed! $${commAmt} KYD platform commission deducted from vendor wallet.`);
-  };
-
-  // Verify PIN / QR for Pickup
-  const verifyAndCompletePickup = (pinInput) => {
+  // Backwards-compatible pickup completion helper
+  const verifyAndCompletePickup = (pinOrId) => {
     const matchingOrder = orders.find(
-      (o) => o.type === "PICKUP" && o.pin_code === pinInput && o.status !== "Completed" && o.status !== "Cancelled"
+      (o) => (o.id === pinOrId || o.order_id === pinOrId || o.pin_code === pinOrId) && o.status !== "Completed" && o.status !== "Cancelled"
     );
 
     if (!matchingOrder) {
-      showToast("Invalid PIN or Order has already been completed/cancelled.", "error");
+      showToast("Order not found or already completed/cancelled.", "error");
       return false;
     }
 
-    updateOrderStatus(matchingOrder.id, "Completed");
-    showToast(`SUCCESS! Pickup PIN Verified for Order ${matchingOrder.id}. Order is now Completed.`, "success");
+    updateOrderStatus(matchingOrder.id, "Completed", "Paid");
+    showToast(`Order #${matchingOrder.id} completed successfully!`, "success");
     return true;
   };
 
@@ -931,7 +985,13 @@ export const MarketplaceProvider = ({ children }) => {
         authModalRole,
         openAuthModal,
         closeAuthModal,
-        categories: CATEGORIES
+        categories: CATEGORIES,
+        ORDER_STATUSES,
+        PAYMENT_STATUSES,
+        PAYMENT_METHODS,
+        CENTRAL_MARKETPLACE_WHATSAPP,
+        CENTRAL_MARKETPLACE_PHONE_DISPLAY,
+        formatWhatsAppOrderMessage
       }}
     >
       {children}

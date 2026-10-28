@@ -413,11 +413,12 @@ export const INITIAL_PRODUCTS = [
 
 export const INITIAL_ORDERS = [
   {
-    id: "ORD-9801",
+    id: "CB-1041",
     customer_name: "David Sterling",
     customer_phone: "+1 (345) 926-5544",
     customer_email: "david.s@example.com",
-    type: "PICKUP", // "COD" or "PICKUP"
+    fulfillment_type: "Collection at Stall",
+    type: "PICKUP",
     vendor_id: "v-101",
     vendor_name: "Grand Cayman Artisan Hub",
     items: [
@@ -432,18 +433,19 @@ export const INITIAL_ORDERS = [
     total_amount: 45.00,
     commission_amount: 4.50, // 10%
     currency: "KYD",
-    status: "Ready for Pickup", // Pending -> Packing -> Ready for Pickup -> Completed
-    pin_code: "4829",
-    qr_code: "CAYMAN-PICKUP-ORD-9801-4829",
-    hold_until: "2026-10-11T18:00:00Z",
+    status: "Ready for Collection", // 9 Client statuses: New, Contacted, Confirmed, Awaiting Payment, Processing, Ready for Collection, Out for Delivery, Completed, Cancelled
+    payment_status: "Pending", // Pending, Partially Paid, Paid, Refunded
+    payment_method: "Cash on Collection",
     created_at: "2026-10-09T09:30:00Z",
-    pickup_location: "Cardinall Avenue, Craft Market Stall #4, Georgetown, Grand Cayman"
+    pickup_location: "Cardinall Avenue, Craft Market Stall #4, Georgetown, Grand Cayman",
+    special_notes: "Customer will collect Saturday morning around 10:30 AM."
   },
   {
-    id: "ORD-9802",
+    id: "CB-1042",
     customer_name: "David Sterling",
     customer_phone: "+1 (345) 916-7711",
     customer_email: "david.s@example.com",
+    fulfillment_type: "Island Courier Delivery",
     type: "COD",
     vendor_id: "v-102",
     vendor_name: "Seven Mile Surf & Watersports",
@@ -467,10 +469,42 @@ export const INITIAL_ORDERS = [
     total_amount: 76.00,
     commission_amount: 7.60,
     currency: "KYD",
-    status: "Out for Delivery", // Pending -> Packing -> Ready for Dispatch -> Out for Delivery -> Completed
-    created_at: "2026-10-09T08:15:00Z"
+    status: "Out for Delivery",
+    payment_status: "Pending",
+    payment_method: "Cash on Delivery",
+    created_at: "2026-10-09T08:15:00Z",
+    special_notes: "Please leave with concierge if guest is out on beach."
+  },
+  {
+    id: "CB-1043",
+    customer_name: "Sarah Jenkins",
+    customer_phone: "+1 (345) 945-8822",
+    customer_email: "sarah.j@caymanislands.ky",
+    fulfillment_type: "Collection at Stall",
+    type: "PICKUP",
+    vendor_id: "v-103",
+    vendor_name: "Rum Point Gourmet & Spices",
+    items: [
+      {
+        product_id: "p-5",
+        title: "Original Cayman Tortuga Rum Cake (16oz)",
+        price: 24.00,
+        qty: 2,
+        image: "/product_rum_cake.jpg"
+      }
+    ],
+    total_amount: 48.00,
+    commission_amount: 4.80,
+    currency: "KYD",
+    status: "New",
+    payment_status: "Pending",
+    payment_method: "Local Bank Transfer",
+    created_at: "2026-10-10T11:00:00Z",
+    pickup_location: "Rum Point Drive, Cottage #2, North Side, Grand Cayman",
+    special_notes: "Requesting Butterfield bank transfer details."
   }
 ];
+
 
 export const INITIAL_LEDGER = [
   {
