@@ -39,6 +39,29 @@ export const PAYMENT_METHODS = [
 export const CENTRAL_MARKETPLACE_WHATSAPP = "13459492299";
 export const CENTRAL_MARKETPLACE_PHONE_DISPLAY = "+1 (345) 949-2299";
 
+// Convert any phone (India 10-digit, Cayman 7/10-digit, or international) into WhatsApp wa.me compatible format
+export const toWhatsAppWaMeNumber = (phone, defaultNumber = CENTRAL_MARKETPLACE_WHATSAPP) => {
+  if (!phone) return defaultNumber;
+  const digits = String(phone).replace(/\D/g, "");
+  // Indian mobile: 10 digits starting with 6, 7, 8, 9 -> add country code 91
+  if (digits.length === 10 && /^[6-9]/.test(digits)) {
+    return `91${digits}`;
+  }
+  // Cayman: 10 digits starting with 345 -> add country code 1
+  if (digits.length === 10 && digits.startsWith("345")) {
+    return `1${digits}`;
+  }
+  // Cayman 7 digits
+  if (digits.length === 7) {
+    return `1345${digits}`;
+  }
+  // If already prefixed with country code (e.g. 919876543210 or 13459492299)
+  if (digits.length >= 11) {
+    return digits;
+  }
+  return digits || defaultNumber;
+};
+
 export const formatWhatsAppOrderMessage = ({
   orderId,
   customerName,
@@ -367,7 +390,19 @@ export const MarketplaceProvider = ({ children }) => {
         specialNotes: orderData.special_notes
       });
 
-      const waUrl = `https://wa.me/${CENTRAL_MARKETPLACE_WHATSAPP}?text=${encodeURIComponent(waMessage)}`;
+      // Target WhatsApp recipient
+      let targetWhatsApp = CENTRAL_MARKETPLACE_WHATSAPP;
+      if (orderData.target_whatsapp) {
+        targetWhatsApp = toWhatsAppWaMeNumber(orderData.target_whatsapp);
+      } else if (orderData.customer_phone) {
+        const cleanCust = toWhatsAppWaMeNumber(orderData.customer_phone);
+        // If customer entered an Indian number (+91 or 10 digits starting with 6-9), route to customer for live testing!
+        if (orderData.country_code === "+91" || (cleanCust.startsWith("91") && cleanCust.length >= 12)) {
+          targetWhatsApp = cleanCust;
+        }
+      }
+
+      const waUrl = `https://wa.me/${targetWhatsApp}?text=${encodeURIComponent(waMessage)}`;
 
       const newOrder = {
         id: subOrderId,
@@ -391,6 +426,7 @@ export const MarketplaceProvider = ({ children }) => {
         special_notes: orderData.special_notes || "",
         whatsapp_message: waMessage,
         whatsapp_url: waUrl,
+        target_whatsapp: targetWhatsApp,
         created_at: new Date().toISOString()
       };
 
@@ -991,7 +1027,8 @@ export const MarketplaceProvider = ({ children }) => {
         PAYMENT_METHODS,
         CENTRAL_MARKETPLACE_WHATSAPP,
         CENTRAL_MARKETPLACE_PHONE_DISPLAY,
-        formatWhatsAppOrderMessage
+        formatWhatsAppOrderMessage,
+        toWhatsAppWaMeNumber
       }}
     >
       {children}

@@ -94,6 +94,15 @@ router.post("/", async (req, res) => {
     const baseOrderId = `CB-${randomSuffix}`;
 
     const CENTRAL_WHATSAPP = "13459492299";
+    const toWaNumber = (phone) => {
+      if (!phone) return CENTRAL_WHATSAPP;
+      const digits = String(phone).replace(/\D/g, "");
+      if (digits.length === 10 && /^[6-9]/.test(digits)) return `91${digits}`;
+      if (digits.length === 10 && digits.startsWith("345")) return `1${digits}`;
+      if (digits.length === 7) return `1345${digits}`;
+      if (digits.length >= 11) return digits;
+      return digits || CENTRAL_WHATSAPP;
+    };
 
     let index = 1;
     for (const vId of Object.keys(vendorGrouped)) {
@@ -128,7 +137,13 @@ ${special_notes ? `\n*Notes:* ${special_notes}` : ""}
 
 Please confirm receipt and let me know the collection / delivery ETA. Thank you!`;
 
-      const whatsappUrl = `https://wa.me/${CENTRAL_WHATSAPP}?text=${encodeURIComponent(waText)}`;
+      // If testing with Indian phone or specific target_whatsapp provided
+      const cleanPhone = toWaNumber(customer_phone);
+      const targetPhone = req.body.target_whatsapp 
+        ? toWaNumber(req.body.target_whatsapp) 
+        : (req.body.country_code === "+91" || (cleanPhone.startsWith("91") && cleanPhone.length >= 12) ? cleanPhone : CENTRAL_WHATSAPP);
+
+      const whatsappUrl = `https://wa.me/${targetPhone}?text=${encodeURIComponent(waText)}`;
 
       const newOrder = new Order({
         order_id: subOrderId,

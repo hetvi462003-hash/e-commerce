@@ -24,6 +24,7 @@ export default function VendorOrders() {
     orders,
     updateOrderStatus,
     formatPrice,
+    toWhatsAppWaMeNumber,
     ORDER_STATUSES = [
       "New",
       "Contacted",
@@ -254,7 +255,7 @@ export default function VendorOrders() {
                 {filteredOrders.map((ord) => {
                   const isDelivery = ord.fulfillment_type === "Island Courier Delivery" || ord.type === "COD";
                   const statusColors = getStatusColor(ord.status);
-                  const custDigits = cleanDigits(ord.customer_phone);
+                  const custDigits = toWhatsAppWaMeNumber ? toWhatsAppWaMeNumber(ord.customer_phone) : cleanDigits(ord.customer_phone);
 
                   const directWhatsAppUrl = `https://wa.me/${custDigits}?text=${encodeURIComponent(
                     `Hello ${ord.customer_name}! This is ${activeVendor.store_name} regarding your Cayman Bazaar Order #${ord.id || ord.order_id}.`

@@ -37,6 +37,7 @@ export default function CheckoutPage({ setActiveTab }) {
   const [fulfillmentType, setFulfillmentType] = useState("Collection at Stall");
 
   // Form Fields - Pre-fill from active customer session if available
+  const [countryCode, setCountryCode] = useState("+91"); // Default to +91 India for live testing
   const [customerName, setCustomerName] = useState(customerProfile?.name || "");
   const [customerPhone, setCustomerPhone] = useState(customerPhoneSession || customerProfile?.phone || "");
   const [customerEmail, setCustomerEmail] = useState(customerProfile?.email || "");
@@ -89,11 +90,16 @@ export default function CheckoutPage({ setActiveTab }) {
       return;
     }
 
+    const cleanRawPhone = customerPhone.trim();
+    const formattedPhone = cleanRawPhone.startsWith("+")
+      ? cleanRawPhone
+      : `${countryCode} ${cleanRawPhone}`;
+
     // Persist profile in session
     if (updateCustomerProfile) {
       updateCustomerProfile({
         name: customerName.trim(),
-        phone: customerPhone.trim(),
+        phone: formattedPhone,
         email: customerEmail.trim(),
         address: deliveryAddress.trim()
       });
@@ -103,7 +109,8 @@ export default function CheckoutPage({ setActiveTab }) {
       fulfillment_type: fulfillmentType,
       type: fulfillmentType === "Island Courier Delivery" ? "COD" : "PICKUP",
       customer_name: customerName.trim(),
-      customer_phone: customerPhone.trim(),
+      customer_phone: formattedPhone,
+      country_code: countryCode,
       customer_email: customerEmail.trim(),
       delivery_address: deliveryAddress.trim(),
       special_notes: specialNotes.trim()
@@ -236,6 +243,12 @@ export default function CheckoutPage({ setActiveTab }) {
                 <span style={{ color: "#64748B" }}>Customer:</span>
                 <strong style={{ color: "#0A192F" }}>{confirmedOrder.customer_name} ({confirmedOrder.customer_phone})</strong>
               </div>
+              {confirmedOrder.target_whatsapp && (
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem", background: "#F0FDFA", padding: "0.4rem 0.75rem", borderRadius: "10px", border: "1px solid #CCFBF1" }}>
+                  <span style={{ color: "#0D9488", fontWeight: 700, fontSize: "0.82rem" }}>WhatsApp Destination:</span>
+                  <strong style={{ color: "#0F766E", fontSize: "0.84rem" }}>+{confirmedOrder.target_whatsapp}</strong>
+                </div>
+              )}
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
                 <span style={{ color: "#64748B" }}>Fulfillment:</span>
                 <strong style={{ color: "#00A896" }}>{confirmedOrder.fulfillment_type}</strong>
@@ -479,22 +492,44 @@ export default function CheckoutPage({ setActiveTab }) {
                   <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.35rem", display: "block" }}>
                     WhatsApp Phone Number *
                   </label>
-                  <input
-                    type="tel"
-                    required
-                    value={customerPhone}
-                    onChange={(e) => setCustomerPhone(e.target.value)}
-                    placeholder="+1 (345) 926-5544"
-                    style={{
-                      width: "100%",
-                      padding: "0.75rem 1rem",
-                      borderRadius: "12px",
-                      border: "1.5px solid #CBD5E1",
-                      fontSize: "0.95rem"
-                    }}
-                  />
-                  <span style={{ fontSize: "0.74rem", color: "#64748B", marginTop: "3px", display: "block" }}>
-                    Cayman area code +1 (345)
+                  <div style={{ display: "flex", gap: "0.5rem" }}>
+                    <select
+                      value={countryCode}
+                      onChange={(e) => setCountryCode(e.target.value)}
+                      style={{
+                        padding: "0.75rem 0.5rem",
+                        borderRadius: "12px",
+                        border: "1.5px solid #CBD5E1",
+                        fontSize: "0.85rem",
+                        background: "#F8FAFC",
+                        color: "#0F172A",
+                        fontWeight: 700,
+                        cursor: "pointer",
+                        outline: "none"
+                      }}
+                    >
+                      <option value="+91">🇮🇳 +91 (India - Live Test)</option>
+                      <option value="+1 (345)">🇰🇾 +1 (345) (Cayman)</option>
+                    </select>
+                    <input
+                      type="tel"
+                      required
+                      value={customerPhone}
+                      onChange={(e) => setCustomerPhone(e.target.value)}
+                      placeholder={countryCode === "+91" ? "98765 43210" : "926-5544"}
+                      style={{
+                        flex: 1,
+                        padding: "0.75rem 1rem",
+                        borderRadius: "12px",
+                        border: "1.5px solid #CBD5E1",
+                        fontSize: "0.95rem"
+                      }}
+                    />
+                  </div>
+                  <span style={{ fontSize: "0.74rem", color: countryCode === "+91" ? "#00A896" : "#64748B", marginTop: "4px", display: "block", fontWeight: countryCode === "+91" ? 700 : 400 }}>
+                    {countryCode === "+91"
+                      ? "🇮🇳 Testing Mode: WhatsApp order chat will open directly with this number!"
+                      : "🇰🇾 Cayman area code +1 (345)"}
                   </span>
                 </div>
 

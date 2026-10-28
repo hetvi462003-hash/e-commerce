@@ -42,7 +42,8 @@ export default function AdminOrders() {
       "Cash on Delivery",
       "Local Bank Transfer",
       "Other"
-    ]
+    ],
+    toWhatsAppWaMeNumber
   } = useMarketplace();
 
   const [statusFilter, setStatusFilter] = useState("all");
@@ -192,7 +193,7 @@ export default function AdminOrders() {
                 {filteredOrders.map((ord) => {
                   const isDelivery = ord.fulfillment_type === "Island Courier Delivery" || ord.type === "COD";
                   const statusColors = getStatusColor(ord.status);
-                  const custDigits = cleanDigits(ord.customer_phone);
+                  const custDigits = toWhatsAppWaMeNumber ? toWhatsAppWaMeNumber(ord.customer_phone) : cleanDigits(ord.customer_phone);
 
                   const customerWhatsApp = `https://wa.me/${custDigits}?text=${encodeURIComponent(
                     `Hello ${ord.customer_name}, this is Cayman Bazaar Admin regarding your Order #${ord.id || ord.order_id}.`
