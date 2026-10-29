@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useMarketplace } from "../context/MarketplaceContext";
-import { ShoppingBag, Clock, Sparkles, Store, MapPin, Eye, Plus, Minus, Sliders } from "lucide-react";
+import { ShoppingBag, Sparkles, Store, MapPin, Eye, Plus, Minus, Sliders, MessageCircle } from "lucide-react";
 
 export default function ProductCard({ product, onSelectProduct, onVisitStore }) {
-  const { formatPrice, addToCart, vendors, currency } = useMarketplace();
+  const { formatPrice, addToCart, vendors, currency, toWhatsAppWaMeNumber } = useMarketplace();
   const [cardQty, setCardQty] = useState(1);
 
   const isLowStock = product.stock_count > 0 && product.stock_count <= 5;
@@ -90,7 +90,7 @@ export default function ProductCard({ product, onSelectProduct, onVisitStore }) 
             cursor: "pointer"
           }}
         >
-          <Store size={13} /> {vendorObj?.stall_number ? `${vendorObj.stall_number} • ` : ""}{product.vendor_name}
+          <Store size={13} /> {product.vendor_name}
         </div>
 
         {/* Title */}
@@ -236,18 +236,33 @@ export default function ProductCard({ product, onSelectProduct, onVisitStore }) 
               disabled={isOutOfStock}
               onClick={(e) => {
                 e.stopPropagation();
-                addToCart(product, {}, cardQty);
-                onSelectProduct(product, true);
+                const targetPhone = vendorObj?.phone
+                  ? (toWhatsAppWaMeNumber ? toWhatsAppWaMeNumber(vendorObj.phone) : vendorObj.phone.replace(/\D/g, ""))
+                  : "13459492299";
+                const waText = encodeURIComponent(
+                  `Hello ${product.vendor_name}! I would like to buy: "${product.title}" (Qty: ${cardQty}, Total: ${formatPrice(product.price * cardQty)}) on CaymanBazaar.`
+                );
+                window.open(`https://wa.me/${targetPhone}?text=${waText}`, "_blank");
               }}
-              className="btn-gold"
               style={{
+                background: "#25D366",
+                color: "#FFFFFF",
+                border: "none",
+                fontWeight: 800,
                 padding: "0.6rem 0.75rem",
                 fontSize: "0.84rem",
                 borderRadius: "12px",
-                opacity: isOutOfStock ? 0.4 : 1
+                cursor: isOutOfStock ? "not-allowed" : "pointer",
+                opacity: isOutOfStock ? 0.4 : 1,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.35rem",
+                boxShadow: "0 2px 8px rgba(37, 211, 102, 0.25)"
               }}
+              title="Order this item directly on WhatsApp"
             >
-              <Clock size={15} /> Reserve PIN
+              <MessageCircle size={15} /> WhatsApp
             </button>
           </div>
         </div>

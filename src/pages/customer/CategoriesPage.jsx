@@ -106,16 +106,16 @@ export default function CategoriesPage({ setActiveTab, setSelectedVendor, setSel
 
         {/* Vendor Filter */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-          <span style={{ fontSize: "0.85rem", color: "#64748B", fontWeight: 700 }}>Filter Stall:</span>
+          <span style={{ fontSize: "0.85rem", color: "#64748B", fontWeight: 700 }}>Filter Store:</span>
           <select
             value={selectedVendorFilter}
             onChange={(e) => setSelectedVendorFilter(e.target.value)}
             style={{ width: "auto", borderRadius: "12px", fontWeight: 700, color: "#0A2540" }}
           >
-            <option value="all">All Cayman Stalls</option>
+            <option value="all">All Cayman Stores</option>
             {vendors.filter(v => v.status === "active").map((v) => (
               <option key={v.id} value={v.id}>
-                {v.stall_number ? `${v.stall_number} • ` : ""}{v.store_name}
+                {v.district ? `${v.district} • ` : ""}{v.store_name}
               </option>
             ))}
           </select>

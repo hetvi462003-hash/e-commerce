@@ -85,7 +85,7 @@ export default function AdminDashboard({ setActiveTab }) {
                 Governance & Executive Command
               </h1>
               <p style={{ color: "#94A3B8", fontSize: "1.02rem", maxWidth: "680px", lineHeight: 1.5 }}>
-                Master oversight for Grand Cayman multi-vendor stalls, WhatsApp orders, merchant onboarding approvals, and monthly performance reports.
+                Master oversight for Grand Cayman multi-vendor stores, WhatsApp orders, merchant onboarding approvals, and monthly performance reports.
               </p>
             </div>
 
@@ -110,7 +110,7 @@ export default function AdminDashboard({ setActiveTab }) {
                   }}
                 >
                   <AlertCircle size={16} />
-                  <span>Review {pendingApprovalsCount} Pending Stalls</span>
+                  <span>Review {pendingApprovalsCount} Pending Stores</span>
                 </button>
               )}
 
@@ -249,7 +249,7 @@ export default function AdminDashboard({ setActiveTab }) {
               </div>
             </div>
             <div style={{ fontSize: "2.2rem", fontWeight: 900, color: "#FFFFFF", letterSpacing: "-0.02em" }}>
-              {vendors.length} <span style={{ fontSize: "1rem", color: "#64748B", fontWeight: 600 }}>Stalls</span>
+              {vendors.length} <span style={{ fontSize: "1rem", color: "#64748B", fontWeight: 600 }}>Stores</span>
             </div>
             <div style={{ marginTop: "0.75rem", display: "flex", alignItems: "center", gap: "0.6rem", fontSize: "0.78rem" }}>
               <span style={{ color: "#38BDF8", fontWeight: 700 }}>{verifiedVendorsCount} Verified</span>
@@ -339,10 +339,10 @@ export default function AdminDashboard({ setActiveTab }) {
                 )}
               </div>
               <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#FFFFFF", marginBottom: "0.35rem" }}>
-                Vendor Stalls & Licensing
+                Vendor Stores & Licensing
               </h3>
               <p style={{ fontSize: "0.84rem", color: "#94A3B8", lineHeight: 1.5, marginBottom: "1rem" }}>
-                Approve new island artisan registrations, toggle verified badges, and inspect individual merchant stall credentials.
+                Approve new island artisan registrations, toggle verified badges, and inspect individual merchant store credentials.
               </p>
               <div style={{ color: "#00E5C9", fontSize: "0.82rem", fontWeight: 800, display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
                 Manage Artisan Directory <ArrowRight size={14} />
@@ -480,7 +480,7 @@ export default function AdminDashboard({ setActiveTab }) {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem", flexWrap: "wrap", gap: "0.5rem" }}>
             <div>
               <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#FFFFFF" }}>Recent Global Marketplace Stream</h3>
-              <p style={{ fontSize: "0.82rem", color: "#64748B" }}>Chronological record of orders placed across Grand Cayman stalls</p>
+              <p style={{ fontSize: "0.82rem", color: "#64748B" }}>Chronological record of orders placed across Grand Cayman stores</p>
             </div>
             <button
               onClick={() => setActiveTab("admin-orders")}
@@ -497,7 +497,7 @@ export default function AdminDashboard({ setActiveTab }) {
                 <tr style={{ borderBottom: "1px solid rgba(255, 255, 255, 0.08)", color: "#64748B", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.06em" }}>
                   <th style={{ padding: "0.75rem" }}>Order ID</th>
                   <th style={{ padding: "0.75rem" }}>Method</th>
-                  <th style={{ padding: "0.75rem" }}>Stall</th>
+                  <th style={{ padding: "0.75rem" }}>Store</th>
                   <th style={{ padding: "0.75rem" }}>Customer</th>
                   <th style={{ padding: "0.75rem" }}>Total</th>
                   <th style={{ padding: "0.75rem" }}>Platform 10%</th>

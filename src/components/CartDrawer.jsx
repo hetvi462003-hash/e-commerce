@@ -185,7 +185,7 @@ export default function CartDrawer({ isOpen, onClose, onProceedCheckout }) {
                 }}
               >
                 <ShieldCheck size={14} />
-                <span>Supports <strong>COD</strong> & <strong>Reserve for Store Pickup (4-Digit PIN)</strong></span>
+                <span>Supports <strong>Cash on Delivery (COD)</strong> & <strong>Store Pickup</strong></span>
               </div>
             )}
 

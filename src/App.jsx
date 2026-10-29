@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import ToastNotification from "./components/ToastNotification";
 import CartDrawer from "./components/CartDrawer";
 import AuthModal from "./components/AuthModal";
+import FloatingWhatsApp from "./components/FloatingWhatsApp";
 
 // Customer Pages
 import Home from "./pages/customer/Home";
@@ -163,6 +164,9 @@ function MainApp() {
         defaultRole={authModalRole}
         setActiveTab={setActiveTab}
       />
+
+      {/* Floating WhatsApp Concierge for Grand Cayman Shoppers */}
+      <FloatingWhatsApp />
 
       {/* Footer */}
       <Footer setActiveTab={setActiveTab} />

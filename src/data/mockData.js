@@ -24,8 +24,7 @@ export const INITIAL_VENDORS = [
   {
     id: "v-101",
     store_name: "Grand Cayman Artisan Hub",
-    stall_number: "Stall #04",
-    stall_tag: "Craft Market Stall",
+    store_type: "Artisan Boutique",
     specialty: "Caymanite Gemstones & Woven Thatch",
     is_open_now: true,
     slug: "grand-cayman-artisans",
@@ -35,7 +34,7 @@ export const INITIAL_VENDORS = [
     logo: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%230F1F38' stroke='%23F59E0B' stroke-width='3'/><path d='M50 20 L58 40 L80 40 L62 54 L69 76 L50 62 L31 76 L38 54 L20 40 L42 40 Z' fill='%23F59E0B'/><text x='50' y='90' font-size='10' font-family='serif' fill='%2300E5C9' text-anchor='middle' font-weight='bold'>ARTISAN</text></svg>",
     banner: "/cayman_stall_artisan.jpg",
     district: "Georgetown",
-    address: "Cardinall Avenue, Craft Market Stall #4, Georgetown, Grand Cayman",
+    address: "Cardinall Avenue, Central Plaza, Georgetown, Grand Cayman",
     rating: 4.9,
     reviews_count: 84,
     verified: true,
@@ -45,7 +44,7 @@ export const INITIAL_VENDORS = [
     bio: "Authentic hand-carved Caymanite jewelry, woven palm art, and locally crafted island souvenirs.",
     policies: {
       return_policy: "7-day return policy for unused items with original receipt.",
-      pickup_policy: "Holds reserved items for 48 hours. Please mention your order reference upon arrival.",
+      pickup_policy: "Store pickup available with order reference.",
       shipping_policy: "Curbside pickup & local island delivery available across Grand Cayman."
     },
     social_connections: {
@@ -59,8 +58,7 @@ export const INITIAL_VENDORS = [
   {
     id: "v-102",
     store_name: "Seven Mile Surf & Watersports",
-    stall_number: "Stall #12",
-    stall_tag: "Beachside Watersport Shack",
+    store_type: "Beach & Watersports Shop",
     specialty: "Panoramic Snorkel Gear & Reef Wear",
     is_open_now: true,
     slug: "seven-mile-surf",
@@ -70,7 +68,7 @@ export const INITIAL_VENDORS = [
     logo: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23081E36' stroke='%2300E5C9' stroke-width='3'/><path d='M25 65 Q 40 40 55 55 T 85 45' fill='none' stroke='%2300E5C9' stroke-width='5' stroke-linecap='round'/><circle cx='50' cy='35' r='12' fill='%23FBBF24'/><text x='50' y='88' font-size='11' font-family='sans-serif' fill='%23FFFFFF' text-anchor='middle' font-weight='900'>7-MILE</text></svg>",
     banner: "/cayman_watersports_stall.jpg",
     district: "Seven Mile Beach",
-    address: "West Bay Road, Plaza #12, Seven Mile Beach, Grand Cayman",
+    address: "West Bay Road, Plaza 12, Seven Mile Beach, Grand Cayman",
     rating: 4.8,
     reviews_count: 112,
     verified: true,
@@ -94,8 +92,7 @@ export const INITIAL_VENDORS = [
   {
     id: "v-103",
     store_name: "Rum Point Gourmet & Spices",
-    stall_number: "Stall #02",
-    stall_tag: "Island Bakery & Spice Cabin",
+    store_type: "Gourmet Island Boutique",
     specialty: "Tortuga Rum Cakes & Scotch Bonnet Sauces",
     is_open_now: true,
     slug: "rum-point-gourmet",
@@ -105,7 +102,7 @@ export const INITIAL_VENDORS = [
     logo: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%232D150B' stroke='%23D97706' stroke-width='3'/><rect x='32' y='28' width='36' height='42' rx='10' fill='%23B45309' stroke='%23FDE68A' stroke-width='2'/><line x1='32' y1='42' x2='68' y2='42' stroke='%23FDE68A' stroke-width='2'/><line x1='32' y1='56' x2='68' y2='56' stroke='%23FDE68A' stroke-width='2'/><text x='50' y='88' font-size='10' font-family='serif' fill='%23FDE68A' text-anchor='middle' font-weight='bold'>RUM POINT</text></svg>",
     banner: "/cayman_rum_spice_stall.jpg",
     district: "North Side",
-    address: "Rum Point Drive, Cottage #2, North Side, Grand Cayman",
+    address: "Rum Point Drive, North Side, Grand Cayman",
     rating: 4.95,
     reviews_count: 96,
     verified: true,
@@ -115,7 +112,7 @@ export const INITIAL_VENDORS = [
     bio: "Famous Cayman Tortuga rum cakes, artisanal Scotch Bonnet hot sauces, gourmet sea salt, and Caribbean spice rubs.",
     policies: {
       return_policy: "All food items are final sale. Replacement offered for damaged goods.",
-      pickup_policy: "Store pickup available at North Side location or Georgetown pop-up booth.",
+      pickup_policy: "Store pickup available at North Side location with order reference.",
       shipping_policy: "COD Island-wide courier delivery within 24 hours."
     },
     social_connections: {
@@ -129,8 +126,7 @@ export const INITIAL_VENDORS = [
   {
     id: "v-104",
     store_name: "Georgetown Duty-Free Gems",
-    stall_number: "Boutique #201",
-    stall_tag: "Cruise Port Duty-Free Showcase",
+    store_type: "Duty-Free Watchmaker & Jewelry",
     specialty: "Blue Larimar & Nautical Timepieces",
     is_open_now: true,
     slug: "georgetown-duty-free",
@@ -164,8 +160,7 @@ export const INITIAL_VENDORS = [
   {
     id: "v-105",
     store_name: "Bodden Town Coral Crafts",
-    stall_number: "Stall #08",
-    stall_tag: "Historic Square Craft Booth",
+    store_type: "Heritage Craft Shop",
     specialty: "Handmade Seashell Gifts & Coconut Wax",
     is_open_now: true,
     slug: "bodden-town-crafts",
@@ -185,7 +180,7 @@ export const INITIAL_VENDORS = [
     bio: "Handmade seashell ornaments, eco-printed canvas tote bags, and hand-poured coconut soy candles.",
     policies: {
       return_policy: "Exchanges accepted within 7 days.",
-      pickup_policy: "Reserve online and pay/pickup at Bodden Town square.",
+      pickup_policy: "Reserve online and pay/pickup at Bodden Town store.",
       shipping_policy: "COD available across Bodden Town & East End."
     },
     social_connections: {
@@ -417,7 +412,7 @@ export const INITIAL_ORDERS = [
     customer_name: "David Sterling",
     customer_phone: "+1 (345) 926-5544",
     customer_email: "david.s@example.com",
-    fulfillment_type: "Collection at Stall",
+    fulfillment_type: "Store Pickup",
     type: "PICKUP",
     vendor_id: "v-101",
     vendor_name: "Grand Cayman Artisan Hub",
@@ -437,7 +432,7 @@ export const INITIAL_ORDERS = [
     payment_status: "Pending", // Pending, Partially Paid, Paid, Refunded
     payment_method: "Cash on Collection",
     created_at: "2026-10-09T09:30:00Z",
-    pickup_location: "Cardinall Avenue, Craft Market Stall #4, Georgetown, Grand Cayman",
+    pickup_location: "Cardinall Avenue, Artisan Boutique, Georgetown, Grand Cayman",
     special_notes: "Customer will collect Saturday morning around 10:30 AM."
   },
   {
@@ -480,7 +475,7 @@ export const INITIAL_ORDERS = [
     customer_name: "Sarah Jenkins",
     customer_phone: "+1 (345) 945-8822",
     customer_email: "sarah.j@caymanislands.ky",
-    fulfillment_type: "Collection at Stall",
+    fulfillment_type: "Store Pickup",
     type: "PICKUP",
     vendor_id: "v-103",
     vendor_name: "Rum Point Gourmet & Spices",
@@ -574,10 +569,10 @@ export const INITIAL_REVIEWS = [
     product_title: "Hand-Polished Caymanite Gemstone Pendant",
     vendor_id: "v-101",
     vendor_name: "Grand Cayman Artisan Hub",
-    stall_number: "Stall #04",
+    district: "Georgetown",
     author: "Jessica Miller",
     rating: 5,
-    comment: "Absolutely gorgeous Caymanite pendant! Picked it up at the Georgetown craft market with my 4-digit PIN. Sarah was so friendly and explained the natural layers of the stone.",
+    comment: "Absolutely gorgeous Caymanite pendant! Ordered via WhatsApp and picked it up at their boutique. Sarah was so friendly and explained the natural layers of the stone.",
     created_at: "2026-10-18T14:32:00Z",
     verified_purchase: true,
     vendor_reply: {
@@ -595,7 +590,7 @@ export const INITIAL_REVIEWS = [
     product_title: "Pro Snorkel Set with Anti-Fog Panoramic Mask",
     vendor_id: "v-102",
     vendor_name: "Seven Mile Surf & Watersports",
-    stall_number: "Stall #12",
+    district: "Seven Mile Beach",
     author: "Michael Henderson",
     rating: 5,
     comment: "Crystal clear visibility out on Coral Gardens reef! The dry-top snorkel worked flawlessly. Best gear on Seven Mile Beach.",
@@ -613,7 +608,7 @@ export const INITIAL_REVIEWS = [
     product_title: "Fiery Scotch Bonnet Island Hot Sauce",
     vendor_id: "v-103",
     vendor_name: "Rum Point Gourmet & Spices",
-    stall_number: "Stall #18",
+    district: "North Side",
     author: "Liam Thorne",
     rating: 5,
     comment: "Incredible tropical kick! Perfect blend of papaya and scotch bonnet heat. Ordered 3 more bottles for friends back home.",
@@ -634,7 +629,7 @@ export const INITIAL_REVIEWS = [
     product_title: "Woven Silver Thatch Palm Beach Tote",
     vendor_id: "v-101",
     vendor_name: "Grand Cayman Artisan Hub",
-    stall_number: "Stall #04",
+    district: "Georgetown",
     author: "Anonymous Shopper",
     rating: 1,
     comment: "Fake bag completely broken in 2 hours terrible seller do not buy from this market",
@@ -642,7 +637,7 @@ export const INITIAL_REVIEWS = [
     verified_purchase: false,
     vendor_reply: null,
     is_flagged: true,
-    flag_reason: "Competitor spam / abusive review: This buyer never placed this order or visited our stall.",
+    flag_reason: "Competitor spam / abusive review: This buyer never placed this order or visited our store.",
     status: "published"
   }
 ];

@@ -224,7 +224,7 @@ export default function AdminOrders() {
             </div>
           </div>
           <div style={{ fontSize: "1.85rem", fontWeight: 900, color: "#0F172A", lineHeight: 1 }}>{totalOrdersCount}</div>
-          <div style={{ fontSize: "0.76rem", color: "#64748B", marginTop: "0.4rem" }}>Across all 5 island stall pavilions</div>
+          <div style={{ fontSize: "0.76rem", color: "#64748B", marginTop: "0.4rem" }}>Across all 5 island store boutiques</div>
         </div>
 
         {/* Card 2: Action Required */}
@@ -399,7 +399,7 @@ export default function AdminOrders() {
           
           {/* Vendor Filter */}
           <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-            <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "#64748B" }}>Stall:</span>
+            <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "#64748B" }}>Store:</span>
             <select
               value={vendorFilter}
               onChange={(e) => setVendorFilter(e.target.value)}
@@ -415,7 +415,7 @@ export default function AdminOrders() {
                 cursor: "pointer"
               }}
             >
-              <option value="all">All Island Stalls</option>
+              <option value="all">All Island Stores</option>
               {vendors.map((v) => (
                 <option key={v.id} value={v.id}>
                   {v.store_name} ({v.district})
@@ -460,7 +460,7 @@ export default function AdminOrders() {
             />
             <input
               type="text"
-              placeholder="Search Order #, Customer, Stall..."
+              placeholder="Search Order #, Customer, Store..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
@@ -625,7 +625,7 @@ export default function AdminOrders() {
                             }}
                           >
                             {isDelivery ? <Truck size={12} /> : <Store size={12} />}
-                            {ord.fulfillment_type || (isDelivery ? "Island Courier Delivery" : "Collection at Stall")}
+                            {ord.fulfillment_type || (isDelivery ? "Island Courier Delivery" : "Store Pickup")}
                           </span>
                           {ord.delivery_address && (
                             <div style={{ fontSize: "0.74rem", color: "#64748B", marginTop: "4px", display: "flex", alignItems: "flex-start", gap: "0.25rem", maxWidth: "210px", lineHeight: 1.35 }}>

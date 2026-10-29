@@ -116,7 +116,7 @@ export default function AdminDisputes() {
             <tr style={{ background: "#F8FAFC", borderBottom: "1px solid #E2E8F0", color: "#64748B" }}>
               <th style={{ padding: "1rem" }}>Dispute ID</th>
               <th style={{ padding: "1rem" }}>Order & Method</th>
-              <th style={{ padding: "1rem" }}>Buyer & Stall</th>
+              <th style={{ padding: "1rem" }}>Buyer & Store</th>
               <th style={{ padding: "1rem" }}>Claim Reason</th>
               <th style={{ padding: "1rem" }}>Value</th>
               <th style={{ padding: "1rem" }}>Status</th>

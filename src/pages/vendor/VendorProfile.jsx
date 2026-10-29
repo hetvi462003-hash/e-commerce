@@ -40,7 +40,7 @@ export default function VendorProfile({ setActiveTab, setSelectedVendor }) {
   const [pickupPolicy, setPickupPolicy] = useState(() => {
     const p = activeVendor.policies?.pickup_policy;
     if (!p || p.includes("PIN") || p.includes("QR") || p.includes("pin") || p.includes("qr")) {
-      return "Items held at stall counter for collection. Please mention your order reference (#CB-XXXX) upon arrival.";
+      return "Items held at store counter for pickup. Please mention your order reference (#CB-XXXX) upon arrival.";
     }
     return p;
   });
@@ -79,7 +79,7 @@ export default function VendorProfile({ setActiveTab, setSelectedVendor }) {
 
     setTimeout(() => {
       setIsSaving(false);
-      showToast("Stall profile and storefront appearance saved successfully!", "success");
+      showToast("Store profile and storefront appearance saved successfully!", "success");
     }, 300);
   };
 
@@ -109,10 +109,10 @@ export default function VendorProfile({ setActiveTab, setSelectedVendor }) {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1.5rem" }}>
             <div>
               <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "rgba(0, 229, 201, 0.12)", border: "1px solid rgba(0, 229, 201, 0.35)", padding: "0.3rem 0.8rem", borderRadius: "999px", color: "#00E5C9", fontSize: "0.78rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.5rem" }}>
-                <Store size={14} /> {activeVendor.stall_number || "Craft Stall"} • Stall Management Hub
+                <Store size={14} /> {activeVendor.store_type || "Island Boutique"} • Store Management Hub
               </div>
               <h1 style={{ fontSize: "2.2rem", fontWeight: 900, color: "#FFFFFF", margin: 0, letterSpacing: "-0.01em" }}>
-                Stall Customizer & Profile Settings
+                Store Customizer & Profile Settings
               </h1>
               <p style={{ color: "#94A3B8", fontSize: "0.92rem", marginTop: "0.4rem", maxWidth: "620px", lineHeight: 1.5 }}>
                 Customize your Grand Cayman digital storefront, showcase artisanal branding, manage pickup hours, and configure direct offline bank transfer instructions.
@@ -187,7 +187,7 @@ export default function VendorProfile({ setActiveTab, setSelectedVendor }) {
                   </div>
                   <div>
                     <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0F172A", margin: 0 }}>
-                      Stall Identity & Story
+                      Store Identity & Story
                     </h3>
                     <p style={{ fontSize: "0.78rem", color: "#64748B", margin: 0 }}>
                       Public store name, district, and bio presented to island shoppers
@@ -200,7 +200,7 @@ export default function VendorProfile({ setActiveTab, setSelectedVendor }) {
                   {/* Store Name */}
                   <div>
                     <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 700, color: "#334155", marginBottom: "0.4rem" }}>
-                      Store / Stall Name *
+                      Store / Boutique Name *
                     </label>
                     <input
                       type="text"
@@ -303,7 +303,7 @@ export default function VendorProfile({ setActiveTab, setSelectedVendor }) {
                   {/* Physical Address */}
                   <div>
                     <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 700, color: "#334155", marginBottom: "0.4rem" }}>
-                      Physical Address / Stall Counter Spot
+                      Physical Address / Storefront Spot
                     </label>
                     <div style={{ position: "relative" }}>
                       <MapPin size={16} color="#00A896" style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)" }} />
@@ -340,7 +340,7 @@ export default function VendorProfile({ setActiveTab, setSelectedVendor }) {
                       Storefront Imagery & Badging
                     </h3>
                     <p style={{ fontSize: "0.78rem", color: "#64748B", margin: 0 }}>
-                      Stall logo avatar and panoramic banner image displayed on marketplace directories
+                      Store logo avatar and panoramic banner image displayed on marketplace directories
                     </p>
                   </div>
                 </div>
@@ -382,14 +382,14 @@ export default function VendorProfile({ setActiveTab, setSelectedVendor }) {
                       }}
                     />
                     <small style={{ color: "#64748B", fontSize: "0.74rem", display: "block", marginTop: "3px" }}>
-                      Recommended: 1200 x 400px panoramic island photography or stall booth image.
+                      Recommended: 1200 x 400px panoramic island photography or boutique image.
                     </small>
                   </div>
 
                   {/* Logo Image with Circular Thumbnail Preview */}
                   <div>
                     <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 700, color: "#334155", marginBottom: "0.4rem" }}>
-                      Stall Logo / Circular Avatar
+                      Store Logo / Circular Avatar
                     </label>
 
                     <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "0.6rem" }}>
@@ -487,7 +487,7 @@ export default function VendorProfile({ setActiveTab, setSelectedVendor }) {
                       Customer Policies & Social Handles
                     </h3>
                     <p style={{ fontSize: "0.78rem", color: "#64748B", margin: 0 }}>
-                      Stall collection instructions, warranty terms, and Instagram showcase
+                      Store pickup instructions, warranty terms, and Instagram showcase
                     </p>
                   </div>
                 </div>
@@ -518,16 +518,16 @@ export default function VendorProfile({ setActiveTab, setSelectedVendor }) {
                     />
                   </div>
 
-                  {/* Stall Collection Policy */}
+                  {/* Store Pickup Policy */}
                   <div>
                     <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 700, color: "#334155", marginBottom: "0.4rem" }}>
-                      Stall Counter Collection Instructions
+                      Store Counter Pickup Instructions
                     </label>
                     <textarea
                       rows={2}
                       value={pickupPolicy}
                       onChange={(e) => setPickupPolicy(e.target.value)}
-                      placeholder="e.g. Items held at stall counter. Present your Order Reference (#CB-XXXX) upon pickup."
+                      placeholder="e.g. Items held at store counter. Present your Order Reference (#CB-XXXX) upon pickup."
                       style={{
                         width: "100%",
                         padding: "0.75rem 1rem",
@@ -634,7 +634,7 @@ export default function VendorProfile({ setActiveTab, setSelectedVendor }) {
 
                     <div style={{ position: "absolute", top: "10px", left: "10px" }}>
                       <span style={{ background: "rgba(5, 11, 20, 0.85)", border: "1px solid rgba(245, 158, 11, 0.4)", color: "#FDE68A", fontSize: "0.72rem", fontWeight: 800, padding: "0.2rem 0.6rem", borderRadius: "6px" }}>
-                        {activeVendor.stall_number || "Stall #01"}
+                        {activeVendor.store_type || "Island Boutique"}
                       </span>
                     </div>
 
@@ -645,7 +645,7 @@ export default function VendorProfile({ setActiveTab, setSelectedVendor }) {
                     </div>
                   </div>
 
-                  {/* Stall Profile Details */}
+                  {/* Store Profile Details */}
                   <div style={{ padding: "1.25rem", paddingTop: 0 }}>
                     
                     {/* Avatar & Rating Row */}
@@ -672,7 +672,7 @@ export default function VendorProfile({ setActiveTab, setSelectedVendor }) {
                     {/* Store Title */}
                     <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", marginBottom: "0.25rem" }}>
                       <h4 style={{ fontFamily: "Playfair Display, serif", fontSize: "1.2rem", fontWeight: 800, color: "#0F172A", margin: 0 }}>
-                        {storeName || "My Stall Name"}
+                        {storeName || "My Store Name"}
                       </h4>
                       <CheckCircle2 size={15} color="#00A896" />
                     </div>
@@ -691,7 +691,7 @@ export default function VendorProfile({ setActiveTab, setSelectedVendor }) {
                     {/* Badges */}
                     <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", marginBottom: "0.9rem" }}>
                       <span style={{ fontSize: "0.7rem", color: "#00A896", background: "#E6FBF2", padding: "0.2rem 0.55rem", borderRadius: "6px", fontWeight: 800 }}>
-                        🏪 Stall Collection
+                        🏪 Store Pickup
                       </span>
                       <span style={{ fontSize: "0.7rem", color: "#1D4ED8", background: "#EFF6FF", padding: "0.2rem 0.55rem", borderRadius: "6px", fontWeight: 800 }}>
                         🚚 Island Courier COD

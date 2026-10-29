@@ -37,7 +37,7 @@ export default function VendorSocial() {
       {/* Header */}
       <div style={{ marginBottom: "2rem" }}>
         <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "#00A896", fontSize: "0.85rem", fontWeight: 700, textTransform: "uppercase" }}>
-          <Share2 size={16} /> Stall Connectivity
+          <Share2 size={16} /> Store Connectivity
         </div>
         <h1 style={{ fontSize: "2.2rem", color: "#0F172A", marginBottom: "0.2rem" }}>Social Media & Channels</h1>
         <p style={{ color: "#64748B", fontSize: "0.95rem" }}>
@@ -56,7 +56,7 @@ export default function VendorSocial() {
               </div>
               <div>
                 <h4 style={{ fontSize: "1.05rem", color: "#0F172A", fontWeight: 700 }}>Instagram Store</h4>
-                <div style={{ fontSize: "0.75rem", color: "#64748B" }}>Public handle on your stall</div>
+                <div style={{ fontSize: "0.75rem", color: "#64748B" }}>Public handle on your store</div>
               </div>
             </div>
 
@@ -65,7 +65,7 @@ export default function VendorSocial() {
             </label>
             <input
               type="text"
-              placeholder="@your_stall_handle"
+              placeholder="@your_store_handle"
               value={instagram}
               onChange={(e) => setInstagram(e.target.value)}
               style={{
@@ -107,7 +107,7 @@ export default function VendorSocial() {
             </label>
             <input
               type="text"
-              placeholder="e.g. https://facebook.com/yourstall"
+              placeholder="e.g. https://facebook.com/yourstore"
               value={facebook}
               onChange={(e) => setFacebook(e.target.value)}
               style={{

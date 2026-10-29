@@ -33,8 +33,8 @@ export default function CheckoutPage({ setActiveTab }) {
     CENTRAL_MARKETPLACE_PHONE_DISPLAY
   } = useMarketplace();
 
-  // Fulfillment Selection: 'Collection at Stall' or 'Island Courier Delivery'
-  const [fulfillmentType, setFulfillmentType] = useState("Collection at Stall");
+  // Fulfillment Selection: 'Store Pickup' or 'Island Courier Delivery'
+  const [fulfillmentType, setFulfillmentType] = useState("Store Pickup");
 
   // Form Fields - Start clean and empty for every order (no sticky dummy data)
   const [countryCode, setCountryCode] = useState("+91"); // Default to +91 India for live testing
@@ -54,7 +54,7 @@ export default function CheckoutPage({ setActiveTab }) {
         <ShoppingBag size={54} color="#CBD5E1" style={{ marginBottom: "1rem" }} />
         <h2 style={{ color: "#0F172A", marginBottom: "0.5rem" }}>Your Shopping Bag is Empty</h2>
         <p style={{ color: "#64748B", marginBottom: "1.5rem" }}>
-          Browse island stalls across Grand Cayman and add items before proceeding to checkout.
+          Browse island stores across Grand Cayman and add items before proceeding to checkout.
         </p>
         <button onClick={() => setActiveTab("categories")} className="btn-primary">
           Browse Catalog <ArrowRight size={16} />
@@ -332,7 +332,7 @@ export default function CheckoutPage({ setActiveTab }) {
           Complete Your Order
         </h1>
         <p style={{ color: "#64748B", fontSize: "0.95rem" }}>
-          Submit your order request directly via WhatsApp to our central Cayman team. Choose between <strong>Collection at Stall</strong> or <strong>Grand Cayman Courier Delivery</strong>.
+          Submit your order request directly via WhatsApp to our central Cayman team. Choose between <strong>Store Pickup</strong> or <strong>Grand Cayman Courier Delivery</strong>.
         </p>
       </div>
 
@@ -349,27 +349,27 @@ export default function CheckoutPage({ setActiveTab }) {
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
               
-              {/* Option 1: Stall Collection */}
+              {/* Option 1: Store Pickup */}
               <div
-                onClick={() => setFulfillmentType("Collection at Stall")}
+                onClick={() => setFulfillmentType("Store Pickup")}
                 style={{
-                  background: fulfillmentType === "Collection at Stall" ? "#F0FDFA" : "#FFFFFF",
-                  border: fulfillmentType === "Collection at Stall" ? "2px solid #00A896" : "1.5px solid #E2E8F0",
+                  background: fulfillmentType === "Store Pickup" ? "#F0FDFA" : "#FFFFFF",
+                  border: fulfillmentType === "Store Pickup" ? "2px solid #00A896" : "1.5px solid #E2E8F0",
                   borderRadius: "16px",
                   padding: "1.1rem 1rem",
                   cursor: "pointer",
                   transition: "all 0.2s ease",
-                  boxShadow: fulfillmentType === "Collection at Stall" ? "0 4px 15px rgba(0, 168, 150, 0.15)" : "none"
+                  boxShadow: fulfillmentType === "Store Pickup" ? "0 4px 15px rgba(0, 168, 150, 0.15)" : "none"
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.35rem" }}>
-                  <Store size={20} color={fulfillmentType === "Collection at Stall" ? "#00A896" : "#64748B"} />
-                  <strong style={{ fontSize: "0.92rem", color: fulfillmentType === "Collection at Stall" ? "#0A192F" : "#334155" }}>
-                    Collection at Stall
+                  <Store size={20} color={fulfillmentType === "Store Pickup" ? "#00A896" : "#64748B"} />
+                  <strong style={{ fontSize: "0.92rem", color: fulfillmentType === "Store Pickup" ? "#0A192F" : "#334155" }}>
+                    Store Pickup
                   </strong>
                 </div>
                 <div style={{ fontSize: "0.78rem", color: "#64748B", lineHeight: 1.4 }}>
-                  Pick up directly from the vendor's physical stall or shop counter on Grand Cayman.
+                  Pick up directly from the vendor's physical store or boutique counter on Grand Cayman.
                 </div>
                 <div style={{ marginTop: "0.5rem", fontSize: "0.76rem", color: "#00A896", fontWeight: 800 }}>
                   FREE PICKUP
@@ -649,7 +649,7 @@ export default function CheckoutPage({ setActiveTab }) {
                 <span>{formatPrice(grandTotalKYD)}</span>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.88rem", color: "#64748B" }}>
-                <span>Fulfillment ({fulfillmentType === "Collection at Stall" ? "Stall Pickup" : "Courier"}):</span>
+                <span>Fulfillment ({fulfillmentType === "Store Pickup" ? "Store Pickup" : "Courier"}):</span>
                 <span style={{ color: "#16A34A", fontWeight: 700 }}>FREE</span>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.88rem", color: "#64748B" }}>

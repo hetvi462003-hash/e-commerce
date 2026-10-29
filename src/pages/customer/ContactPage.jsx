@@ -50,7 +50,7 @@ export default function ContactPage({ setActiveTab }) {
           Contact CaymanBazaar
         </h1>
         <p style={{ color: "#64748B", fontSize: "1.05rem", maxWidth: "620px", margin: "0 auto", lineHeight: 1.6 }}>
-          Have questions regarding WhatsApp order requests, stall collection, courier delivery, or vendor onboarding? Our island concierge team is here to assist.
+          Have questions regarding WhatsApp order requests, store pickup, courier delivery, or vendor onboarding? Our island concierge team is here to assist.
         </p>
       </div>
 
@@ -116,7 +116,7 @@ export default function ContactPage({ setActiveTab }) {
             </div>
             <h4 style={{ fontSize: "1.15rem", marginBottom: "0.6rem" }}>Check our Pickup & COD FAQ</h4>
             <p style={{ color: "#94A3B8", fontSize: "0.88rem", lineHeight: 1.5, marginBottom: "1.25rem" }}>
-              Find complete guidelines on 48-hour reserve windows, 4-digit PIN passes, resort delivery schedules, and vendor commission rules.
+              Find complete guidelines on convenient store pickup, direct WhatsApp ordering, island delivery schedules, and vendor commission rules.
             </p>
             <button
               onClick={() => setActiveTab && setActiveTab("faq")}
@@ -207,9 +207,9 @@ export default function ContactPage({ setActiveTab }) {
                     onChange={(e) => setFormData({ ...formData, inquiryType: e.target.value })}
                     style={{ width: "100%", padding: "0.8rem 1rem", borderRadius: "12px", border: "1.5px solid #CBD5E1", fontSize: "0.9rem", background: "#FFFFFF" }}
                   >
-                    <option value="order_pickup">WhatsApp Order & Stall Collection</option>
+                    <option value="order_pickup">WhatsApp Order & Store Pickup</option>
                     <option value="cod_delivery">Island Courier Delivery</option>
-                    <option value="vendor_onboarding">Register as Cayman Stall Vendor</option>
+                    <option value="vendor_onboarding">Register as Cayman Store Vendor</option>
                     <option value="vendor_invoicing">Vendor Commissions & Invoicing</option>
                     <option value="general">General Support / Feedback</option>
                   </select>
@@ -236,7 +236,7 @@ export default function ContactPage({ setActiveTab }) {
                 <textarea
                   required
                   rows={4}
-                  placeholder="How can our concierge desk help you today? Please include any stall number or resort location..."
+                  placeholder="How can our concierge desk help you today? Please include any store name or resort location..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   style={{ width: "100%", padding: "0.8rem 1rem", borderRadius: "12px", border: "1.5px solid #CBD5E1", fontSize: "0.95rem", resize: "vertical" }}

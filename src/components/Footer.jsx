@@ -33,7 +33,7 @@ export default function Footer({ setActiveTab }) {
             <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.6rem", fontSize: "0.88rem", color: "#CBD5E1" }}>
               <li>
                 <a href="#stores" onClick={(e) => { e.preventDefault(); setActiveTab("stores"); }}>
-                  Browse Island Stalls
+                  Browse Island Stores
                 </a>
               </li>
               <li>
@@ -69,7 +69,7 @@ export default function Footer({ setActiveTab }) {
               </div>
               <div style={{ display: "flex", gap: "0.6rem" }}>
                 <ShieldCheck size={18} color="#E5A93C" style={{ flexShrink: 0, marginTop: "2px" }} />
-                <span><strong>Stall Collection / Courier:</strong> Collect in person at the stall counter or request courier delivery.</span>
+                <span><strong>Store Pickup / Courier:</strong> Collect in person at the store counter or request courier delivery.</span>
               </div>
             </div>
           </div>

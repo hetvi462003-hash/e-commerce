@@ -90,7 +90,7 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
                 alignItems: "center",
                 gap: "0.4rem"
               }}>
-                <Store size={14} /> {activeVendor.stall_number || "Craft Market Stall"}
+                <Store size={14} /> {activeVendor.store_type || "Island Boutique"}
               </span>
 
               {activeVendor.status === "pending_approval" ? (
@@ -123,7 +123,7 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
                   gap: "0.35rem"
                 }}>
                   <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#10B981", boxShadow: "0 0 8px #10B981" }} />
-                  Stall Open & Active
+                  Store Open & Active
                 </span>
               )}
 
@@ -190,7 +190,7 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
                 }}
               >
                 <Store size={16} />
-                <span>Stall Profile & Info</span>
+                <span>Store Profile & Info</span>
               </button>
 
               <button
@@ -227,10 +227,10 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
               <Clock size={30} style={{ color: "#F59E0B", flexShrink: 0 }} />
               <div>
                 <h4 style={{ fontSize: "1rem", fontWeight: 800, color: "#FFFFFF", marginBottom: "0.2rem" }}>
-                  Stall Awaiting SuperAdmin Approval
+                  Store Awaiting SuperAdmin Approval
                 </h4>
                 <p style={{ fontSize: "0.84rem", color: "#CBD5E1", lineHeight: 1.4 }}>
-                  Your stall details are currently under review by the platform administrator. You can add inventory now; your products will become publicly visible once approved.
+                  Your store details are currently under review by the platform administrator. You can add inventory now; your products will become publicly visible once approved.
                 </p>
               </div>
             </div>
@@ -339,7 +339,7 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
                 Manage WhatsApp Order Requests
               </h3>
               <p style={{ color: "#CBD5E1", fontSize: "0.92rem", lineHeight: 1.55 }}>
-                When shoppers submit items from your stall, orders are placed in the central system and sent via WhatsApp. 
+                When shoppers submit items from your store, orders are placed in the central system and sent via WhatsApp. 
                 Use the dedicated Orders portal to contact customers directly, advance fulfillment status (Processing, Ready for Collection, Out for Delivery), and mark orders Completed.
               </p>
             </div>
@@ -374,7 +374,7 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "1.5rem" }}>
             <div>
               <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: "#FFFFFF" }}>
-                Active Stall Operations Queue
+                Active Store Operations Queue
               </h3>
               <p style={{ fontSize: "0.82rem", color: "#64748B" }}>
                 Manage pending counter pickups, packing steps, and courier dispatches
@@ -465,13 +465,8 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
                           padding: "0.2rem 0.55rem",
                           borderRadius: "6px"
                         }}>
-                          {o.type === "PICKUP" ? "48H Store Hold" : "Resort COD"}
+                          {o.type === "PICKUP" ? "Store Pickup" : "Courier COD"}
                         </span>
-                        {o.pin_code && (
-                          <div style={{ fontSize: "0.75rem", color: "#FBBF24", fontWeight: 800, marginTop: "0.25rem" }}>
-                            PIN: {o.pin_code}
-                          </div>
-                        )}
                       </td>
                       <td style={{ padding: "0.85rem" }}>
                         <div style={{ fontWeight: 700, color: "#FFFFFF" }}>{o.customer_name}</div>

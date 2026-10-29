@@ -20,7 +20,7 @@ export default function VendorProducts() {
 
   // Delete handler
   const handleDelete = (prod) => {
-    if (window.confirm(`Are you sure you want to delete "${prod.title}" from your stall?`)) {
+    if (window.confirm(`Are you sure you want to delete "${prod.title}" from your store?`)) {
       deleteProduct(prod.id);
     }
   };

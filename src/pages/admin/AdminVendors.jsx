@@ -22,7 +22,7 @@ export default function AdminVendors() {
 
   const [formData, setFormData] = useState({
     store_name: "",
-    stall_number: "",
+    store_type: "Artisan Boutique",
     owner_name: "",
     email: "",
     phone: "",
@@ -39,14 +39,14 @@ export default function AdminVendors() {
 
     registerVendor({
       ...formData,
-      stall_number: formData.stall_number || `STALL #${Math.floor(20 + Math.random() * 70)}`,
+      store_type: formData.store_type || "Island Boutique",
       address: formData.address || `${formData.district} Commercial Promenade, Grand Cayman`
     });
 
     setIsOnboardModalOpen(false);
     setFormData({
       store_name: "",
-      stall_number: "",
+      store_type: "Artisan Boutique",
       owner_name: "",
       email: "",
       phone: "",
@@ -78,7 +78,7 @@ export default function AdminVendors() {
           </div>
           <h1 style={{ fontSize: "2.2rem", color: "#0F172A", marginBottom: "0.2rem" }}>Vendor Directory & Verifications</h1>
           <p style={{ color: "#64748B", fontSize: "0.95rem" }}>
-            Verify Cayman Island merchant licenses, manage commission rates, and approve new applicant stalls.
+            Verify Cayman Island merchant licenses, manage commission rates, and approve new applicant stores.
           </p>
         </div>
 
@@ -139,7 +139,7 @@ export default function AdminVendors() {
                   <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
                     <strong style={{ fontSize: "1rem", color: "#0F172A" }}>{pv.store_name}</strong>
                     <span style={{ background: "#FEF3C7", color: "#B45309", padding: "0.2rem 0.55rem", borderRadius: "6px", fontSize: "0.72rem", fontWeight: 800 }}>
-                      {pv.stall_number}
+                      {pv.store_type || "Boutique"}
                     </span>
                     <span style={{ color: "#64748B", fontSize: "0.78rem" }}>• {pv.district}</span>
                   </div>
@@ -157,7 +157,7 @@ export default function AdminVendors() {
                     className="btn-primary"
                     style={{ padding: "0.5rem 1rem", fontSize: "0.84rem", fontWeight: 800 }}
                   >
-                    <CheckCircle2 size={15} /> Approve & Activate Stall
+                    <CheckCircle2 size={15} /> Approve & Activate Store
                   </button>
                   <button
                     onClick={() => rejectVendor(pv.id)}
@@ -204,7 +204,7 @@ export default function AdminVendors() {
                       <img src={v.logo} alt={v.store_name} style={{ width: "42px", height: "42px", borderRadius: "10px", objectFit: "cover" }} />
                       <div>
                         <div style={{ fontWeight: 700, color: "#0F172A" }}>{v.store_name}</div>
-                        <div style={{ fontSize: "0.78rem", color: "#64748B" }}>{v.stall_number || v.id}</div>
+                        <div style={{ fontSize: "0.78rem", color: "#64748B" }}>{v.store_type || v.district || "Boutique"}</div>
                       </div>
                     </div>
                   </td>
@@ -328,7 +328,7 @@ export default function AdminVendors() {
                   Platform Admin Console
                 </span>
                 <h3 style={{ fontSize: "1.3rem", fontWeight: 800, marginTop: "0.2rem", color: "#FFFFFF" }}>
-                  Onboard & Approve New Stall
+                  Onboard & Approve New Store
                 </h3>
               </div>
               <button
@@ -354,7 +354,7 @@ export default function AdminVendors() {
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }}>
                 <div>
                   <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
-                    Store / Stall Name *
+                    Store / Boutique Name *
                   </label>
                   <input
                     type="text"
@@ -376,13 +376,13 @@ export default function AdminVendors() {
 
                 <div>
                   <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
-                    Stall #
+                    Store Category / Type
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. STALL #25"
-                    value={formData.stall_number}
-                    onChange={(e) => setFormData({ ...formData, stall_number: e.target.value })}
+                    placeholder="e.g. Artisan Boutique, Gourmet Shop"
+                    value={formData.store_type}
+                    onChange={(e) => setFormData({ ...formData, store_type: e.target.value })}
                     style={{
                       width: "100%",
                       background: "#050B14",
@@ -498,7 +498,7 @@ export default function AdminVendors() {
                   cursor: "pointer"
                 }}
               >
-                Approve & Add Stall to Platform
+                Approve & Add Store to Platform
               </button>
             </form>
           </div>

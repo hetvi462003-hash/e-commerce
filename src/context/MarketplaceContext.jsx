@@ -87,7 +87,7 @@ Store: ${vendorName || "Cayman Island Marketplace"}
 Name: ${customerName}
 Phone: ${customerPhone}
 ${customerEmail ? `Email: ${customerEmail}\n` : ""}Fulfillment: ${fulfillmentType}
-${fulfillmentType === "Island Courier Delivery" ? `Delivery Address: ${deliveryAddress || "To be provided via chat"}\n` : `Pickup Location: ${pickupLocation || "Vendor Stall Counter"}\n`}
+${fulfillmentType === "Island Courier Delivery" ? `Delivery Address: ${deliveryAddress || "To be provided via chat"}\n` : `Pickup Location: ${pickupLocation || "Vendor Store Counter"}\n`}
 *Items Ordered:*
 ${itemsList}
 
@@ -343,7 +343,7 @@ export const MarketplaceProvider = ({ children }) => {
     const randomSuffix = Math.floor(1000 + Math.random() * 9000);
     const orderId = `CB-${randomSuffix}`;
 
-    const effectiveFulfillment = orderData.fulfillment_type || (orderData.type === "COD" ? "Island Courier Delivery" : "Collection at Stall");
+    const effectiveFulfillment = orderData.fulfillment_type || (orderData.type === "COD" ? "Island Courier Delivery" : "Store Pickup");
 
     // Group items by vendor to create distinct sub-orders if multiple vendors in cart
     const vendorGrouped = {};
@@ -420,9 +420,9 @@ export const MarketplaceProvider = ({ children }) => {
         currency: "KYD",
         status: "New", // 9 Client statuses: New, Contacted, Confirmed, Awaiting Payment, Processing, Ready for Collection, Out for Delivery, Completed, Cancelled
         payment_status: "Pending", // Pending, Partially Paid, Paid, Refunded
-        payment_method: effectiveFulfillment === "Island Courier Delivery" ? "Cash on Delivery" : "Cash on Collection",
+        payment_method: effectiveFulfillment === "Island Courier Delivery" ? "Cash on Delivery" : "Cash on Pickup",
         delivery_address: effectiveFulfillment === "Island Courier Delivery" ? orderData.delivery_address : null,
-        pickup_location: effectiveFulfillment === "Collection at Stall" ? (vendorObj?.address || `${vendorObj?.district}, Grand Cayman`) : null,
+        pickup_location: effectiveFulfillment.includes("Delivery") ? null : (vendorObj?.address || `${vendorObj?.district}, Grand Cayman`),
         special_notes: orderData.special_notes || "",
         whatsapp_message: waMessage,
         whatsapp_url: waUrl,
@@ -597,21 +597,21 @@ export const MarketplaceProvider = ({ children }) => {
   // Delete Product
   const deleteProduct = (productId) => {
     setProducts((prev) => prev.filter((p) => p.id !== productId));
-    showToast("Product deleted from stall catalog.", "info");
+    showToast("Product deleted from store catalog.", "info");
   };
 
-  // Register a new Vendor Stall (Subject to SuperAdmin Approval)
+  // Register a new Vendor Store (Subject to SuperAdmin Approval)
   const registerVendor = async (newVendorData) => {
     const newId = `v-${Date.now()}`;
     const newVendor = {
       id: newId,
       vendor_id: newId,
       store_name: newVendorData.store_name,
-      slug: (newVendorData.store_name || "stall").toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-      stall_number: newVendorData.stall_number || `STALL #${Math.floor(10 + Math.random() * 89)}`,
+      slug: (newVendorData.store_name || "store").toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+      store_type: newVendorData.store_type || "Island Boutique",
       owner_name: newVendorData.owner_name || "Artisan Merchant",
       phone: newVendorData.phone || "+1 (345) 949-0000",
-      email: newVendorData.email || `${(newVendorData.store_name || "stall").toLowerCase().replace(/[^a-z0-9]/g, "")}@caymanbazaar.ky`,
+      email: newVendorData.email || `${(newVendorData.store_name || "store").toLowerCase().replace(/[^a-z0-9]/g, "")}@caymanbazaar.ky`,
       password: newVendorData.password || "merchant123",
       district: newVendorData.district || "Georgetown",
       address: newVendorData.address || `${newVendorData.district || "Georgetown"}, Grand Cayman`,
@@ -658,7 +658,7 @@ export const MarketplaceProvider = ({ children }) => {
           : v
       )
     );
-    showToast("🎉 Stall approved! Store is now officially LIVE in the Island Directory.", "success");
+    showToast("🎉 Store approved! Store is now officially LIVE in the Island Directory.", "success");
     try {
       await api.updateVendor(vendorId, { status: "active", verified: true });
     } catch (e) {
@@ -774,8 +774,8 @@ export const MarketplaceProvider = ({ children }) => {
       product_id: productId,
       product_title: prod?.title || "Island Artisan Creation",
       vendor_id: vendorId || prod?.vendor_id || "v-101",
-      vendor_name: ven?.store_name || prod?.vendor_name || "Cayman Stall",
-      stall_number: ven?.stall_number || "Stall",
+      vendor_name: ven?.store_name || prod?.vendor_name || "Cayman Store",
+      district: ven?.district || "Grand Cayman",
       author: customerName || "Verified Buyer",
       rating: Number(rating),
       comment: comment.trim(),
@@ -862,7 +862,7 @@ export const MarketplaceProvider = ({ children }) => {
         return r;
       })
     );
-    showToast("Official stall reply published to storefront.", "success");
+    showToast("Official store reply published to storefront.", "success");
   };
 
   // Vendor: Flag / dispute an unfair or fake review to Admin

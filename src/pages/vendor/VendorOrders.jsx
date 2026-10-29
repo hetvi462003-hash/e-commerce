@@ -395,7 +395,7 @@ export default function VendorOrders() {
                           }}
                         >
                           {isDelivery ? <Truck size={13} /> : <Store size={13} />}
-                          {ord.fulfillment_type || (isDelivery ? "Courier Delivery" : "Collection at Stall")}
+                          {ord.fulfillment_type || (isDelivery ? "Courier Delivery" : "Store Pickup")}
                         </span>
 
                         {ord.delivery_address && (

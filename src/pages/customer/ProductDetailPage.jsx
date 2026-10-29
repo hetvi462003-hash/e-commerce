@@ -11,11 +11,12 @@ import {
   Share2,
   Sparkles,
   DollarSign,
-  Star
+  Star,
+  MessageCircle
 } from "lucide-react";
 
 export default function ProductDetailPage({ product, setActiveTab, setSelectedVendor }) {
-  const { products, vendors, reviews = [], formatPrice, addToCart } = useMarketplace();
+  const { products, vendors, reviews = [], formatPrice, addToCart, toWhatsAppWaMeNumber } = useMarketplace();
 
   const currentProd = product || products[0];
   const vendorObj = vendors.find((v) => v.id === currentProd.vendor_id);
@@ -210,28 +211,59 @@ export default function ProductDetailPage({ product, setActiveTab, setSelectedVe
           </div>
 
           {/* Purchase Actions */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginBottom: "2rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.85rem", marginBottom: "0.85rem" }}>
             <button
               disabled={isOutOfStock}
               onClick={() => addToCart(currentProd, selectedVariations, qty)}
               className="btn-primary"
-              style={{ flex: 1, padding: "0.9rem 1.2rem", fontSize: "1rem", opacity: isOutOfStock ? 0.5 : 1 }}
+              style={{ padding: "0.85rem 1.2rem", fontSize: "0.95rem", opacity: isOutOfStock ? 0.5 : 1, display: "flex", alignItems: "center", justifyContent: "center", gap: "0.45rem" }}
             >
-              <ShoppingBag size={20} /> Add to Bag
+              <ShoppingBag size={18} /> Add to Bag
             </button>
 
             <button
               disabled={isOutOfStock}
               onClick={() => {
-                addToCart(currentProd, selectedVariations, qty);
-                setActiveTab("checkout");
+                const targetPhone = vendorObj?.phone
+                  ? (toWhatsAppWaMeNumber ? toWhatsAppWaMeNumber(vendorObj.phone) : vendorObj.phone.replace(/\D/g, ""))
+                  : "13459492299";
+                const waText = encodeURIComponent(
+                  `Hello ${currentProd.vendor_name}! I would like to buy: "${currentProd.title}" (Qty: ${qty}, Price: ${formatPrice(currentProd.price * qty)}) on CaymanBazaar.`
+                );
+                window.open(`https://wa.me/${targetPhone}?text=${waText}`, "_blank");
               }}
-              className="btn-gold"
-              style={{ flex: 1, padding: "0.9rem 1.2rem", fontSize: "1rem", opacity: isOutOfStock ? 0.5 : 1 }}
+              style={{
+                background: "#25D366",
+                color: "#FFFFFF",
+                border: "none",
+                fontWeight: 800,
+                padding: "0.85rem 1.2rem",
+                fontSize: "0.95rem",
+                borderRadius: "14px",
+                cursor: isOutOfStock ? "not-allowed" : "pointer",
+                opacity: isOutOfStock ? 0.5 : 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.45rem",
+                boxShadow: "0 4px 14px rgba(37, 211, 102, 0.3)"
+              }}
             >
-              <Clock size={20} /> Reserve for Pickup
+              <MessageCircle size={18} /> Order on WhatsApp
             </button>
           </div>
+
+          <button
+            disabled={isOutOfStock}
+            onClick={() => {
+              addToCart(currentProd, selectedVariations, qty);
+              setActiveTab("checkout");
+            }}
+            className="btn-gold"
+            style={{ width: "100%", padding: "0.8rem", fontSize: "0.92rem", marginBottom: "2rem", opacity: isOutOfStock ? 0.5 : 1 }}
+          >
+            <Clock size={16} /> Proceed to Fast Checkout
+          </button>
 
           {/* Pickup & COD Information Box */}
           <div style={{ background: "#F8FAFC", border: "1px solid #E2E8F0", padding: "1.25rem", borderRadius: "16px", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -351,7 +383,7 @@ export default function ProductDetailPage({ product, setActiveTab, setSelectedVe
                       }}
                     >
                       <div style={{ fontSize: "0.76rem", fontWeight: 800, color: "#0F766E", textTransform: "uppercase", marginBottom: "0.2rem" }}>
-                        Response from Stall Owner:
+                        Response from Store Owner:
                       </div>
                       <div style={{ fontSize: "0.86rem", color: "#134E4A", fontStyle: "italic" }}>
                         "{rev.vendor_reply.text}"

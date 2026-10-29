@@ -41,12 +41,9 @@ export default function StorePage({ vendor, setActiveTab, setSelectedProduct }) 
             gap: "0.3rem"
           }}
         >
-          <ChevronLeft size={16} /> Back to Island Stalls Promenade
+          <ChevronLeft size={16} /> Back to Island Stores Directory
         </button>
       </div>
-
-      {/* Beach Canopy Accent */}
-      <div className="stall-canopy" style={{ height: "14px" }} />
 
       {/* Vendor Store Hero Banner */}
       <div style={{ height: "260px", position: "relative", overflow: "hidden", background: "#07101E" }}>
@@ -58,8 +55,16 @@ export default function StorePage({ vendor, setActiveTab, setSelectedProduct }) 
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(7,16,30,0.9) 0%, transparent 60%)" }} />
 
         <div className="container" style={{ position: "absolute", bottom: "20px", left: 0, right: 0, display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
-          <span className="badge badge-stall" style={{ fontSize: "0.82rem", padding: "0.35rem 0.85rem" }}>
-            {currentVendor.stall_number || "Stall #01"} • {currentVendor.stall_tag || "Artisan Stall"}
+          <span style={{
+            fontSize: "0.82rem",
+            padding: "0.35rem 0.85rem",
+            background: "rgba(15, 23, 42, 0.85)",
+            color: "#00E5C9",
+            borderRadius: "8px",
+            fontWeight: 800,
+            border: "1px solid rgba(0, 229, 201, 0.3)"
+          }}>
+            📍 {currentVendor.district} • {currentVendor.store_type || "Cayman Boutique"}
           </span>
 
           <span style={{
@@ -75,7 +80,7 @@ export default function StorePage({ vendor, setActiveTab, setSelectedProduct }) 
             gap: "0.4rem",
             border: "1px solid rgba(16, 185, 129, 0.4)"
           }}>
-            <span className="pulse-dot"></span> Stall Open Now
+            <span className="pulse-dot"></span> Store Open Now
           </span>
         </div>
       </div>
@@ -123,7 +128,7 @@ export default function StorePage({ vendor, setActiveTab, setSelectedProduct }) 
             </div>
 
             <div style={{ fontSize: "0.92rem", color: "#00897B", fontWeight: 800, marginBottom: "0.6rem" }}>
-              {currentVendor.specialty || currentVendor.stall_tag}
+              {currentVendor.specialty || currentVendor.store_type}
             </div>
 
             <div style={{ display: "flex", alignItems: "center", gap: "1.2rem", flexWrap: "wrap", color: "#64748B", fontSize: "0.85rem", marginBottom: "0.95rem" }}>
@@ -173,12 +178,12 @@ export default function StorePage({ vendor, setActiveTab, setSelectedProduct }) 
               <button
                 onClick={() => {
                   const cleanPhone = (currentVendor.phone || "+13459491234").replace(/\D/g, "");
-                  const msg = encodeURIComponent(`Hi ${currentVendor.store_name}, I saw your stall on CaymanBazaar and would like to ask about your products!`);
+                  const msg = encodeURIComponent(`Hi ${currentVendor.store_name}, I saw your store on CaymanBazaar and would like to ask about your products!`);
                   window.open(`https://wa.me/${cleanPhone}?text=${msg}`, "_blank");
                 }}
                 style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", background: "#DCFCE7", color: "#15803D", padding: "0.4rem 0.95rem", borderRadius: "999px", fontSize: "0.8rem", fontWeight: 800, cursor: "pointer", border: "1px solid #BBF7D0" }}
               >
-                <MessageCircle size={15} /> WhatsApp Stall ({currentVendor.phone})
+                <MessageCircle size={15} /> WhatsApp Store ({currentVendor.phone})
               </button>
             </div>
           </div>
@@ -186,7 +191,7 @@ export default function StorePage({ vendor, setActiveTab, setSelectedProduct }) 
           {/* Pickup & Policy Box */}
           <div style={{ background: "#F8FAFC", border: "1px solid #E2E8F0", padding: "1.5rem", borderRadius: "20px", width: "280px" }}>
             <h4 style={{ fontSize: "0.95rem", color: "#0A2540", marginBottom: "0.65rem", display: "flex", alignItems: "center", gap: "0.45rem", fontWeight: 800 }}>
-              <ShieldCheck size={18} color="#00BFA5" /> Stall Pickup Guarantee
+              <ShieldCheck size={18} color="#00BFA5" /> Store Pickup Guarantee
             </h4>
             <p style={{ fontSize: "0.82rem", color: "#64748B", lineHeight: 1.45, marginBottom: "0.75rem" }}>
               {currentVendor.policies.pickup_policy}
@@ -203,8 +208,8 @@ export default function StorePage({ vendor, setActiveTab, setSelectedProduct }) 
       <div className="container">
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.75rem" }}>
           <div>
-            <h2 style={{ fontSize: "1.8rem", color: "#0A2540", fontWeight: 900 }}>Stall Catalog ({vendorProducts.length})</h2>
-            <p style={{ fontSize: "0.88rem", color: "#64748B" }}>Browse items available for WhatsApp order checkout, stall collection, or courier delivery</p>
+            <h2 style={{ fontSize: "1.8rem", color: "#0A2540", fontWeight: 900 }}>Store Catalog ({vendorProducts.length})</h2>
+            <p style={{ fontSize: "0.88rem", color: "#64748B" }}>Browse items available for WhatsApp order checkout, store pickup, or courier delivery</p>
           </div>
           <span style={{ background: "#E0F2FE", color: "#0284C7", padding: "0.35rem 0.9rem", borderRadius: "999px", fontSize: "0.82rem", fontWeight: 800 }}>
             In-Stock Catalog
@@ -214,7 +219,7 @@ export default function StorePage({ vendor, setActiveTab, setSelectedProduct }) 
         {vendorProducts.length === 0 ? (
           <div style={{ textAlign: "center", padding: "4rem", background: "#FFFFFF", borderRadius: "20px", border: "1px solid #E2E8F0" }}>
             <Package size={48} color="#CBD5E1" style={{ marginBottom: "1rem" }} />
-            <h4 style={{ color: "#475569" }}>No products listed at this stall currently</h4>
+            <h4 style={{ color: "#475569" }}>No products listed at this store currently</h4>
           </div>
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.5rem" }}>

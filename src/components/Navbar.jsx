@@ -67,7 +67,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
         }}>
           <span>🌴 <strong style={{ color: "#00E5C9" }}>Grand Cayman</strong> Island-Wide Courier Delivery</span>
           <span style={{ opacity: 0.4 }}>•</span>
-          <span>⚡ <strong style={{ color: "#25D366" }}>WhatsApp Checkout</strong> & Stall Collection</span>
+          <span>⚡ <strong style={{ color: "#25D366" }}>WhatsApp Checkout</strong> & Store Pickup</span>
           <span style={{ opacity: 0.4 }}>•</span>
           <span>🛡️ <strong style={{ color: "#FFFFFF" }}>100% Verified Local Artisans</strong></span>
           <span style={{ opacity: 0.4 }}>•</span>
@@ -115,7 +115,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                 letterSpacing: "0.1em",
                 textTransform: "uppercase"
               }}>
-                Virtual Island Stalls • Grand Cayman
+                Premier Local Marketplace • Grand Cayman
               </div>
             </div>
           </div>
@@ -158,7 +158,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                     border: activeTab === "stores" ? "1px solid rgba(0, 229, 201, 0.3)" : "1px solid transparent"
                   }}
                 >
-                  <Store size={16} /> Island Stalls
+                  <Store size={16} /> Island Stores
                 </button>
 
                 <button
@@ -316,7 +316,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                   border: activeTab === "vendor-products" ? "1px solid rgba(0, 229, 201, 0.4)" : "1px solid transparent"
                 }}
               >
-                <Package size={15} /> Stall Products
+                <Package size={15} /> Store Products
               </button>
 
               <button
@@ -357,7 +357,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                   border: activeTab === "vendor-profile" ? "1px solid rgba(0, 229, 201, 0.4)" : "1px solid transparent"
                 }}
               >
-                <Settings size={15} /> Stall Profile
+                <Settings size={15} /> Store Profile
               </button>
 
               <button
@@ -551,7 +551,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
         >
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem", paddingBottom: "0.6rem", borderBottom: "1px solid rgba(255, 255, 255, 0.1)" }}>
             <div style={{ fontSize: "0.8rem", color: "#94A3B8", textTransform: "uppercase", fontWeight: 800 }}>
-              {userRole === "customer" ? "🌴 Cayman Shopper Menu" : userRole === "vendor" ? `🏪 ${activeVendor?.store_name || "Stall Portal"}` : "🛡️ SuperAdmin Master Console"}
+              {userRole === "customer" ? "🌴 Cayman Shopper Menu" : userRole === "vendor" ? `🏪 ${activeVendor?.store_name || "Vendor Portal"}` : "🛡️ SuperAdmin Master Console"}
             </div>
             <span style={{ fontSize: "0.75rem", color: "#00E5C9", fontWeight: 700 }}>Mobile Access</span>
           </div>
@@ -592,7 +592,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                     gap: "0.5rem"
                   }}
                 >
-                  <Store size={16} /> Island Stalls
+                  <Store size={16} /> Island Stores
                 </button>
 
                 <button
@@ -674,7 +674,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                 <button onClick={() => { setActiveTab("vendor-dashboard"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#00E5C9", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><LayoutDashboard size={15} /> Dashboard</button>
                 <button onClick={() => { setActiveTab("vendor-products"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Package size={15} /> Products</button>
                 <button onClick={() => { setActiveTab("vendor-orders"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Package size={15} /> Orders</button>
-                <button onClick={() => { setActiveTab("vendor-profile"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Settings size={15} /> Stall Profile</button>
+                <button onClick={() => { setActiveTab("vendor-profile"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Settings size={15} /> Store Profile</button>
                 <button onClick={() => { setActiveTab("vendor-reviews"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Star size={15} /> Reviews</button>
               </>
             )}

@@ -93,7 +93,7 @@ export default function VendorReviews() {
 
         <div className="container" style={{ position: "relative", zIndex: 2 }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "rgba(0, 229, 201, 0.12)", border: "1px solid rgba(0, 229, 201, 0.35)", padding: "0.35rem 0.85rem", borderRadius: "999px", color: "#00E5C9", fontSize: "0.8rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "1rem" }}>
-            <Store size={15} /> {activeVendor?.store_name || "Stall"} • Customer Reputation
+            <Store size={15} /> {activeVendor?.store_name || "Store"} • Customer Reputation
           </div>
 
           <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: "1.5rem" }}>
@@ -102,13 +102,13 @@ export default function VendorReviews() {
                 Customer Ratings & Verified Feedback
               </h1>
               <p style={{ color: "#94A3B8", fontSize: "1rem", maxWidth: "680px", margin: 0 }}>
-                Respond directly to shoppers who reserved items at your stall, build buyer trust, and report fraudulent or competitor reviews to Admin.
+                Respond directly to shoppers who purchased items at your store, build buyer trust, and report fraudulent or competitor reviews to Admin.
               </p>
             </div>
 
             <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
               <div style={{ background: "#061324", border: "1px solid rgba(0, 229, 201, 0.3)", padding: "0.75rem 1.25rem", borderRadius: "16px", textAlign: "right" }}>
-                <div style={{ fontSize: "0.75rem", color: "#94A3B8", fontWeight: 700, textTransform: "uppercase" }}>Stall Reputation</div>
+                <div style={{ fontSize: "0.75rem", color: "#94A3B8", fontWeight: 700, textTransform: "uppercase" }}>Store Reputation</div>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", justifyContent: "flex-end", fontSize: "1.4rem", fontWeight: 900, color: "#FBBF24" }}>
                   <Star size={20} fill="#FBBF24" /> {avgRating} <span style={{ fontSize: "0.85rem", color: "#94A3B8" }}>({totalCount} reviews)</span>
                 </div>
@@ -134,7 +134,7 @@ export default function VendorReviews() {
 
           <div style={{ background: "#0A1628", border: "1px solid #1E293B", borderRadius: "18px", padding: "1.25rem 1.5rem" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-              <span style={{ fontSize: "0.82rem", color: "#94A3B8", fontWeight: 700 }}>STALL AVERAGE</span>
+              <span style={{ fontSize: "0.82rem", color: "#94A3B8", fontWeight: 700 }}>STORE AVERAGE</span>
               <Star size={18} color="#FBBF24" fill="#FBBF24" />
             </div>
             <div style={{ fontSize: "2rem", fontWeight: 900, color: "#FBBF24" }}>{avgRating} <span style={{ fontSize: "1rem", color: "#94A3B8" }}>/ 5.0</span></div>
@@ -178,7 +178,7 @@ export default function VendorReviews() {
                 cursor: "pointer"
               }}
             >
-              All Stall Feedback ({stallReviews.length})
+              All Store Feedback ({stallReviews.length})
             </button>
 
             <button
@@ -329,7 +329,7 @@ export default function VendorReviews() {
                       <div style={{ flex: 1 }}>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.25rem" }}>
                           <span style={{ fontSize: "0.8rem", fontWeight: 800, color: "#00E5C9", textTransform: "uppercase" }}>
-                            Your Official Stall Reply
+                            Your Official Store Reply
                           </span>
                           <span style={{ fontSize: "0.75rem", color: "#64748B" }}>
                             {new Date(rev.vendor_reply.replied_at || Date.now()).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
@@ -361,7 +361,7 @@ export default function VendorReviews() {
                               cursor: "pointer"
                             }}
                           >
-                            <MessageSquare size={15} /> Write Official Stall Reply
+                            <MessageSquare size={15} /> Write Official Store Reply
                           </button>
 
                           {!rev.is_flagged && (
@@ -489,7 +489,7 @@ export default function VendorReviews() {
               </h3>
             </div>
             <p style={{ color: "#94A3B8", fontSize: "0.88rem", lineHeight: 1.5, marginBottom: "1.25rem" }}>
-              Please state why this customer review violates Cayman Bazaar standards (e.g. competitor spam, customer never visited stall, inappropriate language). SuperAdmin will investigate and can delete it.
+              Please state why this customer review violates Cayman Bazaar standards (e.g. competitor spam, customer never visited store, inappropriate language). SuperAdmin will investigate and can delete it.
             </p>
 
             <form onSubmit={handleReportSubmit}>

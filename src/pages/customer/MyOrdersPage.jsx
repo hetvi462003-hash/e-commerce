@@ -227,7 +227,7 @@ export default function MyOrdersPage({ setActiveTab }) {
               onClick={() => setActiveTab("categories")}
               style={{ background: "transparent", border: "none", color: "#00A896", fontWeight: 800, fontSize: "0.88rem", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "0.4rem" }}
             >
-              Start Shopping Island Stalls <ArrowRight size={15} />
+              Start Shopping Island Stores <ArrowRight size={15} />
             </button>
           </div>
 
@@ -295,7 +295,7 @@ export default function MyOrdersPage({ setActiveTab }) {
                         }}
                       >
                         {isDelivery ? <Truck size={13} /> : <Store size={13} />}
-                        {ord.fulfillment_type || (isDelivery ? "Island Courier Delivery" : "Collection at Stall")}
+                        {ord.fulfillment_type || (isDelivery ? "Island Courier Delivery" : "Store Pickup")}
                       </span>
 
                       {/* Payment Status */}
@@ -421,7 +421,7 @@ export default function MyOrdersPage({ setActiveTab }) {
                       <div><strong>🚚 Courier Delivery Destination:</strong> {ord.delivery_address}</div>
                     )}
                     {ord.pickup_location && (
-                      <div><strong>🏪 Stall Collection Counter:</strong> {ord.pickup_location}</div>
+                      <div><strong>🏪 Store Pickup Counter:</strong> {ord.pickup_location}</div>
                     )}
                     {ord.special_notes && (
                       <div><strong>📝 Order Notes:</strong> {ord.special_notes}</div>

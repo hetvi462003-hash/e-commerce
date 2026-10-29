@@ -67,7 +67,7 @@ export default function AdminReviews() {
   });
 
   const handleDelete = (review) => {
-    if (window.confirm(`Are you sure you want to permanently delete this ${review.rating}-star review by "${review.author}"? Product and stall ratings will be automatically updated.`)) {
+    if (window.confirm(`Are you sure you want to permanently delete this ${review.rating}-star review by "${review.author}"? Product and store ratings will be automatically updated.`)) {
       adminDeleteReview(review.id);
     }
   };
@@ -192,7 +192,7 @@ export default function AdminReviews() {
             <Search size={18} color="#64748B" />
             <input
               type="text"
-              placeholder="Search by customer, product, stall, or comment..."
+              placeholder="Search by customer, product, store, or comment..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{ background: "transparent", border: "none", color: "#FFFFFF", outline: "none", fontSize: "0.9rem", width: "100%" }}
@@ -207,10 +207,10 @@ export default function AdminReviews() {
               onChange={(e) => setSelectedVendorFilter(e.target.value)}
               style={{ background: "#060D19", border: "1px solid #1E293B", color: "#E2E8F0", padding: "0.6rem 0.9rem", borderRadius: "12px", fontSize: "0.88rem", outline: "none", cursor: "pointer" }}
             >
-              <option value="all">All Cayman Stalls</option>
+              <option value="all">All Cayman Stores</option>
               {vendors.map((v) => (
                 <option key={v.id || v.vendor_id} value={v.id || v.vendor_id}>
-                  {v.store_name} ({v.stall_number || "Stall"})
+                  {v.store_name} ({v.district || "Grand Cayman"})
                 </option>
               ))}
             </select>
@@ -345,10 +345,10 @@ export default function AdminReviews() {
                         )}
                       </div>
 
-                      {/* Stall & Product Attribution */}
+                      {/* Store & Product Attribution */}
                       <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", marginTop: "0.45rem", fontSize: "0.86rem", color: "#94A3B8", flexWrap: "wrap" }}>
                         <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", color: "#00E5C9", fontWeight: 700 }}>
-                          <Store size={14} /> {rev.vendor_name} ({rev.stall_number || "Stall"})
+                          <Store size={14} /> {rev.vendor_name}
                         </span>
                         <span>•</span>
                         <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", color: "#E2E8F0" }}>

@@ -11,7 +11,7 @@ export default function FaqPage() {
         </div>
         <h1 style={{ fontSize: "2.4rem", color: "#0F172A", marginTop: "0.3rem", fontWeight: 900 }}>Marketplace Policy & FAQ</h1>
         <p style={{ color: "#64748B", fontSize: "1rem" }}>
-          Everything you need to know about WhatsApp Checkout, Stall Collection, Courier Delivery, and Payment Arrangements.
+          Everything you need to know about WhatsApp Checkout, Store Pickup, Courier Delivery, and Payment Arrangements.
         </p>
       </div>
 
@@ -26,7 +26,7 @@ export default function FaqPage() {
             <div>
               <h3 style={{ fontSize: "1.15rem", color: "#0F172A", marginBottom: "0.5rem" }}>How does WhatsApp Checkout work?</h3>
               <p style={{ color: "#475569", fontSize: "0.92rem", lineHeight: 1.6 }}>
-                Browse vendor stalls, select your items, and click <strong>Submit Order via WhatsApp</strong>. 
+                Browse vendor stores, select your items, and click <strong>Submit Order via WhatsApp</strong>. 
                 Our platform generates a unique order reference (e.g. <strong>#CB-1042</strong>) and creates a pre-formatted message itemizing your products, quantities, prices, and vendor details. 
                 When WhatsApp opens, simply tap <strong>Send</strong> to submit your order request directly to our concierge team.
               </p>
@@ -41,9 +41,9 @@ export default function FaqPage() {
               <Store size={22} />
             </div>
             <div>
-              <h3 style={{ fontSize: "1.15rem", color: "#0F172A", marginBottom: "0.5rem" }}>How does Collection at Stall work?</h3>
+              <h3 style={{ fontSize: "1.15rem", color: "#0F172A", marginBottom: "0.5rem" }}>How does Store Pickup work?</h3>
               <p style={{ color: "#475569", fontSize: "0.92rem", lineHeight: 1.6 }}>
-                If you choose "Collection at Stall" during checkout, the vendor prepares your order for in-person pickup at their physical stall counter or boutique on Grand Cayman. 
+                If you choose "Store Pickup" during checkout, the vendor prepares your order for in-person pickup at their physical store counter or boutique on Grand Cayman. 
                 You will receive confirmation via WhatsApp when your order status changes to <strong>Ready for Collection</strong>. 
                 Simply mention your Order Reference (#CB-XXXX) upon arrival.
               </p>

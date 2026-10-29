@@ -30,10 +30,10 @@ export default function StoreDirectoryPage({ setActiveTab, setSelectedVendor }) 
           <Compass size={15} /> Grand Cayman Digital Promenade
         </div>
         <h1 style={{ fontSize: "2.6rem", color: "#0A2540", fontWeight: 900, marginBottom: "0.5rem" }}>
-          Island Stalls & Boutique Directory
+          Island Stores & Boutiques Directory
         </h1>
         <p style={{ color: "#64748B", fontSize: "1rem", maxWidth: "700px" }}>
-          Explore authentic artisan booths, watersport shacks, and duty-free merchants across Georgetown, Seven Mile Beach, Rum Point, and Bodden Town.
+          Explore authentic local boutiques, watersport shops, and duty-free merchants across Georgetown, Seven Mile Beach, Rum Point, and Bodden Town.
         </p>
       </div>
 
@@ -57,7 +57,7 @@ export default function StoreDirectoryPage({ setActiveTab, setSelectedVendor }) 
         <div style={{ flex: "1 1 300px", position: "relative" }}>
           <input
             type="text"
-            placeholder="Search by stall name, specialty, or island crafts..."
+            placeholder="Search by store name, specialty, or island products..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{ paddingLeft: "2.6rem", borderRadius: "12px", background: "#F8FAFC" }}
@@ -88,7 +88,7 @@ export default function StoreDirectoryPage({ setActiveTab, setSelectedVendor }) 
       {filteredVendors.length === 0 ? (
         <div style={{ textAlign: "center", padding: "4rem", background: "#FFFFFF", borderRadius: "20px", border: "1px solid #E2E8F0" }}>
           <Store size={48} color="#CBD5E1" style={{ marginBottom: "1rem" }} />
-          <h3 style={{ color: "#475569" }}>No virtual stalls match your search</h3>
+          <h3 style={{ color: "#475569" }}>No island stores match your search</h3>
           <p style={{ color: "#94A3B8" }}>Try selecting another district or clearing your search filter.</p>
         </div>
       ) : (

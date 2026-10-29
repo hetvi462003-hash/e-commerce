@@ -16,7 +16,6 @@ import {
   DollarSign,
   Search,
   CheckCircle2,
-  QrCode,
   Map,
   ChevronRight,
   Waves,
@@ -24,7 +23,8 @@ import {
   X,
   Palmtree,
   Camera,
-  MessageSquare
+  MessageSquare,
+  MessageCircle
 } from "lucide-react";
 
 export default function Home({ setActiveTab, setSelectedVendor, setSelectedProduct }) {
@@ -63,7 +63,7 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
     return isVendorLive && matchesDistrict && matchesCategory && matchesSearch;
   });
 
-  const featuredStalls = filteredVendors.slice(0, 4);
+  const featuredStores = filteredVendors.slice(0, 4);
   const trendingItems = filteredProducts.slice(0, 8);
 
   return (
@@ -74,10 +74,10 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
         style={{
           position: "relative",
           minHeight: "560px",
-          background: "#050B14",
+          background: "linear-gradient(135deg, #07192C 0%, #0B2545 40%, #0E355C 70%, #09213D 100%)",
           color: "#FFFFFF",
           overflow: "hidden",
-          borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+          borderBottom: "1px solid rgba(255, 255, 255, 0.12)",
           display: "flex",
           alignItems: "center"
         }}
@@ -89,14 +89,15 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
           backgroundImage: "url('/cayman_market_promenade.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center 45%",
-          transform: "scale(1.02)"
+          transform: "scale(1.02)",
+          opacity: 0.28
         }} />
 
-        {/* Soft, Luxury Glass Scrim Overlay */}
+        {/* Soft, Luxury Glass Scrim Overlay with Vibrant Ocean Luster */}
         <div style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(180deg, rgba(5, 11, 20, 0.72) 0%, rgba(5, 11, 20, 0.88) 60%, rgba(5, 11, 20, 0.98) 100%)",
+          background: "radial-gradient(ellipse at 50% 25%, rgba(0, 229, 201, 0.18) 0%, transparent 65%), linear-gradient(180deg, rgba(7, 25, 44, 0.7) 0%, rgba(11, 37, 69, 0.88) 60%, rgba(9, 33, 61, 0.98) 100%)",
           backdropFilter: "blur(2px)",
           WebkitBackdropFilter: "blur(2px)"
         }} />
@@ -119,13 +120,13 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
             border: "1px solid rgba(0, 229, 201, 0.3)"
           }}>
             <span className="pulse-dot"></span>
-            <span>GRAND CAYMAN ISLAND • VIRTUAL MARKETPLACE</span>
+            <span>GRAND CAYMAN ISLAND • LOCAL ONLINE MARKETPLACE</span>
           </div>
 
           {/* Majestic Headline with breathing room */}
           <h1 style={{
             fontFamily: "var(--font-serif)",
-            fontSize: "3.8rem",
+            fontSize: "3.6rem",
             color: "#FFFFFF",
             lineHeight: 1.15,
             marginBottom: "1.25rem",
@@ -137,7 +138,7 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
             textShadow: "0 4px 25px rgba(0,0,0,0.6)"
           }}>
             Grand Cayman's Premier <br />
-            <span className="gold-foil-text" style={{ fontStyle: "italic", fontWeight: 700 }}>Virtual Island Bazaar</span>
+            <span className="gold-foil-text" style={{ fontStyle: "italic", fontWeight: 700 }}>Local Online Marketplace</span>
           </h1>
 
           {/* Clean, Refined Subtitle */}
@@ -151,8 +152,8 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
             marginRight: "auto",
             textShadow: "0 2px 8px rgba(0,0,0,0.5)"
           }}>
-            Discover artisanal Caymanite gems, Tortuga rum cakes & Seven Mile beach boutiques.
-            Order online with fast <strong>WhatsApp Checkout</strong> for stall collection or request <strong>Island Courier Delivery ($KYD / $USD)</strong> to your residence or resort.
+            Discover artisanal Caymanite gems, Tortuga rum treats, beachwear & everyday essentials.
+            Order online with fast <strong>WhatsApp Checkout</strong> for convenient store pickup or request <strong>Island Courier Delivery ($KYD / $USD)</strong> to your residence or resort.
           </p>
 
           {/* Spacious Luxury Search Bar */}
@@ -173,7 +174,7 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
             <Search size={20} color="#00B49F" style={{ flexShrink: 0 }} />
             <input
               type="text"
-              placeholder="Search Caymanite, rum cakes, dive gear, stalls..."
+              placeholder="Search Caymanite, rum cakes, dive gear, stores..."
               value={heroSearch}
               onChange={(e) => setHeroSearch(e.target.value)}
               style={{
@@ -190,7 +191,7 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
 
             <button
               onClick={() => {
-                const el = document.getElementById("stalls-section");
+                const el = document.getElementById("stores-section");
                 if (el) el.scrollIntoView({ behavior: "smooth" });
               }}
               className="btn-primary"
@@ -202,15 +203,50 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
                 flexShrink: 0
               }}
             >
-              Explore Stalls <ArrowRight size={16} />
+              Explore Stores <ArrowRight size={16} />
             </button>
+          </div>
+
+          {/* Quick Category Chips for Fast Discovery */}
+          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "0.5rem", maxWidth: "780px", margin: "0 auto 2.2rem auto" }}>
+            {[
+              { id: "all", label: "✨ All Categories" },
+              { id: "cat-1", label: "💎 Artisan Jewelry" },
+              { id: "cat-2", label: "🍰 Cayman Gourmet" },
+              { id: "cat-3", label: "🤿 Beach & Dive Gear" },
+              { id: "cat-4", label: "⌚ Luxury Watches" },
+              { id: "cat-5", label: "🎨 Island Crafts" }
+            ].map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => {
+                  setHeroCategory(cat.id);
+                  const el = document.getElementById("stores-section");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+                style={{
+                  background: heroCategory === cat.id ? "rgba(0, 229, 201, 0.25)" : "rgba(255, 255, 255, 0.1)",
+                  color: heroCategory === cat.id ? "#00E5C9" : "#E2E8F0",
+                  border: heroCategory === cat.id ? "1px solid #00E5C9" : "1px solid rgba(255, 255, 255, 0.18)",
+                  borderRadius: "999px",
+                  padding: "0.4rem 0.95rem",
+                  fontSize: "0.82rem",
+                  fontWeight: 700,
+                  backdropFilter: "blur(8px)",
+                  cursor: "pointer",
+                  transition: "all 0.2s"
+                }}
+              >
+                {cat.label}
+              </button>
+            ))}
           </div>
 
           {/* Clean 3 Guarantees with generous spacing */}
           <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "2.5rem", color: "#E2E8F0", fontSize: "0.88rem", fontWeight: 600 }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
               <Clock size={16} color="#FBBF24" />
-              <span>48h Free Stall Hold</span>
+              <span>Convenient Store Pickup</span>
             </div>
 
             <div style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
@@ -255,7 +291,7 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
                   transition: "all 0.2s"
                 }}
               >
-                All Cayman ({liveVendors.length} Stalls)
+                All Cayman ({liveVendors.length} Stores)
               </button>
 
               {CAYMAN_DISTRICTS.map((dist) => {
@@ -286,28 +322,28 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
         </div>
       </section>
 
-      {/* 🎪 VIRTUAL BOUTIQUE STALLS SECTION (Core Client Requirement) */}
-      <section id="stalls-section" className="container" style={{ marginBottom: "5rem" }}>
+      {/* 🎪 VIRTUAL BOUTIQUE STORES SECTION */}
+      <section id="stores-section" className="container" style={{ marginBottom: "5rem" }}>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "2.25rem", flexWrap: "wrap", gap: "1rem" }}>
           <div>
             <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "#00B49F", fontSize: "0.84rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em" }}>
-              <Store size={16} /> Grand Cayman Promenade of Pavilions
+              <Store size={16} /> Grand Cayman Promenade of Boutiques
             </div>
             <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "2.6rem", color: "#0A1C36", fontWeight: 800, letterSpacing: "-0.02em" }}>
-              Featured Caribbean Stalls & Pavilions
+              Featured Island Stores & Boutiques
             </h2>
             <p style={{ fontSize: "1rem", color: "#64748B" }}>
-              Discover authentic self-managed boutiques across Georgetown, Seven Mile Beach, Rum Point & Bodden Town
+              Discover authentic local boutiques across Georgetown, Seven Mile Beach, Rum Point & Bodden Town
             </p>
           </div>
 
           <button onClick={() => setActiveTab("stores")} className="btn-outline">
-            Browse All Stalls ({liveVendors.length}) <ArrowRight size={15} />
+            Browse All Stores ({liveVendors.length}) <ArrowRight size={15} />
           </button>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(310px, 1fr))", gap: "1.85rem" }}>
-          {featuredStalls.map((vendor, idx) => (
+          {featuredStores.map((vendor, idx) => (
             <div key={vendor.id} className={`animate-entrance stagger-${idx + 1}`}>
               <StoreCard
                 vendor={vendor}
@@ -321,7 +357,7 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
         </div>
       </section>
 
-      {/* 💎 3 PILLAR EXPERIENCES: PIN RESERVE, COD, SELF-MANAGED STALLS */}
+      {/* 💎 3 PILLAR EXPERIENCES: WHATSAPP DIRECT, COURIER COD, INDEPENDENT STORES */}
       <section className="container" style={{ marginBottom: "5rem" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.75rem" }}>
           
@@ -412,7 +448,7 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
             </div>
           </div>
 
-          {/* Card 3: Multi-Vendor Stalls */}
+          {/* Card 3: Independent Merchant Stores */}
           <div className="animate-entrance stagger-3" style={{ height: "100%" }}>
             <div
               className="pillar-card pillar-card-green"
@@ -447,10 +483,10 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
                 <ShieldCheck size={30} />
               </div>
               <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.45rem", marginBottom: "0.6rem", color: "#0A1C36", fontWeight: 800 }}>
-                Self-Managed Vendor Stalls
+                Self-Managed Vendor Stores
               </h3>
               <p style={{ fontSize: "0.9rem", color: "#4A5B73", lineHeight: 1.6 }}>
-                Local businesses register their own digital stall booth on CaymanBazaar. They manage catalog inventory, receive direct WhatsApp checkout orders, and coordinate local island fulfillment.
+                Local businesses manage their own digital storefront on CaymanBazaar. They showcase catalog items, receive direct WhatsApp checkout orders, and coordinate local island fulfillment.
               </p>
             </div>
           </div>
@@ -507,11 +543,11 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "2rem", flexWrap: "wrap", gap: "1rem" }}>
           <div>
             <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "#F59E0B", fontSize: "0.82rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em" }}>
-              <Sparkles size={15} /> Local Stall Favorites
+              <Sparkles size={15} /> Island Customer Favorites
             </div>
-            <h2 style={{ fontSize: "2.4rem", color: "#0A1C36", fontWeight: 900 }}>Trending Products from Island Stalls</h2>
+            <h2 style={{ fontSize: "2.4rem", color: "#0A1C36", fontWeight: 900 }}>Trending Products from Island Stores</h2>
             <p style={{ fontSize: "0.95rem", color: "#64748B" }}>
-              Reserve with 4-Digit PIN for immediate stall pickup or request Cash on Delivery
+              Order via WhatsApp for fast store pickup or request Cash on Delivery
             </p>
           </div>
 
@@ -629,17 +665,15 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
                     <ShoppingBag size={16} /> Add to Bag
                   </button>
 
-                  <button
-                    onClick={() => {
-                      setSelectedProduct(quickViewProduct);
-                      setQuickViewProduct(null);
-                      setActiveTab("checkout");
-                    }}
-                    className="btn-gold"
-                    style={{ flex: 1, padding: "0.75rem" }}
+                  <a
+                    href={`https://wa.me/13459492299?text=${encodeURIComponent(`Hello! I would like to order: ${quickViewProduct.title} (Price: $${quickViewProduct.price.toFixed(2)} KYD) on CaymanBazaar.`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-whatsapp"
+                    style={{ flex: 1, padding: "0.75rem", textDecoration: "none" }}
                   >
-                    <QrCode size={16} /> Reserve PIN
-                  </button>
+                    <MessageCircle size={16} /> WhatsApp Order
+                  </a>
                 </div>
               </div>
             </div>
