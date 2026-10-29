@@ -17,16 +17,15 @@ import {
   MessageSquare,
   MessageCircle,
   Percent,
-  TrendingUp,
   Tag,
   Truck,
-  HeartHandshake
+  ShoppingCart
 } from "lucide-react";
 
-export default function Home({ setActiveTab, setSelectedVendor, setSelectedProduct }) {
+export default function Home({ setActiveTab, setSelectedProduct }) {
   const { products, categories, formatPrice, addToCart, currency } = useMarketplace();
 
-  // Filter states
+  // Filter & Search states
   const [heroSearch, setHeroSearch] = useState("");
   const [heroCategory, setHeroCategory] = useState("all");
   const [newsletterEmail, setNewsletterEmail] = useState("");
@@ -45,629 +44,416 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
     return matchesCategory && matchesSearch;
   });
 
-  // EE345 Structure Sections:
-  // 1. Cayman's Choice (Essie's Choice) - Top curated hero products
-  const caymansChoice = filteredProducts.filter((p) => p.featured || p.sponsored).slice(0, 4);
+  // 1. Essie's Choice / Cayman's Choice (Top curated hero products)
+  const featuredOnly = filteredProducts.filter((p) => p.featured || p.sponsored);
+  const caymansChoice = (featuredOnly.length > 0 ? featuredOnly : filteredProducts).slice(0, 4);
 
-  // 2. New Arrivals
+  // 2. New Arrivals (Latest additions)
   const newArrivals = filteredProducts.slice(0, 8);
 
-  // 3. Special Offers (Items with promotional discounts)
+  // 3. Special Offers (Promotional items)
   const specialOffers = filteredProducts.filter((p) => p.price >= 20).slice(0, 4);
 
   return (
-    <div style={{ paddingBottom: "5rem" }}>
+    <div style={{ background: "#FFFFFF", minHeight: "100vh", paddingBottom: "5rem" }}>
       
-      {/* 🌴 01. CARIBBEAN LUXURY PROMOTIONAL HERO BANNER */}
-      <section
-        style={{
-          position: "relative",
-          minHeight: "530px",
-          background: "linear-gradient(135deg, #07192C 0%, #0B2545 40%, #0E355C 70%, #09213D 100%)",
-          color: "#FFFFFF",
-          overflow: "hidden",
-          borderBottom: "1px solid rgba(255, 255, 255, 0.12)",
-          display: "flex",
-          alignItems: "center"
-        }}
-      >
-        {/* Cinematic Caribbean Luxury Hero Background Image */}
-        <div style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: "url('/cayman_luxury_hero.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center 40%",
-          transform: "scale(1.02)",
-          opacity: 0.28
-        }} />
-
-        {/* Soft, Luxury Glass Scrim Overlay with Ocean Luster */}
-        <div style={{
-          position: "absolute",
-          inset: 0,
-          background: "radial-gradient(ellipse at 50% 25%, rgba(0, 229, 201, 0.18) 0%, transparent 65%), linear-gradient(180deg, rgba(7, 25, 44, 0.72) 0%, rgba(11, 37, 69, 0.88) 60%, rgba(9, 33, 61, 0.98) 100%)",
-          backdropFilter: "blur(2px)",
-          WebkitBackdropFilter: "blur(2px)"
-        }} />
-
-        <div className="container" style={{ position: "relative", zIndex: 10, paddingTop: "5rem", paddingBottom: "5rem", textAlign: "center" }}>
-          
-          {/* Subtle Island Tag */}
-          <div style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            background: "rgba(0, 229, 201, 0.12)",
-            padding: "0.35rem 1.15rem",
-            borderRadius: "999px",
-            fontSize: "0.78rem",
-            fontWeight: 800,
-            color: "#00E5C9",
-            letterSpacing: "0.08em",
-            marginBottom: "1.5rem",
-            border: "1px solid rgba(0, 229, 201, 0.3)"
-          }}>
-            <span className="pulse-dot"></span>
-            <span>GRAND CAYMAN ISLAND • ONLINE SHOPPING STORE</span>
-          </div>
-
-          {/* Majestic Headline */}
-          <h1 style={{
-            fontFamily: "var(--font-serif)",
-            fontSize: "3.5rem",
-            color: "#FFFFFF",
-            lineHeight: 1.15,
-            marginBottom: "1.25rem",
-            fontWeight: 800,
-            letterSpacing: "-0.02em",
-            maxWidth: "880px",
-            marginLeft: "auto",
-            marginRight: "auto",
-            textShadow: "0 4px 25px rgba(0,0,0,0.6)"
-          }}>
-            Grand Cayman's Premier <br />
-            <span className="gold-foil-text" style={{ fontStyle: "italic", fontWeight: 700 }}>Online Shopping Store</span>
-          </h1>
-
-          {/* Clean Subtitle */}
-          <p style={{
-            fontSize: "1.15rem",
-            color: "#CBD5E1",
-            lineHeight: 1.6,
-            marginBottom: "2.5rem",
-            maxWidth: "720px",
-            marginLeft: "auto",
-            marginRight: "auto",
-            textShadow: "0 2px 8px rgba(0,0,0,0.5)"
-          }}>
-            Discover everyday essentials, handcrafted Caymanite jewelry, Tortuga rum cakes & reef gear.
-            Shop online with instant <strong>WhatsApp Checkout</strong>, fast store pickup, or <strong>Island Courier Delivery ($KYD / $USD)</strong> across Grand Cayman.
-          </p>
-
-          {/* Spacious Luxury Search Bar */}
-          <div style={{
-            background: "rgba(255, 255, 255, 0.98)",
-            borderRadius: "999px",
-            padding: "0.45rem 0.6rem 0.45rem 1.4rem",
-            boxShadow: "0 20px 45px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 229, 201, 0.2)",
-            display: "flex",
-            alignItems: "center",
-            gap: "0.75rem",
-            maxWidth: "680px",
-            marginLeft: "auto",
-            marginRight: "auto",
-            border: "1px solid rgba(255, 255, 255, 0.6)",
-            marginBottom: "2rem"
-          }}>
-            <Search size={20} color="#00B49F" style={{ flexShrink: 0 }} />
-            <input
-              type="text"
-              placeholder="Search products, rum cake, dive gear, sunglasses, jewelry..."
-              value={heroSearch}
-              onChange={(e) => setHeroSearch(e.target.value)}
+      {/* 🌴 01. EE345-STYLE PROMOTIONAL HERO BANNER (Clean, Light & Vibrant) */}
+      <section style={{ paddingTop: "1.5rem", marginBottom: "2.5rem" }}>
+        <div className="container">
+          <div
+            style={{
+              position: "relative",
+              borderRadius: "20px",
+              overflow: "hidden",
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.06)",
+              border: "1px solid #F1F5F9",
+              background: "#FFF1F2"
+            }}
+          >
+            {/* Promo Banner Image */}
+            <img
+              src="/cayman_promo_hero_banner.jpg"
+              alt="Grand Cayman Online Shopping - Everything Essential"
               style={{
-                flex: 1,
-                border: "none",
-                background: "transparent",
-                color: "#0A1C36",
-                fontSize: "0.95rem",
-                fontWeight: 600,
-                outline: "none",
-                boxShadow: "none"
+                width: "100%",
+                height: "auto",
+                maxHeight: "420px",
+                objectFit: "cover",
+                display: "block"
               }}
             />
 
-            <button
-              onClick={() => {
-                const el = document.getElementById("new-arrivals-section");
-                if (el) el.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="btn-primary"
+            {/* Slider Dots (EE345 style) */}
+            <div
               style={{
-                padding: "0.75rem 1.6rem",
+                position: "absolute",
+                bottom: "16px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                background: "rgba(255, 255, 255, 0.8)",
+                padding: "0.3rem 0.75rem",
                 borderRadius: "999px",
-                fontSize: "0.9rem",
-                fontWeight: 800,
-                flexShrink: 0
+                backdropFilter: "blur(4px)"
               }}
             >
-              Shop Catalog <ArrowRight size={16} />
-            </button>
-          </div>
-
-          {/* Quick Category Chips */}
-          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "0.5rem", maxWidth: "780px", margin: "0 auto 2.2rem auto" }}>
-            {[
-              { id: "all", label: "✨ All Products" },
-              { id: "cat-1", label: "💎 Artisan Jewelry" },
-              { id: "cat-3", label: "🍰 Cayman Gourmet" },
-              { id: "cat-2", label: "🤿 Beach & Dive Gear" },
-              { id: "cat-4", label: "⌚ Luxury Watches" },
-              { id: "cat-5", label: "👕 Island Apparel" }
-            ].map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => {
-                  setHeroCategory(cat.id);
-                  const el = document.getElementById("categories-section");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }}
-                style={{
-                  background: heroCategory === cat.id ? "rgba(0, 229, 201, 0.25)" : "rgba(255, 255, 255, 0.1)",
-                  color: heroCategory === cat.id ? "#00E5C9" : "#E2E8F0",
-                  border: heroCategory === cat.id ? "1px solid #00E5C9" : "1px solid rgba(255, 255, 255, 0.18)",
-                  borderRadius: "999px",
-                  padding: "0.4rem 0.95rem",
-                  fontSize: "0.82rem",
-                  fontWeight: 700,
-                  backdropFilter: "blur(8px)",
-                  cursor: "pointer",
-                  transition: "all 0.2s"
-                }}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Guarantees with generous spacing */}
-          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "2.5rem", color: "#E2E8F0", fontSize: "0.88rem", fontWeight: 600 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
-              <Clock size={16} color="#FBBF24" />
-              <span>Convenient Store Pickup</span>
-            </div>
-
-            <div style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
-              <DollarSign size={16} color="#00E5C9" />
-              <span>Cash on Delivery ($KYD / $USD)</span>
-            </div>
-
-            <div style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
-              <CheckCircle2 size={16} color="#00E5C9" />
-              <span>100% Verified Island Artisans</span>
+              <span style={{ width: "16px", height: "6px", borderRadius: "999px", background: "#0F172A", display: "inline-block" }} />
+              <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#CBD5E1", display: "inline-block" }} />
+              <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#CBD5E1", display: "inline-block" }} />
             </div>
           </div>
-
         </div>
       </section>
 
-      {/* 🛍️ 02. SHOP BY CATEGORY (Matching EE345) */}
-      <section id="categories-section" className="container" style={{ paddingTop: "3.5rem", marginBottom: "4.5rem" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.75rem" }}>
-          <div>
-            <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "#0A1C36", fontWeight: 900, letterSpacing: "-0.02em" }}>
-              Shop by Category
-            </h2>
-            <p style={{ fontSize: "0.95rem", color: "#64748B", margin: "0.25rem 0 0 0" }}>
-              Explore everyday essentials, artisan jewelry, gourmet treats & beach finds
-            </p>
-          </div>
+      {/* 🛍️ 02. SHOP BY CATEGORY (Matching EE345 exactly) */}
+      <section id="categories-section" className="container" style={{ marginBottom: "3.5rem" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
+          <h2 style={{ fontSize: "1.55rem", color: "#111827", fontWeight: 800, margin: 0 }}>
+            Shop by Category
+          </h2>
 
-          <button onClick={() => setActiveTab("categories")} className="btn-outline" style={{ fontSize: "0.85rem", padding: "0.45rem 1rem" }}>
+          <button
+            onClick={() => setActiveTab("categories")}
+            style={{
+              background: "none",
+              border: "none",
+              color: "#0284C7",
+              fontSize: "0.9rem",
+              fontWeight: 700,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.25rem"
+            }}
+          >
             All products <ArrowRight size={14} />
           </button>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "1.25rem" }}>
+        {/* Categories Grid (EE345 clean card style) */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(170px, 1fr))", gap: "1.25rem" }}>
           {categories.map((cat) => (
             <div
               key={cat.id}
-              className="category-card"
               onClick={() => {
                 setHeroCategory(cat.id);
                 setActiveTab("categories");
               }}
               style={{
                 background: "#FFFFFF",
-                borderRadius: "20px",
-                overflow: "hidden",
-                border: "1.5px solid #E2E8F0",
-                boxShadow: "0 4px 14px rgba(15, 23, 42, 0.04)",
-                cursor: "pointer",
+                borderRadius: "16px",
+                border: "1px solid #E5E7EB",
+                boxShadow: "0 2px 6px rgba(0, 0, 0, 0.03)",
+                padding: "1.2rem 1rem",
                 textAlign: "center",
-                transition: "all 0.25s ease"
+                cursor: "pointer",
+                transition: "transform 0.2s ease, box-shadow 0.2s ease"
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-3px)";
+                e.currentTarget.style.boxShadow = "0 8px 18px rgba(0, 0, 0, 0.08)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 2px 6px rgba(0, 0, 0, 0.03)";
               }}
             >
-              <div style={{ height: "130px", overflow: "hidden", background: "#F1F5F9" }}>
+              <div
+                style={{
+                  height: "110px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: "0.75rem",
+                  overflow: "hidden"
+                }}
+              >
                 <img
                   src={cat.image}
                   alt={cat.name}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.4s ease" }}
-                />
-              </div>
-              <div style={{ padding: "1rem" }}>
-                <div style={{ fontWeight: 800, fontSize: "0.95rem", color: "#0A1C36" }}>{cat.name}</div>
-                <div style={{ fontSize: "0.78rem", color: "#00B49F", fontWeight: 700, marginTop: "0.25rem" }}>
-                  {cat.count} Products
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ⭐ 03. CAYMAN'S CHOICE / FEATURED PICKS (Matching EE345 "Essie's Choice") */}
-      <section className="container" style={{ marginBottom: "4.5rem" }}>
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "1.75rem", flexWrap: "wrap", gap: "1rem" }}>
-          <div>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "#00B49F", fontSize: "0.82rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em" }}>
-              <Award size={15} /> Hand-Picked Customer Favorites
-            </div>
-            <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2.2rem", color: "#0A1C36", fontWeight: 900, letterSpacing: "-0.02em" }}>
-              Cayman's Choice
-            </h2>
-            <p style={{ fontSize: "0.95rem", color: "#64748B", margin: "0.25rem 0 0 0" }}>
-              Our top recommended local finds with instant WhatsApp ordering & local pickup
-            </p>
-          </div>
-
-          <button onClick={() => setActiveTab("categories")} className="btn-outline" style={{ fontSize: "0.85rem", padding: "0.45rem 1rem" }}>
-            View Catalog <ArrowRight size={14} />
-          </button>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.75rem" }}>
-          {caymansChoice.map((prod, idx) => (
-            <div key={prod.id} className={`animate-entrance stagger-${idx + 1}`}>
-              <ProductCard
-                product={prod}
-                onSelectProduct={(p, directReserve = false) => {
-                  if (directReserve) {
-                    setSelectedProduct(p);
-                    setActiveTab("checkout");
-                  } else {
-                    setQuickViewProduct(p);
-                  }
-                }}
-                onVisitStore={(v) => {
-                  setSelectedVendor(v);
-                  setActiveTab("store-detail");
-                }}
-              />
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ✨ 04. NEW ARRIVALS (Matching EE345 "New Arrivals") */}
-      <section id="new-arrivals-section" className="container" style={{ marginBottom: "4.5rem" }}>
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "1.75rem", flexWrap: "wrap", gap: "1rem" }}>
-          <div>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "#0284C7", fontSize: "0.82rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em" }}>
-              <Sparkles size={15} /> Fresh From Island Artisans
-            </div>
-            <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2.2rem", color: "#0A1C36", fontWeight: 900, letterSpacing: "-0.02em" }}>
-              New Arrivals
-            </h2>
-            <p style={{ fontSize: "0.95rem", color: "#64748B", margin: "0.25rem 0 0 0" }}>
-              Recently listed treasures, beachwear, gifts and pantry items
-            </p>
-          </div>
-
-          <button onClick={() => setActiveTab("categories")} className="btn-outline" style={{ fontSize: "0.85rem", padding: "0.45rem 1rem" }}>
-            See all ({products.length}) <ArrowRight size={14} />
-          </button>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.75rem" }}>
-          {newArrivals.map((prod, idx) => (
-            <div key={prod.id} className={`animate-entrance stagger-${(idx % 4) + 1}`}>
-              <ProductCard
-                product={prod}
-                onSelectProduct={(p, directReserve = false) => {
-                  if (directReserve) {
-                    setSelectedProduct(p);
-                    setActiveTab("checkout");
-                  } else {
-                    setQuickViewProduct(p);
-                  }
-                }}
-                onVisitStore={(v) => {
-                  setSelectedVendor(v);
-                  setActiveTab("store-detail");
-                }}
-              />
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 🔥 05. SPECIAL OFFERS / DEALS (Matching EE345 "Special Offers") */}
-      <section className="container" style={{ marginBottom: "5rem" }}>
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "1.75rem", flexWrap: "wrap", gap: "1rem" }}>
-          <div>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "#EF4444", fontSize: "0.82rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em" }}>
-              <Tag size={15} /> Island Deals & Duty-Free Promotions
-            </div>
-            <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2.2rem", color: "#0A1C36", fontWeight: 900, letterSpacing: "-0.02em" }}>
-              Special Offers
-            </h2>
-            <p style={{ fontSize: "0.95rem", color: "#64748B", margin: "0.25rem 0 0 0" }}>
-              Limited-time discounts on premium jewelry, rum gift packs, and snorkeling gear
-            </p>
-          </div>
-
-          <button onClick={() => setActiveTab("categories")} className="btn-outline" style={{ fontSize: "0.85rem", padding: "0.45rem 1rem" }}>
-            See all offers <ArrowRight size={14} />
-          </button>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.75rem" }}>
-          {specialOffers.map((prod, idx) => {
-            const originalPrice = (prod.price * 1.25).toFixed(2);
-            const savings = (originalPrice - prod.price).toFixed(2);
-
-            return (
-              <div key={prod.id} className={`animate-entrance stagger-${idx + 1}`} style={{ position: "relative" }}>
-                {/* Sale Pill Top Right */}
-                <div style={{
-                  position: "absolute",
-                  top: "12px",
-                  left: "12px",
-                  zIndex: 10,
-                  background: "#EF4444",
-                  color: "#FFFFFF",
-                  fontWeight: 900,
-                  fontSize: "0.74rem",
-                  padding: "0.25rem 0.65rem",
-                  borderRadius: "999px",
-                  boxShadow: "0 2px 8px rgba(239, 68, 68, 0.4)",
-                  letterSpacing: "0.05em"
-                }}>
-                  SALE • SAVE CI${savings}
-                </div>
-
-                <ProductCard
-                  product={prod}
-                  onSelectProduct={(p, directReserve = false) => {
-                    if (directReserve) {
-                      setSelectedProduct(p);
-                      setActiveTab("checkout");
-                    } else {
-                      setQuickViewProduct(p);
-                    }
-                  }}
-                  onVisitStore={(v) => {
-                    setSelectedVendor(v);
-                    setActiveTab("store-detail");
+                  style={{
+                    maxHeight: "100%",
+                    maxWidth: "100%",
+                    objectFit: "cover",
+                    borderRadius: "10px"
                   }}
                 />
               </div>
-            );
-          })}
+              <div style={{ fontWeight: 700, fontSize: "0.9rem", color: "#111827" }}>
+                {cat.name}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* 🛡️ 06. WHY SHOP WITH US (Matching EE345 "Why Shop With Us") */}
-      <section style={{ padding: "4rem 0", background: "#F8FAFC", borderTop: "1px solid #E2E8F0", borderBottom: "1px solid #E2E8F0", marginBottom: "5rem" }}>
+      {/* ⭐ 03. ESSIE'S CHOICE / CAYMAN'S CHOICE (Matching EE345) */}
+      <section className="container" style={{ marginBottom: "3.5rem" }}>
+        <div style={{ marginBottom: "1.25rem" }}>
+          <h2 style={{ fontSize: "1.55rem", color: "#111827", fontWeight: 800, margin: 0 }}>
+            Essie's Choice
+          </h2>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.25rem" }}>
+          {caymansChoice.map((prod) => (
+            <ProductCard
+              key={prod.id}
+              product={prod}
+              onSelectProduct={(p) => setQuickViewProduct(p)}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* ✨ 04. NEW ARRIVALS (Matching EE345) */}
+      <section id="new-arrivals-section" className="container" style={{ marginBottom: "3.5rem" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
+          <h2 style={{ fontSize: "1.55rem", color: "#111827", fontWeight: 800, margin: 0 }}>
+            New Arrivals
+          </h2>
+
+          <button
+            onClick={() => setActiveTab("categories")}
+            style={{
+              background: "none",
+              border: "none",
+              color: "#0284C7",
+              fontSize: "0.9rem",
+              fontWeight: 700,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.25rem"
+            }}
+          >
+            See all <ArrowRight size={14} />
+          </button>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.25rem" }}>
+          {newArrivals.map((prod) => (
+            <ProductCard
+              key={prod.id}
+              product={prod}
+              onSelectProduct={(p) => setQuickViewProduct(p)}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* 🔥 05. SPECIAL OFFERS (Matching EE345) */}
+      <section id="special-offers-section" className="container" style={{ marginBottom: "4rem" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
+          <h2 style={{ fontSize: "1.55rem", color: "#111827", fontWeight: 800, margin: 0 }}>
+            Special Offers
+          </h2>
+
+          <button
+            onClick={() => setActiveTab("categories")}
+            style={{
+              background: "none",
+              border: "none",
+              color: "#0284C7",
+              fontSize: "0.9rem",
+              fontWeight: 700,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.25rem"
+            }}
+          >
+            See all <ArrowRight size={14} />
+          </button>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.25rem" }}>
+          {specialOffers.map((prod) => (
+            <ProductCard
+              key={prod.id}
+              product={prod}
+              onSelectProduct={(p) => setQuickViewProduct(p)}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* 🛡️ 06. WHY SHOP WITH US (Matching EE345 exactly) */}
+      <section style={{ padding: "3.5rem 0", background: "#F9FAFB", borderTop: "1px solid #E5E7EB", borderBottom: "1px solid #E5E7EB", marginBottom: "4rem" }}>
         <div className="container">
-          <div style={{ textAlign: "center", maxWidth: "680px", margin: "0 auto 3rem auto" }}>
-            <div style={{ fontSize: "0.8rem", fontWeight: 800, color: "#00B49F", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.4rem" }}>
-              CaymanBazaar Guarantees
-            </div>
-            <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2.4rem", color: "#0A1C36", fontWeight: 900, margin: 0 }}>
+          <div style={{ marginBottom: "2rem" }}>
+            <h2 style={{ fontSize: "1.55rem", color: "#111827", fontWeight: 800, margin: 0 }}>
               Why Shop With Us
             </h2>
-            <p style={{ color: "#64748B", fontSize: "1rem", marginTop: "0.5rem" }}>
-              Proudly serving Grand Cayman residents, condo guests & resort visitors with effortless shopping
-            </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.75rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.5rem", marginBottom: "2.5rem" }}>
             
             {/* 1. Shop Local */}
-            <div style={{ background: "#FFFFFF", padding: "1.85rem", borderRadius: "20px", border: "1.5px solid #E2E8F0", boxShadow: "0 4px 16px rgba(15,23,42,0.04)" }}>
-              <div style={{ width: "48px", height: "48px", borderRadius: "14px", background: "#E6FBF2", color: "#00A896", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1rem" }}>
-                <Palmtree size={24} />
-              </div>
-              <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#0A1C36", marginBottom: "0.35rem" }}>
+            <div style={{ background: "#FFFFFF", padding: "1.5rem", borderRadius: "16px", border: "1px solid #E5E7EB" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#111827", marginBottom: "0.35rem" }}>
                 Shop Local
               </h3>
-              <p style={{ fontSize: "0.9rem", color: "#64748B", lineHeight: 1.5, margin: 0 }}>
-                Proudly supporting Grand Cayman artisans, makers, and local businesses across all three islands.
+              <p style={{ fontSize: "0.88rem", color: "#4B5563", lineHeight: 1.5, margin: 0 }}>
+                Proudly serving the Cayman Islands.
               </p>
             </div>
 
             {/* 2. Quality Items */}
-            <div style={{ background: "#FFFFFF", padding: "1.85rem", borderRadius: "20px", border: "1.5px solid #E2E8F0", boxShadow: "0 4px 16px rgba(15,23,42,0.04)" }}>
-              <div style={{ width: "48px", height: "48px", borderRadius: "14px", background: "#FEF3C7", color: "#D97706", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1rem" }}>
-                <ShieldCheck size={24} />
-              </div>
-              <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#0A1C36", marginBottom: "0.35rem" }}>
+            <div style={{ background: "#FFFFFF", padding: "1.5rem", borderRadius: "16px", border: "1px solid #E5E7EB" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#111827", marginBottom: "0.35rem" }}>
                 Quality Items
               </h3>
-              <p style={{ fontSize: "0.9rem", color: "#64748B", lineHeight: 1.5, margin: 0 }}>
-                Genuine Caymanite stones, authentic aged rum cakes, and products backed by local seller warranties.
+              <p style={{ fontSize: "0.88rem", color: "#4B5563", lineHeight: 1.5, margin: 0 }}>
+                Products we stand behind.
               </p>
             </div>
 
-            {/* 3. WhatsApp Direct Support */}
-            <div style={{ background: "#FFFFFF", padding: "1.85rem", borderRadius: "20px", border: "1.5px solid #E2E8F0", boxShadow: "0 4px 16px rgba(15,23,42,0.04)" }}>
-              <div style={{ width: "48px", height: "48px", borderRadius: "14px", background: "#DCFCE7", color: "#16A34A", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1rem" }}>
-                <MessageSquare size={24} />
-              </div>
-              <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#0A1C36", marginBottom: "0.35rem" }}>
-                WhatsApp Direct Support
+            {/* 3. Secure Checkout */}
+            <div style={{ background: "#FFFFFF", padding: "1.5rem", borderRadius: "16px", border: "1px solid #E5E7EB" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#111827", marginBottom: "0.35rem" }}>
+                Secure Checkout
               </h3>
-              <p style={{ fontSize: "0.9rem", color: "#64748B", lineHeight: 1.5, margin: 0 }}>
-                Talk directly with our local Cayman support team for item sizing, availability, or custom requests.
+              <p style={{ fontSize: "0.88rem", color: "#4B5563", lineHeight: 1.5, margin: 0 }}>
+                Pay securely online or Cash on Delivery.
               </p>
             </div>
 
             {/* 4. Convenient Ordering */}
-            <div style={{ background: "#FFFFFF", padding: "1.85rem", borderRadius: "20px", border: "1.5px solid #E2E8F0", boxShadow: "0 4px 16px rgba(15,23,42,0.04)" }}>
-              <div style={{ width: "48px", height: "48px", borderRadius: "14px", background: "#E0F2FE", color: "#0284C7", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1rem" }}>
-                <ShoppingBag size={24} />
-              </div>
-              <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#0A1C36", marginBottom: "0.35rem" }}>
+            <div style={{ background: "#FFFFFF", padding: "1.5rem", borderRadius: "16px", border: "1px solid #E5E7EB" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#111827", marginBottom: "0.35rem" }}>
                 Convenient Ordering
               </h3>
-              <p style={{ fontSize: "0.9rem", color: "#64748B", lineHeight: 1.5, margin: 0 }}>
-                Build your bag in minutes and place itemized order requests with no mandatory online card fees.
+              <p style={{ fontSize: "0.88rem", color: "#4B5563", lineHeight: 1.5, margin: 0 }}>
+                Build your cart in minutes.
               </p>
             </div>
 
-            {/* 5. Pickup & Courier Delivery */}
-            <div style={{ background: "#FFFFFF", padding: "1.85rem", borderRadius: "20px", border: "1.5px solid #E2E8F0", boxShadow: "0 4px 16px rgba(15,23,42,0.04)" }}>
-              <div style={{ width: "48px", height: "48px", borderRadius: "14px", background: "#F3E8FF", color: "#9333EA", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1rem" }}>
-                <Truck size={24} />
-              </div>
-              <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#0A1C36", marginBottom: "0.35rem" }}>
-                Pickup & Island Delivery
+            {/* 5. WhatsApp Support */}
+            <div style={{ background: "#FFFFFF", padding: "1.5rem", borderRadius: "16px", border: "1px solid #E5E7EB" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#111827", marginBottom: "0.35rem" }}>
+                WhatsApp Support
               </h3>
-              <p style={{ fontSize: "0.9rem", color: "#64748B", lineHeight: 1.5, margin: 0 }}>
-                Convenient store collection at Georgetown or Seven Mile Beach, or 24h courier delivery to your resort.
+              <p style={{ fontSize: "0.88rem", color: "#4B5563", lineHeight: 1.5, margin: 0 }}>
+                Talk to our local team.
               </p>
             </div>
 
-            {/* 6. Pay on Delivery (COD) */}
-            <div style={{ background: "#FFFFFF", padding: "1.85rem", borderRadius: "20px", border: "1.5px solid #E2E8F0", boxShadow: "0 4px 16px rgba(15,23,42,0.04)" }}>
-              <div style={{ width: "48px", height: "48px", borderRadius: "14px", background: "#CCFBF1", color: "#0F766E", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1rem" }}>
-                <DollarSign size={24} />
-              </div>
-              <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#0A1C36", marginBottom: "0.35rem" }}>
-                Cash on Delivery ($KYD / $USD)
+            {/* 6. Pickup & Delivery */}
+            <div style={{ background: "#FFFFFF", padding: "1.5rem", borderRadius: "16px", border: "1px solid #E5E7EB" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#111827", marginBottom: "0.35rem" }}>
+                Pickup & Delivery
               </h3>
-              <p style={{ fontSize: "0.9rem", color: "#64748B", lineHeight: 1.5, margin: 0 }}>
-                Pay cash upon delivery or pickup in either Cayman Dollars or US Dollars with 0% island sales tax.
+              <p style={{ fontSize: "0.88rem", color: "#4B5563", lineHeight: 1.5, margin: 0 }}>
+                Arranged to suit you.
               </p>
             </div>
 
           </div>
-        </div>
-      </section>
 
-      {/* 💬 07. KEEP UP WITH CAYMANBAZAAR (Matching EE345 WhatsApp Channel Banner) */}
-      <section className="container" style={{ marginBottom: "5rem" }}>
-        <div style={{
-          background: "linear-gradient(135deg, #07192C 0%, #0B2545 100%)",
-          borderRadius: "28px",
-          padding: "3.5rem 2.5rem",
-          color: "#FFFFFF",
-          textAlign: "center",
-          border: "1px solid rgba(0, 229, 201, 0.3)",
-          boxShadow: "0 20px 45px rgba(0, 0, 0, 0.25)",
-          position: "relative",
-          overflow: "hidden"
-        }}>
-          <div style={{
-            position: "absolute",
-            top: "-50px",
-            right: "-50px",
-            width: "200px",
-            height: "200px",
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(0, 229, 201, 0.2) 0%, transparent 70%)"
-          }} />
-
-          <div style={{ position: "relative", zIndex: 2, maxWidth: "640px", margin: "0 auto" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", background: "rgba(37, 211, 102, 0.2)", color: "#25D366", padding: "0.3rem 0.85rem", borderRadius: "999px", fontSize: "0.78rem", fontWeight: 800, marginBottom: "1rem" }}>
-              <MessageCircle size={15} /> INSTANT ISLAND UPDATES
-            </div>
-
-            <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2.4rem", fontWeight: 900, marginBottom: "0.85rem", color: "#FFFFFF" }}>
-              Keep Up with CaymanBazaar
-            </h2>
-            <p style={{ color: "#CBD5E1", fontSize: "1.05rem", lineHeight: 1.6, marginBottom: "2rem" }}>
-              Get new island finds, artisan arrivals, and exclusive duty-free flash offers directly in your inbox or on WhatsApp.
+          {/* EE345 Summary Blurb */}
+          <div style={{ maxWidth: "800px", color: "#6B7280", fontSize: "0.92rem", lineHeight: 1.6 }}>
+            <p style={{ margin: "0 0 0.5rem 0" }}>
+              CaymanBazaar is a locally owned online store in Grand Cayman offering a thoughtfully selected range of everyday essentials, artisan jewelry, Caymanite stones, gourmet rum treats, beach accessories and home finds. Shop securely online with convenient pickup and local delivery.
             </p>
-
-            {newsletterSubscribed ? (
-              <div style={{ background: "rgba(37, 211, 102, 0.2)", border: "1px solid #25D366", color: "#25D366", padding: "1rem 1.5rem", borderRadius: "16px", fontWeight: 800 }}>
-                🎉 Thank you for subscribing! We'll keep you updated on new Cayman treasures.
-              </div>
-            ) : (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  if (newsletterEmail) setNewsletterSubscribed(true);
-                }}
-                style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", justifyContent: "center", marginBottom: "1.75rem" }}
-              >
-                <input
-                  type="email"
-                  required
-                  placeholder="Enter your email address..."
-                  value={newsletterEmail}
-                  onChange={(e) => setNewsletterEmail(e.target.value)}
-                  style={{
-                    flex: "1 1 280px",
-                    maxWidth: "380px",
-                    padding: "0.85rem 1.25rem",
-                    borderRadius: "999px",
-                    border: "1px solid rgba(255, 255, 255, 0.3)",
-                    background: "rgba(255, 255, 255, 0.95)",
-                    color: "#0A1C36",
-                    fontWeight: 600,
-                    outline: "none"
-                  }}
-                />
-                <button
-                  type="submit"
-                  className="btn-primary"
-                  style={{ padding: "0.85rem 1.75rem", borderRadius: "999px", fontWeight: 800 }}
-                >
-                  Subscribe
-                </button>
-              </form>
-            )}
-
-            <div style={{ display: "flex", justifyContent: "center", gap: "1rem", flexWrap: "wrap" }}>
-              <a
-                href="https://wa.me/13459492299?text=Hello%20CaymanBazaar%2C%20I%20would%20like%20to%20follow%20your%20WhatsApp%20updates!"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  background: "#25D366",
-                  color: "#FFFFFF",
-                  padding: "0.75rem 1.5rem",
-                  borderRadius: "999px",
-                  fontWeight: 800,
-                  fontSize: "0.9rem",
-                  textDecoration: "none",
-                  boxShadow: "0 4px 14px rgba(37, 211, 102, 0.35)"
-                }}
-              >
-                <MessageCircle size={18} /> Follow CaymanBazaar on WhatsApp
-              </a>
-            </div>
+            <p style={{ fontWeight: 700, color: "#111827", margin: 0 }}>
+              Shop local. Support Cayman Islands business.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* 🌟 08. IMMERSIVE PRODUCT QUICK-VIEW MODAL */}
+      {/* 💬 07. KEEP UP WITH CAYMANBAZAAR (Matching EE345) */}
+      <section className="container" style={{ marginBottom: "5rem" }}>
+        <div style={{ maxWidth: "600px", margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontSize: "1.6rem", fontWeight: 800, color: "#111827", marginBottom: "0.5rem" }}>
+            Keep up with CaymanBazaar
+          </h2>
+          <p style={{ color: "#6B7280", fontSize: "0.95rem", marginBottom: "1.75rem" }}>
+            Get new finds, store news and current offers in your inbox.
+          </p>
+
+          {newsletterSubscribed ? (
+            <div style={{ background: "#D1FAE5", color: "#065F46", padding: "0.85rem", borderRadius: "8px", fontWeight: 700 }}>
+              ✓ Thank you for subscribing to CaymanBazaar updates!
+            </div>
+          ) : (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (newsletterEmail) setNewsletterSubscribed(true);
+              }}
+              style={{ display: "flex", gap: "0.5rem", justifyContent: "center", marginBottom: "1.5rem" }}
+            >
+              <input
+                type="email"
+                required
+                placeholder="Enter your email"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                style={{
+                  flex: 1,
+                  maxWidth: "360px",
+                  padding: "0.65rem 1rem",
+                  borderRadius: "8px",
+                  border: "1px solid #D1D5DB",
+                  fontSize: "0.9rem",
+                  outline: "none"
+                }}
+              />
+              <button
+                type="submit"
+                style={{
+                  background: "#0F172A",
+                  color: "#FFFFFF",
+                  border: "none",
+                  borderRadius: "8px",
+                  padding: "0.65rem 1.25rem",
+                  fontSize: "0.9rem",
+                  fontWeight: 700,
+                  cursor: "pointer"
+                }}
+              >
+                Subscribe
+              </button>
+            </form>
+          )}
+
+          {/* Follow on WhatsApp Channel Button */}
+          <div style={{ marginTop: "1rem" }}>
+            <a
+              href="https://wa.me/13459492299?text=Hello%20CaymanBazaar%2C%20I%20would%20like%20to%20follow%20your%20WhatsApp%20updates!"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                background: "#25D366",
+                color: "#FFFFFF",
+                padding: "0.65rem 1.4rem",
+                borderRadius: "8px",
+                fontWeight: 700,
+                fontSize: "0.9rem",
+                textDecoration: "none"
+              }}
+            >
+              <MessageCircle size={18} /> Follow CaymanBazaar on WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* 🌟 08. PRODUCT QUICK-VIEW MODAL (EE345 style) */}
       {quickViewProduct && (
         <div
           style={{
             position: "fixed",
             inset: 0,
             zIndex: 10000,
-            background: "rgba(5, 11, 20, 0.8)",
-            backdropFilter: "blur(12px)",
+            background: "rgba(0, 0, 0, 0.6)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -676,16 +462,15 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
           onClick={() => setQuickViewProduct(null)}
         >
           <div
-            className="modal-animate"
             onClick={(e) => e.stopPropagation()}
             style={{
               background: "#FFFFFF",
-              borderRadius: "28px",
+              borderRadius: "20px",
               maxWidth: "680px",
               width: "100%",
               overflow: "hidden",
-              boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
-              border: "1px solid #E2E8F0",
+              boxShadow: "0 20px 50px rgba(0, 0, 0, 0.2)",
+              border: "1px solid #E5E7EB",
               position: "relative"
             }}
           >
@@ -693,73 +478,71 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
               onClick={() => setQuickViewProduct(null)}
               style={{
                 position: "absolute",
-                top: "16px",
-                right: "16px",
-                background: "#F1F5F9",
+                top: "14px",
+                right: "14px",
+                background: "#F3F4F6",
                 border: "none",
                 borderRadius: "50%",
-                width: "36px",
-                height: "36px",
+                width: "32px",
+                height: "32px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#64748B",
-                zIndex: 10,
-                cursor: "pointer"
+                color: "#4B5563",
+                cursor: "pointer",
+                zIndex: 10
               }}
             >
-              <X size={18} />
+              <X size={16} />
             </button>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
-              <div style={{ height: "340px", background: "#050B14", overflow: "hidden" }}>
+              <div style={{ height: "320px", background: "#FFFFFF", display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
                 <img
                   src={quickViewProduct.images[0]}
                   alt={quickViewProduct.title}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }}
                 />
               </div>
 
-              <div style={{ padding: "2rem", display: "flex", flexDirection: "column" }}>
-                <div style={{ fontSize: "0.8rem", color: "#00B49F", fontWeight: 800, textTransform: "uppercase", marginBottom: "0.3rem" }}>
-                  {quickViewProduct.category_name || "Grand Cayman Specialty"}
+              <div style={{ padding: "1.75rem", display: "flex", flexDirection: "column" }}>
+                <div style={{ fontSize: "0.78rem", color: "#0284C7", fontWeight: 700, textTransform: "uppercase", marginBottom: "0.3rem" }}>
+                  {quickViewProduct.category_name || "Everyday Essential"}
                 </div>
-                <h3 style={{ fontSize: "1.3rem", fontWeight: 900, color: "#0A1C36", marginBottom: "0.75rem" }}>
+                <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: "#111827", marginBottom: "0.6rem" }}>
                   {quickViewProduct.title}
                 </h3>
-                <div style={{ fontSize: "1.4rem", fontWeight: 900, color: "#0A1C36", marginBottom: "0.85rem" }}>
-                  {formatPrice(quickViewProduct.price)}
-                  {currency === "KYD" && (
-                    <span style={{ fontSize: "0.85rem", color: "#64748B", marginLeft: "0.5rem", fontWeight: 600 }}>
-                      (~${(quickViewProduct.price * 1.2).toFixed(2)} USD)
-                    </span>
-                  )}
+                <div style={{ fontSize: "1.35rem", fontWeight: 800, color: "#111827", marginBottom: "0.75rem" }}>
+                  {currency === "KYD" ? `CI$${Number(quickViewProduct.price).toFixed(2)}` : formatPrice(quickViewProduct.price)}
                 </div>
-                <p style={{ color: "#64748B", fontSize: "0.85rem", lineHeight: 1.5, marginBottom: "1.5rem" }}>
+                <p style={{ color: "#4B5563", fontSize: "0.85rem", lineHeight: 1.5, marginBottom: "1.5rem" }}>
                   {quickViewProduct.description}
                 </p>
 
-                <div style={{ marginTop: "auto", display: "flex", gap: "0.75rem" }}>
+                <div style={{ marginTop: "auto" }}>
                   <button
                     onClick={() => {
                       addToCart(quickViewProduct, {}, 1);
                       setQuickViewProduct(null);
                     }}
-                    className="btn-primary"
-                    style={{ flex: 1, padding: "0.75rem" }}
+                    style={{
+                      width: "100%",
+                      background: "#D1FAE5",
+                      color: "#065F46",
+                      border: "none",
+                      borderRadius: "8px",
+                      padding: "0.75rem 1rem",
+                      fontSize: "0.9rem",
+                      fontWeight: 700,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "0.5rem",
+                      cursor: "pointer"
+                    }}
                   >
-                    <ShoppingBag size={16} /> Add to Bag
+                    <ShoppingCart size={18} /> Add to Cart
                   </button>
-
-                  <a
-                    href={`https://wa.me/13459492299?text=${encodeURIComponent(`Hello! I would like to order: "${quickViewProduct.title}" (Price: ${formatPrice(quickViewProduct.price)}) on CaymanBazaar.`)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-whatsapp"
-                    style={{ flex: 1, padding: "0.75rem", textDecoration: "none" }}
-                  >
-                    <MessageCircle size={16} /> WhatsApp Order
-                  </a>
                 </div>
               </div>
             </div>

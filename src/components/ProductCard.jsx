@@ -1,54 +1,90 @@
 import React, { useState } from "react";
 import { useMarketplace } from "../context/MarketplaceContext";
-import { ShoppingBag, Sparkles, Heart, Eye, Plus, Minus, Sliders, MessageCircle, Check } from "lucide-react";
+import { ShoppingCart, Heart, Eye } from "lucide-react";
 
-export default function ProductCard({ product, onSelectProduct, onVisitStore }) {
-  const { formatPrice, addToCart, vendors, currency, toWhatsAppWaMeNumber } = useMarketplace();
-  const [cardQty, setCardQty] = useState(1);
+export default function ProductCard({ product, onSelectProduct }) {
+  const { formatPrice, addToCart, currency } = useMarketplace();
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [addedAnimation, setAddedAnimation] = useState(false);
 
   const isLowStock = product.stock_count > 0 && product.stock_count <= 5;
   const isOutOfStock = product.stock_count <= 0;
-  const hasVariations = product.variations && Object.keys(product.variations).length > 0;
-
-  const vendorObj = vendors.find((v) => v.id === product.vendor_id);
 
   // Approximate USD display if KYD is primary
   const priceUSD = (product.price * 1.2).toFixed(2);
 
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    if (isOutOfStock) return;
+    addToCart(product, {}, 1);
+    setAddedAnimation(true);
+    setTimeout(() => setAddedAnimation(false), 1200);
+  };
+
   return (
-    <div className="luxury-product-card" style={{ position: "relative", display: "flex", flexDirection: "column" }}>
-      
-      {/* Product Image Container */}
-      <div
-        className="product-img-wrapper"
-        onClick={() => onSelectProduct(product)}
-        style={{ cursor: "pointer", position: "relative" }}
-      >
-        <img
-          src={product.images[0]}
-          alt={product.title}
-          className="product-img"
-        />
-
-        {/* Badges Overlay */}
-        <div style={{ position: "absolute", top: "12px", left: "12px", display: "flex", flexDirection: "column", gap: "0.45rem", zIndex: 2 }}>
-          {product.sponsored && (
-            <span className="badge badge-sponsored">
-              <Sparkles size={11} /> Trending
+    <div
+      onClick={() => onSelectProduct && onSelectProduct(product)}
+      style={{
+        background: "#FFFFFF",
+        borderRadius: "16px",
+        border: "1px solid #E5E7EB",
+        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
+        padding: "1rem",
+        display: "flex",
+        flexDirection: "column",
+        position: "relative",
+        cursor: "pointer",
+        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+        height: "100%",
+        boxSizing: "border-box"
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-4px)";
+        e.currentTarget.style.boxShadow = "0 12px 24px rgba(0, 0, 0, 0.08)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = "0 2px 8px rgba(0, 0, 0, 0.04)";
+      }}
+    >
+      {/* Top Overlay: Badges and Wishlist Heart */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem" }}>
+        {/* Badge Pill */}
+        <div>
+          {product.price >= 20 && product.featured ? (
+            <span
+              style={{
+                background: "#E0F2FE",
+                color: "#0369A1",
+                fontSize: "0.68rem",
+                fontWeight: 800,
+                padding: "0.2rem 0.55rem",
+                borderRadius: "4px",
+                textTransform: "uppercase",
+                letterSpacing: "0.04em"
+              }}
+            >
+              TRENDING
             </span>
-          )}
-
-          {isOutOfStock ? (
-            <span className="badge badge-out-stock">Sold Out</span>
-          ) : isLowStock ? (
-            <span className="badge badge-low-stock">Only {product.stock_count} Left</span>
           ) : (
-            <span className="badge badge-stock">In Stock</span>
+            <span
+              style={{
+                background: "#F1F5F9",
+                color: "#475569",
+                fontSize: "0.68rem",
+                fontWeight: 800,
+                padding: "0.2rem 0.55rem",
+                borderRadius: "4px",
+                textTransform: "uppercase",
+                letterSpacing: "0.04em"
+              }}
+            >
+              NEW ARRIVAL
+            </span>
           )}
         </div>
 
-        {/* Wishlist Heart Button */}
+        {/* Wishlist Heart */}
         <button
           type="button"
           onClick={(e) => {
@@ -56,249 +92,168 @@ export default function ProductCard({ product, onSelectProduct, onVisitStore }) 
             setIsWishlisted(!isWishlisted);
           }}
           style={{
-            position: "absolute",
-            top: "12px",
-            right: "12px",
-            background: "rgba(255, 255, 255, 0.9)",
+            background: "none",
             border: "none",
-            borderRadius: "50%",
-            width: "34px",
-            height: "34px",
+            cursor: "pointer",
+            padding: "2px",
+            color: isWishlisted ? "#EF4444" : "#9CA3AF",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            cursor: "pointer",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-            zIndex: 3,
-            color: isWishlisted ? "#EF4444" : "#94A3B8",
-            transition: "all 0.2s"
+            transition: "transform 0.15s ease"
           }}
-          title={isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
+          title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
         >
-          <Heart size={16} fill={isWishlisted ? "#EF4444" : "none"} />
+          <Heart size={18} fill={isWishlisted ? "#EF4444" : "none"} strokeWidth={1.8} />
+        </button>
+      </div>
+
+      {/* Product Image */}
+      <div
+        style={{
+          height: "210px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#FFFFFF",
+          overflow: "hidden",
+          borderRadius: "8px",
+          marginBottom: "0.75rem"
+        }}
+      >
+        <img
+          src={product.images[0]}
+          alt={product.title}
+          style={{
+            maxHeight: "100%",
+            maxWidth: "100%",
+            objectFit: "contain",
+            transition: "transform 0.3s ease"
+          }}
+        />
+      </div>
+
+      {/* Quick View Link */}
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          if (onSelectProduct) onSelectProduct(product);
+        }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "0.3rem",
+          fontSize: "0.76rem",
+          color: "#6B7280",
+          fontWeight: 600,
+          marginBottom: "0.6rem",
+          cursor: "pointer"
+        }}
+      >
+        <Eye size={13} /> Quick View
+      </div>
+
+      {/* Product Title */}
+      <h4
+        style={{
+          fontSize: "0.95rem",
+          fontWeight: 700,
+          color: "#111827",
+          lineHeight: 1.35,
+          marginBottom: "0.5rem",
+          minHeight: "2.6em",
+          display: "-webkit-box",
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden"
+        }}
+      >
+        {product.title}
+      </h4>
+
+      {/* Color / Variant Dots (EE345 style) */}
+      <div style={{ display: "flex", gap: "0.35rem", marginBottom: "0.6rem", minHeight: "14px" }}>
+        <span style={{ width: "12px", height: "12px", borderRadius: "50%", background: "#3B82F6", display: "inline-block" }} />
+        <span style={{ width: "12px", height: "12px", borderRadius: "50%", background: "#EC4899", display: "inline-block" }} />
+      </div>
+
+      {/* Price */}
+      <div style={{ display: "flex", alignItems: "baseline", gap: "0.4rem", marginBottom: "0.5rem" }}>
+        <span style={{ fontSize: "1.18rem", fontWeight: 800, color: "#111827" }}>
+          {currency === "KYD" ? `CI$${Number(product.price).toFixed(2)}` : formatPrice(product.price)}
+        </span>
+        {currency === "KYD" && (
+          <span style={{ fontSize: "0.78rem", color: "#6B7280", fontWeight: 500 }}>
+            (~${priceUSD} USD)
+          </span>
+        )}
+      </div>
+
+      {/* Badges Pills (EE345 style) */}
+      <div style={{ display: "flex", gap: "0.35rem", flexWrap: "wrap", marginBottom: "0.5rem" }}>
+        <span style={{ background: "#F1F5F9", color: "#475569", fontSize: "0.65rem", fontWeight: 700, padding: "0.15rem 0.45rem", borderRadius: "3px" }}>
+          NEW ARRIVAL
+        </span>
+        <span style={{ background: "#F1F5F9", color: "#475569", fontSize: "0.65rem", fontWeight: 700, padding: "0.15rem 0.45rem", borderRadius: "3px" }}>
+          Essie's Choice
+        </span>
+      </div>
+
+      {/* Stock Status */}
+      <div style={{ fontSize: "0.78rem", color: isOutOfStock ? "#DC2626" : "#16A34A", fontWeight: 600, marginBottom: "0.9rem" }}>
+        {isOutOfStock ? "Sold Out" : isLowStock ? `Only ${product.stock_count} Left` : "In Stock"}
+      </div>
+
+      {/* EE345 Primary Action: Add to Cart button */}
+      <div style={{ marginTop: "auto" }}>
+        <button
+          type="button"
+          disabled={isOutOfStock}
+          onClick={handleAddToCart}
+          style={{
+            width: "100%",
+            background: addedAnimation ? "#10B981" : "#D1FAE5",
+            color: addedAnimation ? "#FFFFFF" : "#065F46",
+            border: "none",
+            borderRadius: "8px",
+            padding: "0.65rem 1rem",
+            fontSize: "0.88rem",
+            fontWeight: 700,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0.45rem",
+            cursor: isOutOfStock ? "not-allowed" : "pointer",
+            opacity: isOutOfStock ? 0.4 : 1,
+            transition: "all 0.2s ease"
+          }}
+        >
+          <ShoppingCart size={16} />
+          <span>{addedAnimation ? "Added to Cart!" : "Add to Cart"}</span>
         </button>
 
-        {/* Quick View Pill on Hover */}
+        {/* View Details Link */}
         <div
           onClick={(e) => {
             e.stopPropagation();
-            onSelectProduct(product);
+            if (onSelectProduct) onSelectProduct(product);
           }}
           style={{
-            position: "absolute",
-            bottom: "10px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            background: "rgba(10, 28, 54, 0.85)",
-            backdropFilter: "blur(6px)",
-            color: "#FFFFFF",
-            fontSize: "0.74rem",
-            fontWeight: 700,
-            padding: "0.3rem 0.8rem",
-            borderRadius: "999px",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.35rem",
-            border: "1px solid rgba(255, 255, 255, 0.2)",
-            opacity: 0.95
+            textAlign: "center",
+            fontSize: "0.8rem",
+            color: "#6B7280",
+            fontWeight: 600,
+            marginTop: "0.6rem",
+            cursor: "pointer"
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.textDecoration = "underline")}
+          onMouseLeave={(e) => (e.currentTarget.style.textDecoration = "none")}
         >
-          <Eye size={12} color="#00E5C9" /> Quick View
+          View Details
         </div>
       </div>
 
-      {/* Details */}
-      <div style={{ padding: "1.25rem", flex: 1, display: "flex", flexDirection: "column" }}>
-        
-        {/* Category Tag */}
-        <div
-          style={{
-            fontSize: "0.75rem",
-            color: "#00A896",
-            fontWeight: 800,
-            textTransform: "uppercase",
-            letterSpacing: "0.05em",
-            marginBottom: "0.35rem"
-          }}
-        >
-          {product.category_name || "Grand Cayman Specialty"}
-        </div>
-
-        {/* Title */}
-        <h4
-          onClick={() => onSelectProduct(product)}
-          style={{
-            fontSize: "1.02rem",
-            fontWeight: 800,
-            color: "#0A1C36",
-            lineHeight: 1.35,
-            marginBottom: "0.85rem",
-            cursor: "pointer",
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden"
-          }}
-        >
-          {product.title}
-        </h4>
-
-        {/* Price & SKU */}
-        <div style={{ marginTop: "auto", paddingTop: "0.6rem" }}>
-          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "0.95rem" }}>
-            <div>
-              <span style={{ fontSize: "1.3rem", fontWeight: 900, color: "#0A1C36" }}>
-                {formatPrice(product.price)}
-              </span>
-              {currency === "KYD" && (
-                <span style={{ fontSize: "0.78rem", color: "#64748B", marginLeft: "0.4rem", fontWeight: 600 }}>
-                  (~${priceUSD} USD)
-                </span>
-              )}
-            </div>
-            <span style={{ fontSize: "0.74rem", color: "#94A3B8", fontFamily: "monospace", fontWeight: 600 }}>
-              {product.sku}
-            </span>
-          </div>
-
-          {/* Quick Quantity & Custom Options Bar */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem", background: "#F8FAFC", padding: "0.35rem 0.65rem", borderRadius: "10px", border: "1px solid #E2E8F0" }}>
-            <span style={{ fontSize: "0.76rem", fontWeight: 700, color: "#64748B" }}>Quantity:</span>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-              <button
-                type="button"
-                disabled={cardQty <= 1 || isOutOfStock}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setCardQty((q) => Math.max(1, q - 1));
-                }}
-                style={{
-                  background: "#FFFFFF",
-                  border: "1px solid #CBD5E1",
-                  borderRadius: "6px",
-                  width: "24px",
-                  height: "24px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: cardQty <= 1 ? "not-allowed" : "pointer",
-                  color: "#475569"
-                }}
-              >
-                <Minus size={11} />
-              </button>
-              <span style={{ fontSize: "0.85rem", fontWeight: 800, color: "#0F172A", minWidth: "20px", textAlign: "center" }}>
-                {cardQty}
-              </span>
-              <button
-                type="button"
-                disabled={cardQty >= product.stock_count || isOutOfStock}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setCardQty((q) => Math.min(product.stock_count, q + 1));
-                }}
-                style={{
-                  background: "#FFFFFF",
-                  border: "1px solid #CBD5E1",
-                  borderRadius: "6px",
-                  width: "24px",
-                  height: "24px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: cardQty >= product.stock_count ? "not-allowed" : "pointer",
-                  color: "#475569"
-                }}
-              >
-                <Plus size={11} />
-              </button>
-            </div>
-          </div>
-
-          {/* Variations Notification Badge if present */}
-          {hasVariations && (
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                onSelectProduct(product);
-              }}
-              style={{
-                fontSize: "0.73rem",
-                color: "#0F766E",
-                background: "#F0FDFA",
-                border: "1px solid #CCFBF1",
-                padding: "0.25rem 0.5rem",
-                borderRadius: "8px",
-                marginBottom: "0.75rem",
-                textAlign: "center",
-                cursor: "pointer",
-                fontWeight: 700,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.3rem"
-              }}
-            >
-              <Sliders size={12} />
-              <span>Options Available (Size/Color) • Click to Customize</span>
-            </div>
-          )}
-
-          {/* Action buttons */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.55rem" }}>
-            <button
-              disabled={isOutOfStock}
-              onClick={(e) => {
-                e.stopPropagation();
-                addToCart(product, {}, cardQty);
-              }}
-              className="btn-primary"
-              style={{
-                padding: "0.6rem 0.75rem",
-                fontSize: "0.84rem",
-                borderRadius: "12px",
-                opacity: isOutOfStock ? 0.4 : 1
-              }}
-            >
-              <ShoppingBag size={15} /> Add ({cardQty})
-            </button>
-
-            <button
-              disabled={isOutOfStock}
-              onClick={(e) => {
-                e.stopPropagation();
-                const targetPhone = vendorObj?.phone
-                  ? (toWhatsAppWaMeNumber ? toWhatsAppWaMeNumber(vendorObj.phone) : vendorObj.phone.replace(/\D/g, ""))
-                  : "13459492299";
-                const waText = encodeURIComponent(
-                  `Hello ${product.vendor_name}! I would like to buy: "${product.title}" (Qty: ${cardQty}, Total: ${formatPrice(product.price * cardQty)}) on CaymanBazaar.`
-                );
-                window.open(`https://wa.me/${targetPhone}?text=${waText}`, "_blank");
-              }}
-              style={{
-                background: "#25D366",
-                color: "#FFFFFF",
-                border: "none",
-                fontWeight: 800,
-                padding: "0.6rem 0.75rem",
-                fontSize: "0.84rem",
-                borderRadius: "12px",
-                cursor: isOutOfStock ? "not-allowed" : "pointer",
-                opacity: isOutOfStock ? 0.4 : 1,
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.35rem",
-                boxShadow: "0 2px 8px rgba(37, 211, 102, 0.25)"
-              }}
-              title="Order this item directly on WhatsApp"
-            >
-              <MessageCircle size={15} /> WhatsApp
-            </button>
-          </div>
-        </div>
-
-      </div>
     </div>
   );
 }

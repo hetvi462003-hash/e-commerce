@@ -37,252 +37,373 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
   const vendorPendingOrders = orders.filter(
     (o) => o.vendor_id === activeVendor?.id && o.status !== "Completed" && o.status !== "Cancelled"
   ).length;
+  const isCustomer = userRole === "customer";
 
   return (
     <header style={{
-      background: "rgba(5, 11, 20, 0.94)",
-      backdropFilter: "blur(24px)",
-      WebkitBackdropFilter: "blur(24px)",
-      borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+      background: isCustomer ? "#FFFFFF" : "rgba(5, 11, 20, 0.94)",
+      borderBottom: isCustomer ? "1px solid #E5E7EB" : "1px solid rgba(255, 255, 255, 0.1)",
       position: "sticky",
       top: 0,
       zIndex: 100,
-      boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)"
+      boxShadow: isCustomer ? "0 2px 10px rgba(0, 0, 0, 0.05)" : "0 10px 30px rgba(0, 0, 0, 0.5)"
     }}>
       {/* Top Island Trust & Delivery Bar */}
-      {userRole === "customer" && (
+      {isCustomer && (
         <div style={{
-          background: "linear-gradient(90deg, #050B14 0%, #0A1C36 50%, #050B14 100%)",
-          borderBottom: "1px solid rgba(0, 229, 201, 0.25)",
-          padding: "0.38rem 1rem",
+          background: "#F8FAFC",
+          borderBottom: "1px solid #E2E8F0",
+          padding: "0.35rem 1rem",
           textAlign: "center",
           fontSize: "0.76rem",
           fontWeight: 700,
-          color: "#94A3B8",
-          letterSpacing: "0.03em",
+          color: "#475569",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           gap: "1.25rem",
           flexWrap: "wrap"
         }}>
-          <span>🌴 <strong style={{ color: "#00E5C9" }}>Grand Cayman</strong> Island-Wide Courier Delivery</span>
+          <span>🌴 <strong style={{ color: "#00A896" }}>Grand Cayman</strong> Online Shopping</span>
           <span style={{ opacity: 0.4 }}>•</span>
-          <span>⚡ <strong style={{ color: "#25D366" }}>WhatsApp Checkout</strong> & Store Pickup</span>
+          <span>⚡ <strong style={{ color: "#16A34A" }}>Fast Local Delivery</strong> across Cayman</span>
           <span style={{ opacity: 0.4 }}>•</span>
-          <span>🛡️ <strong style={{ color: "#FFFFFF" }}>100% Verified Local Artisans</strong></span>
+          <span>🛡️ <strong style={{ color: "#0F172A" }}>100% Quality Items</strong></span>
           <span style={{ opacity: 0.4 }}>•</span>
-          <span>💎 <strong style={{ color: "#00E5C9" }}>0% Island Sales Tax</strong> (Duty-Free)</span>
+          <span>💎 <strong style={{ color: "#00A896" }}>0% Island Sales Tax</strong></span>
         </div>
       )}
 
-      <div className="container" style={{ padding: "0.85rem 1.75rem" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1.5rem" }}>
-          
-          {/* Brand Logo & Luxury Monogram */}
-          <div
-            onClick={() => setActiveTab("home")}
-            style={{ display: "flex", alignItems: "center", gap: "0.85rem", cursor: "pointer", flexShrink: 0 }}
-          >
+      {/* Customer Header Row (EE345 style) */}
+      {isCustomer && (
+        <div className="container" style={{ padding: "0.75rem 1.5rem" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1.25rem" }}>
+            
+            {/* Brand Logo (EE345 style) */}
+            <div
+              onClick={() => setActiveTab("home")}
+              style={{ display: "flex", alignItems: "center", gap: "0.6rem", cursor: "pointer", flexShrink: 0 }}
+            >
+              <div style={{
+                background: "#0F172A",
+                width: "38px",
+                height: "38px",
+                borderRadius: "10px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#00E5C9"
+              }}>
+                <ShoppingBag size={22} />
+              </div>
+              <div>
+                <div style={{
+                  fontFamily: "var(--font-heading)",
+                  fontSize: "1.35rem",
+                  fontWeight: 900,
+                  color: isCustomer ? "#0F172A" : "#FFFFFF",
+                  lineHeight: 1,
+                  letterSpacing: "-0.03em"
+                }}>
+                  CAYMAN<span style={{ color: "#00A896" }}>BAZAAR</span>
+                </div>
+                <div style={{
+                  fontSize: "0.65rem",
+                  color: isCustomer ? "#64748B" : "#94A3B8",
+                  fontWeight: 800,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase"
+                }}>
+                  Online Shopping • Grand Cayman
+                </div>
+              </div>
+            </div>
+
+            {/* Centered Search Bar (EE345 style) */}
             <div style={{
-              background: "linear-gradient(135deg, #050B14 0%, #0A1C36 50%, #00E5C9 100%)",
-              width: "46px",
-              height: "46px",
-              borderRadius: "16px",
+              flex: 1,
+              maxWidth: "540px",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              color: "#FFFFFF",
-              boxShadow: "0 8px 20px rgba(0, 229, 201, 0.35)",
-              border: "1.5px solid rgba(0, 229, 201, 0.4)"
+              background: "#F1F5F9",
+              borderRadius: "999px",
+              padding: "0.25rem 0.35rem 0.25rem 1rem",
+              border: "1.5px solid #CBD5E1"
             }}>
-              <Compass size={25} color="#00E5C9" />
-            </div>
-            <div>
-              <div style={{
-                fontFamily: "var(--font-heading)",
-                fontSize: "1.4rem",
-                fontWeight: 900,
-                color: "#FFFFFF",
-                lineHeight: 1.1,
-                letterSpacing: "-0.035em"
-              }}>
-                CAYMAN<span style={{ color: "#00E5C9" }}>BAZAAR</span>
-              </div>
-              <div style={{
-                fontSize: "0.68rem",
-                color: "#94A3B8",
-                fontWeight: 800,
-                letterSpacing: "0.1em",
-                textTransform: "uppercase"
-              }}>
-                Premier Local Marketplace • Grand Cayman
-              </div>
-            </div>
-          </div>
-
-          {/* Customer Navigation Bar */}
-          {userRole === "customer" && (
-            <nav className="desktop-nav-links" style={{ display: "flex", alignItems: "center", gap: "0.4rem", marginLeft: "auto", marginRight: "1rem" }}>
-              <button
-                onClick={() => setActiveTab("home")}
+              <input
+                type="text"
+                placeholder="Search products, rum cake, dive gear, electronics..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") setActiveTab("categories");
+                }}
                 style={{
-                  background: activeTab === "home" ? "rgba(0, 229, 201, 0.15)" : "transparent",
-                  color: activeTab === "home" ? "#00E5C9" : "#CBD5E1",
-                  fontWeight: activeTab === "home" ? 800 : 500,
+                  flex: 1,
+                  border: "none",
+                  background: "transparent",
+                  outline: "none",
                   fontSize: "0.88rem",
-                  padding: "0.5rem 0.85rem",
-                  borderRadius: "10px",
+                  color: "#0F172A",
+                  fontWeight: 500
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => setActiveTab("categories")}
+                style={{
+                  background: "#00A896",
+                  color: "#FFFFFF",
+                  border: "none",
+                  borderRadius: "999px",
+                  width: "36px",
+                  height: "36px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  flexShrink: 0
+                }}
+              >
+                <Search size={16} />
+              </button>
+            </div>
+
+            {/* Customer Navigation Icons (EE345 style: Support, Account, Wishlist, Cart) */}
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0 }}>
+              
+              {/* Support WhatsApp Pill */}
+              <a
+                href="https://wa.me/13459492299?text=Hello%20CaymanBazaar%2C%20I%20need%20some%20assistance."
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  background: "#0F172A",
+                  color: "#FFFFFF",
+                  padding: "0.45rem 0.95rem",
+                  borderRadius: "999px",
+                  fontSize: "0.82rem",
+                  fontWeight: 700,
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "0.35rem",
-                  border: activeTab === "home" ? "1px solid rgba(0, 229, 201, 0.3)" : "1px solid transparent",
-                  cursor: "pointer",
-                  transition: "all 0.2s"
+                  textDecoration: "none"
                 }}
               >
-                Home
+                <MessageCircle size={15} color="#25D366" />
+                <span>Support</span>
+              </a>
+
+              {/* My Orders / Account */}
+              <button
+                onClick={() => setActiveTab("my-orders")}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "#334155",
+                  fontSize: "0.82rem",
+                  fontWeight: 700,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.35rem",
+                  cursor: "pointer",
+                  padding: "0.45rem 0.65rem",
+                  borderRadius: "8px"
+                }}
+              >
+                <PackageCheck size={18} color="#0F172A" />
+                <span className="hide-on-mobile">My Orders</span>
               </button>
-
-                <button
-                  onClick={() => setActiveTab("categories")}
-                  style={{
-                    background: activeTab === "categories" ? "rgba(0, 229, 201, 0.15)" : "transparent",
-                    color: activeTab === "categories" ? "#00E5C9" : "#CBD5E1",
-                    fontWeight: activeTab === "categories" ? 800 : 600,
-                    fontSize: "0.9rem",
-                    padding: "0.55rem 0.95rem",
-                    borderRadius: "12px",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "0.4rem",
-                    border: activeTab === "categories" ? "1px solid rgba(0, 229, 201, 0.3)" : "1px solid transparent"
-                  }}
-                >
-                  <ShoppingBag size={16} /> Shop All
-                </button>
-
-                <button
-                  onClick={() => setActiveTab("my-orders")}
-                  style={{
-                    background: activeTab === "my-orders" ? "rgba(0, 229, 201, 0.15)" : "transparent",
-                    color: activeTab === "my-orders" ? "#00E5C9" : "#CBD5E1",
-                    fontWeight: activeTab === "my-orders" ? 800 : 600,
-                    fontSize: "0.9rem",
-                    padding: "0.55rem 0.85rem",
-                    borderRadius: "12px",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "0.4rem",
-                    border: activeTab === "my-orders" ? "1px solid rgba(0, 229, 201, 0.3)" : "1px solid transparent",
-                    position: "relative"
-                  }}
-                >
-                  <PackageCheck size={16} /> My Orders
-                  {isCustomerLoggedIn && (
-                    <span
-                      title={`Signed in: ${customerDisplayName || customerPhoneSession}`}
-                      style={{
-                        width: "8px",
-                        height: "8px",
-                        borderRadius: "50%",
-                        background: "#10B981",
-                        boxShadow: "0 0 8px #10B981",
-                        display: "inline-block"
-                      }}
-                    />
-                  )}
-                </button>
-
-                <button
-                  onClick={() => setActiveTab("faq")}
-                  style={{
-                    background: activeTab === "faq" ? "rgba(0, 229, 201, 0.15)" : "transparent",
-                    color: activeTab === "faq" ? "#00E5C9" : "#CBD5E1",
-                    fontWeight: activeTab === "faq" ? 800 : 600,
-                    fontSize: "0.9rem",
-                    padding: "0.55rem 0.85rem",
-                    borderRadius: "12px",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "0.4rem",
-                    border: activeTab === "faq" ? "1px solid rgba(0, 229, 201, 0.3)" : "1px solid transparent"
-                  }}
-                >
-                  <HelpCircle size={16} /> FAQ
-                </button>
-
-                <button
-                  onClick={() => setActiveTab("contact")}
-                  style={{
-                    background: activeTab === "contact" ? "rgba(0, 229, 201, 0.15)" : "transparent",
-                    color: activeTab === "contact" ? "#00E5C9" : "#CBD5E1",
-                    fontWeight: activeTab === "contact" ? 800 : 600,
-                    fontSize: "0.9rem",
-                    padding: "0.55rem 0.85rem",
-                    borderRadius: "12px",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "0.4rem",
-                    border: activeTab === "contact" ? "1px solid rgba(0, 229, 201, 0.3)" : "1px solid transparent"
-                  }}
-                >
-                  Contact
-                </button>
-
-                <a
-                  href="https://wa.me/13459492299?text=Hello%20CaymanBazaar%2C%20I%20need%20assistance."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    background: "rgba(37, 211, 102, 0.15)",
-                    color: "#25D366",
-                    fontWeight: 800,
-                    fontSize: "0.85rem",
-                    padding: "0.5rem 0.85rem",
-                    borderRadius: "12px",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "0.4rem",
-                    border: "1px solid rgba(37, 211, 102, 0.4)",
-                    textDecoration: "none"
-                  }}
-                >
-                  <MessageCircle size={15} /> Support
-                </a>
 
                 {/* Cart Drawer Trigger */}
                 <button
                   onClick={() => setIsCartOpen(true)}
-                  className="btn-primary"
                   style={{
-                    padding: "0.65rem 1.4rem",
+                    background: "#00A896",
+                    color: "#FFFFFF",
+                    border: "none",
                     borderRadius: "999px",
-                    fontSize: "0.9rem",
-                    marginLeft: "0.6rem"
+                    padding: "0.45rem 1.15rem",
+                    fontSize: "0.86rem",
+                    fontWeight: 800,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.45rem",
+                    cursor: "pointer",
+                    boxShadow: "0 2px 8px rgba(0, 168, 150, 0.3)"
                   }}
                 >
                   <ShoppingBag size={17} />
-                  <span>Bag</span>
+                  <span>Cart</span>
                   {totalCartCount > 0 && (
                     <span
                       style={{
-                        background: "#FF5A5F",
-                        color: "#FFFFFF",
-                        fontSize: "0.72rem",
+                        background: "#FFFFFF",
+                        color: "#00A896",
+                        fontSize: "0.74rem",
                         fontWeight: 900,
                         borderRadius: "999px",
-                        padding: "0.15rem 0.55rem",
-                        marginLeft: "0.25rem",
-                        boxShadow: "0 2px 8px rgba(255, 90, 95, 0.5)"
+                        padding: "0.1rem 0.45rem",
+                        marginLeft: "0.2rem"
                       }}
                     >
                       {totalCartCount}
                     </span>
                   )}
                 </button>
-              </nav>
-          )}
+              </div>
+            </div>
+          </div>
+        )}
+
+      {/* EE345 Sub-Navigation Category Bar */}
+      {isCustomer && (
+        <div style={{
+          background: "#FFFFFF",
+          borderTop: "1px solid #F1F5F9",
+          borderBottom: "1px solid #E5E7EB",
+          overflowX: "auto",
+          whiteSpace: "nowrap"
+        }}>
+          <div className="container" style={{ padding: "0.4rem 1.5rem", display: "flex", alignItems: "center", gap: "0.35rem" }}>
+            <button
+              onClick={() => setActiveTab("home")}
+              style={{
+                background: activeTab === "home" ? "#0F172A" : "transparent",
+                color: activeTab === "home" ? "#FFFFFF" : "#334155",
+                padding: "0.35rem 0.85rem",
+                borderRadius: "999px",
+                fontSize: "0.82rem",
+                fontWeight: 700,
+                border: "none",
+                cursor: "pointer"
+              }}
+            >
+              Home
+            </button>
+            <button
+              onClick={() => setActiveTab("categories")}
+              style={{
+                background: activeTab === "categories" ? "#0F172A" : "transparent",
+                color: activeTab === "categories" ? "#FFFFFF" : "#334155",
+                padding: "0.35rem 0.85rem",
+                borderRadius: "999px",
+                fontSize: "0.82rem",
+                fontWeight: 600,
+                border: "none",
+                cursor: "pointer"
+              }}
+            >
+              Shop
+            </button>
+            <button
+              onClick={() => {
+                setActiveTab("home");
+                setTimeout(() => {
+                  const el = document.getElementById("new-arrivals-section");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }, 100);
+              }}
+              style={{
+                background: "transparent",
+                color: "#334155",
+                padding: "0.35rem 0.85rem",
+                borderRadius: "999px",
+                fontSize: "0.82rem",
+                fontWeight: 600,
+                border: "none",
+                cursor: "pointer"
+              }}
+            >
+              New Arrivals
+            </button>
+            <button
+              onClick={() => {
+                setActiveTab("home");
+                setTimeout(() => {
+                  const el = document.getElementById("special-offers-section");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }, 100);
+              }}
+              style={{
+                background: "transparent",
+                color: "#334155",
+                padding: "0.35rem 0.85rem",
+                borderRadius: "999px",
+                fontSize: "0.82rem",
+                fontWeight: 600,
+                border: "none",
+                cursor: "pointer"
+              }}
+            >
+              Special Offers
+            </button>
+            <a
+              href="https://wa.me/13459492299?text=Hello%20CaymanBazaar%2C%20I%20need%20customer%20support."
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                background: "transparent",
+                color: "#334155",
+                padding: "0.35rem 0.85rem",
+                borderRadius: "999px",
+                fontSize: "0.82rem",
+                fontWeight: 600,
+                textDecoration: "none"
+              }}
+            >
+              Customer Support
+            </a>
+            <button
+              onClick={() => setActiveTab("contact")}
+              style={{
+                background: activeTab === "contact" ? "#0F172A" : "transparent",
+                color: activeTab === "contact" ? "#FFFFFF" : "#334155",
+                padding: "0.35rem 0.85rem",
+                borderRadius: "999px",
+                fontSize: "0.82rem",
+                fontWeight: 600,
+                border: "none",
+                cursor: "pointer"
+              }}
+            >
+              Contact Us
+            </button>
+
+            <span style={{ color: "#CBD5E1", margin: "0 0.35rem" }}>|</span>
+
+            {[
+              { id: "cat-1", name: "Artisanal Crafts" },
+              { id: "cat-2", name: "Beach & Watersports" },
+              { id: "cat-3", name: "Gourmet Food & Rum" },
+              { id: "cat-4", name: "Duty-Free Luxury" },
+              { id: "cat-5", name: "Island Apparel" },
+              { id: "cat-6", name: "Cayman Souvenirs" }
+            ].map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveTab("categories")}
+                style={{
+                  background: "transparent",
+                  color: "#64748B",
+                  padding: "0.35rem 0.75rem",
+                  fontSize: "0.82rem",
+                  fontWeight: 500,
+                  border: "none",
+                  cursor: "pointer"
+                }}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Main Container Close for non-customers */}
+      {!isCustomer && (
+        <div className="container" style={{ padding: "0.85rem 1.75rem" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1.5rem" }}>
 
           {/* Vendor Portal Navigation */}
           {userRole === "vendor" && (
@@ -540,6 +661,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
 
         </div>
       </div>
+      )}
 
       {/* Mobile Responsive Navigation Drawer */}
       {isMobileMenuOpen && (
