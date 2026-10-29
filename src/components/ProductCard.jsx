@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useMarketplace } from "../context/MarketplaceContext";
-import { ShoppingBag, Sparkles, Store, MapPin, Eye, Plus, Minus, Sliders, MessageCircle } from "lucide-react";
+import { ShoppingBag, Sparkles, Heart, Eye, Plus, Minus, Sliders, MessageCircle, Check } from "lucide-react";
 
 export default function ProductCard({ product, onSelectProduct, onVisitStore }) {
   const { formatPrice, addToCart, vendors, currency, toWhatsAppWaMeNumber } = useMarketplace();
   const [cardQty, setCardQty] = useState(1);
+  const [isWishlisted, setIsWishlisted] = useState(false);
 
   const isLowStock = product.stock_count > 0 && product.stock_count <= 5;
   const isOutOfStock = product.stock_count <= 0;
@@ -16,13 +17,13 @@ export default function ProductCard({ product, onSelectProduct, onVisitStore }) 
   const priceUSD = (product.price * 1.2).toFixed(2);
 
   return (
-    <div className="luxury-product-card">
+    <div className="luxury-product-card" style={{ position: "relative", display: "flex", flexDirection: "column" }}>
       
       {/* Product Image Container */}
       <div
         className="product-img-wrapper"
         onClick={() => onSelectProduct(product)}
-        style={{ cursor: "pointer" }}
+        style={{ cursor: "pointer", position: "relative" }}
       >
         <img
           src={product.images[0]}
@@ -34,7 +35,7 @@ export default function ProductCard({ product, onSelectProduct, onVisitStore }) 
         <div style={{ position: "absolute", top: "12px", left: "12px", display: "flex", flexDirection: "column", gap: "0.45rem", zIndex: 2 }}>
           {product.sponsored && (
             <span className="badge badge-sponsored">
-              <Sparkles size={11} /> Sponsored
+              <Sparkles size={11} /> Trending
             </span>
           )}
 
@@ -43,61 +44,91 @@ export default function ProductCard({ product, onSelectProduct, onVisitStore }) 
           ) : isLowStock ? (
             <span className="badge badge-low-stock">Only {product.stock_count} Left</span>
           ) : (
-            <span className="badge badge-stock">In Stock ({product.stock_count})</span>
+            <span className="badge badge-stock">In Stock</span>
           )}
         </div>
 
-        {/* District Stamp */}
-        {vendorObj && (
-          <div style={{
+        {/* Wishlist Heart Button */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsWishlisted(!isWishlisted);
+          }}
+          style={{
+            position: "absolute",
+            top: "12px",
+            right: "12px",
+            background: "rgba(255, 255, 255, 0.9)",
+            border: "none",
+            borderRadius: "50%",
+            width: "34px",
+            height: "34px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+            zIndex: 3,
+            color: isWishlisted ? "#EF4444" : "#94A3B8",
+            transition: "all 0.2s"
+          }}
+          title={isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
+        >
+          <Heart size={16} fill={isWishlisted ? "#EF4444" : "none"} />
+        </button>
+
+        {/* Quick View Pill on Hover */}
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            onSelectProduct(product);
+          }}
+          style={{
             position: "absolute",
             bottom: "10px",
-            left: "10px",
-            background: "rgba(5, 11, 20, 0.85)",
-            backdropFilter: "blur(8px)",
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "rgba(10, 28, 54, 0.85)",
+            backdropFilter: "blur(6px)",
             color: "#FFFFFF",
             fontSize: "0.74rem",
-            fontWeight: 800,
-            padding: "0.22rem 0.6rem",
-            borderRadius: "8px",
+            fontWeight: 700,
+            padding: "0.3rem 0.8rem",
+            borderRadius: "999px",
             display: "inline-flex",
             alignItems: "center",
             gap: "0.35rem",
-            border: "1px solid rgba(255, 255, 255, 0.15)"
-          }}>
-            <MapPin size={11} color="#00E5C9" /> {vendorObj.district}
-          </div>
-        )}
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            opacity: 0.95
+          }}
+        >
+          <Eye size={12} color="#00E5C9" /> Quick View
+        </div>
       </div>
 
       {/* Details */}
       <div style={{ padding: "1.25rem", flex: 1, display: "flex", flexDirection: "column" }}>
         
-        {/* Stall Attribution */}
+        {/* Category Tag */}
         <div
-          onClick={(e) => {
-            e.stopPropagation();
-            if (vendorObj && onVisitStore) onVisitStore(vendorObj);
-          }}
           style={{
-            fontSize: "0.78rem",
-            color: "#00B49F",
+            fontSize: "0.75rem",
+            color: "#00A896",
             fontWeight: 800,
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.35rem",
-            marginBottom: "0.35rem",
-            cursor: "pointer"
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
+            marginBottom: "0.35rem"
           }}
         >
-          <Store size={13} /> {product.vendor_name}
+          {product.category_name || "Grand Cayman Specialty"}
         </div>
 
         {/* Title */}
         <h4
           onClick={() => onSelectProduct(product)}
           style={{
-            fontSize: "1.05rem",
+            fontSize: "1.02rem",
             fontWeight: 800,
             color: "#0A1C36",
             lineHeight: 1.35,

@@ -20,6 +20,7 @@ import {
   BarChart3,
   Star,
   MessageSquare,
+  MessageCircle,
   Menu,
   X
 } from "lucide-react";
@@ -140,26 +141,8 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                   transition: "all 0.2s"
                 }}
               >
-                Marketplace
+                Home
               </button>
-
-                <button
-                  onClick={() => setActiveTab("stores")}
-                  style={{
-                    background: activeTab === "stores" ? "rgba(0, 229, 201, 0.15)" : "transparent",
-                    color: activeTab === "stores" ? "#00E5C9" : "#CBD5E1",
-                    fontWeight: activeTab === "stores" ? 800 : 600,
-                    fontSize: "0.9rem",
-                    padding: "0.55rem 0.95rem",
-                    borderRadius: "12px",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "0.4rem",
-                    border: activeTab === "stores" ? "1px solid rgba(0, 229, 201, 0.3)" : "1px solid transparent"
-                  }}
-                >
-                  <Store size={16} /> Island Stores
-                </button>
 
                 <button
                   onClick={() => setActiveTab("categories")}
@@ -176,7 +159,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                     border: activeTab === "categories" ? "1px solid rgba(0, 229, 201, 0.3)" : "1px solid transparent"
                   }}
                 >
-                  <Grid size={16} /> Catalog
+                  <ShoppingBag size={16} /> Shop All
                 </button>
 
                 <button
@@ -246,6 +229,27 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                 >
                   Contact
                 </button>
+
+                <a
+                  href="https://wa.me/13459492299?text=Hello%20CaymanBazaar%2C%20I%20need%20assistance."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    background: "rgba(37, 211, 102, 0.15)",
+                    color: "#25D366",
+                    fontWeight: 800,
+                    fontSize: "0.85rem",
+                    padding: "0.5rem 0.85rem",
+                    borderRadius: "12px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.4rem",
+                    border: "1px solid rgba(37, 211, 102, 0.4)",
+                    textDecoration: "none"
+                  }}
+                >
+                  <MessageCircle size={15} /> Support
+                </a>
 
                 {/* Cart Drawer Trigger */}
                 <button
