@@ -11,6 +11,7 @@ import FloatingWhatsApp from "./components/FloatingWhatsApp";
 // Customer Pages
 import Home from "./pages/customer/Home";
 import CategoriesPage from "./pages/customer/CategoriesPage";
+import CartPage from "./pages/customer/CartPage";
 import StoreDirectoryPage from "./pages/customer/StoreDirectoryPage";
 import StorePage from "./pages/customer/StorePage";
 import ProductDetailPage from "./pages/customer/ProductDetailPage";
@@ -108,6 +109,12 @@ function MainApp() {
                 setSelectedVendor={setSelectedVendor}
               />
             )}
+            {activeTab === "cart" && (
+              <CartPage
+                setActiveTab={setActiveTab}
+                setSelectedProduct={setSelectedProduct}
+              />
+            )}
             {activeTab === "checkout" && (
               <CheckoutPage setActiveTab={setActiveTab} />
             )}
@@ -152,6 +159,7 @@ function MainApp() {
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         onProceedCheckout={() => setActiveTab("checkout")}
+        onViewCartPage={() => setActiveTab("cart")}
       />
 
       {/* Toast Pop-up Alerts */}

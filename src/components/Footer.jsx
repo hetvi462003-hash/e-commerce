@@ -24,6 +24,11 @@ export default function Footer({ setActiveTab }) {
                 </span>
               </li>
               <li>
+                <span style={{ cursor: "pointer" }} onClick={() => setActiveTab("cart")}>
+                  Shopping Cart
+                </span>
+              </li>
+              <li>
                 <span
                   style={{ cursor: "pointer" }}
                   onClick={() => {

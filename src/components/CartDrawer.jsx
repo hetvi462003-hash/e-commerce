@@ -3,7 +3,7 @@ import { useMarketplace } from "../context/MarketplaceContext";
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, ShieldCheck, Clock, Store, CheckCircle2, User } from "lucide-react";
 import CheckoutAuthModal from "./CheckoutAuthModal";
 
-export default function CartDrawer({ isOpen, onClose, onProceedCheckout }) {
+export default function CartDrawer({ isOpen, onClose, onProceedCheckout, onViewCartPage }) {
   const { cart, updateCartQty, removeFromCart, formatPrice, vendors, customerPhoneSession, customerProfile } = useMarketplace();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
@@ -202,6 +202,27 @@ export default function CartDrawer({ isOpen, onClose, onProceedCheckout }) {
               style={{ width: "100%", padding: "0.85rem 1rem", fontSize: "0.95rem" }}
             >
               Proceed to Checkout <ArrowRight size={18} />
+            </button>
+
+            <button
+              onClick={() => {
+                onClose();
+                if (onViewCartPage) onViewCartPage();
+              }}
+              style={{
+                width: "100%",
+                background: "#F1F5F9",
+                color: "#1E293B",
+                border: "1px solid #E2E8F0",
+                borderRadius: "10px",
+                padding: "0.65rem 1rem",
+                fontSize: "0.88rem",
+                fontWeight: 700,
+                cursor: "pointer",
+                marginTop: "0.5rem"
+              }}
+            >
+              View Full Shopping Cart Page
             </button>
           </div>
         )}

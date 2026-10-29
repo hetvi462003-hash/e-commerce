@@ -215,9 +215,9 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                 <span className="hide-on-mobile">My Orders</span>
               </button>
 
-                {/* Cart Drawer Trigger */}
+                {/* Cart Page Trigger (EE345 style) */}
                 <button
-                  onClick={() => setIsCartOpen(true)}
+                  onClick={() => setActiveTab("cart")}
                   style={{
                     background: "#00A896",
                     color: "#FFFFFF",
