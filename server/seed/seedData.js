@@ -50,7 +50,7 @@ const seedDatabase = async () => {
       operating_hours: v.hours || "Mon - Sat: 9:00 AM - 6:00 PM",
       policies: v.policies || {
         return_policy: "7-day return policy for unused items.",
-        pickup_policy: "Items held at stall counter for collection. Please mention your order reference (#CB-XXXX) upon arrival.",
+        pickup_policy: "Items held at boutique counter for collection. Please mention your order reference (#CB-XXXX) upon arrival.",
         shipping_policy: "Island-wide Grand Cayman courier delivery."
       },
       social_connections: v.social_connections || {}

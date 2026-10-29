@@ -191,7 +191,7 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
 
             <button
               onClick={() => {
-                const el = document.getElementById("stores-section");
+                const el = document.getElementById("products-section");
                 if (el) el.scrollIntoView({ behavior: "smooth" });
               }}
               className="btn-primary"
@@ -203,14 +203,14 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
                 flexShrink: 0
               }}
             >
-              Explore Stores <ArrowRight size={16} />
+              Explore Products <ArrowRight size={16} />
             </button>
           </div>
 
           {/* Quick Category Chips for Fast Discovery */}
           <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "0.5rem", maxWidth: "780px", margin: "0 auto 2.2rem auto" }}>
             {[
-              { id: "all", label: "✨ All Categories" },
+              { id: "all", label: "✨ All Products" },
               { id: "cat-1", label: "💎 Artisan Jewelry" },
               { id: "cat-2", label: "🍰 Cayman Gourmet" },
               { id: "cat-3", label: "🤿 Beach & Dive Gear" },
@@ -221,7 +221,7 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
                 key={cat.id}
                 onClick={() => {
                   setHeroCategory(cat.id);
-                  const el = document.getElementById("stores-section");
+                  const el = document.getElementById("products-section");
                   if (el) el.scrollIntoView({ behavior: "smooth" });
                 }}
                 style={{
@@ -263,10 +263,137 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
         </div>
       </section>
 
-      {/* 🏝️ CLEAN & SPACIOUS DISTRICT FILTER PROMENADE */}
-      <section style={{ padding: "3rem 0 1.5rem 0", background: "#F8FAFC", borderBottom: "1px solid #E2E8F0" }}>
+      {/* 🔥 01. TRENDING ISLAND PRODUCTS FIRST (Catalog & 1-Click WhatsApp Ordering) */}
+      <section id="products-section" className="container" style={{ paddingTop: "3.5rem", marginBottom: "4.5rem" }}>
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "2.25rem", flexWrap: "wrap", gap: "1rem" }}>
+          <div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "#F59E0B", fontSize: "0.82rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em" }}>
+              <Sparkles size={15} /> Island Customer Favorites
+            </div>
+            <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "2.6rem", color: "#0A1C36", fontWeight: 800, letterSpacing: "-0.02em" }}>
+              Trending Island Products
+            </h2>
+            <p style={{ fontSize: "1rem", color: "#64748B" }}>
+              Direct WhatsApp 1-Click Ordering • Fast Island Courier Delivery or Store Pickup
+            </p>
+          </div>
+
+          <button onClick={() => setActiveTab("categories")} className="btn-outline">
+            Explore All Products ({products.length}) <ArrowRight size={15} />
+          </button>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.85rem" }}>
+          {trendingItems.map((prod, idx) => (
+            <div key={prod.id} className={`animate-entrance stagger-${(idx % 4) + 1}`}>
+              <ProductCard
+                product={prod}
+                onSelectProduct={(p, directReserve = false) => {
+                  if (directReserve) {
+                    setSelectedProduct(p);
+                    setActiveTab("checkout");
+                  } else {
+                    setQuickViewProduct(p);
+                  }
+                }}
+                onVisitStore={(v) => {
+                  setSelectedVendor(v);
+                  setActiveTab("store-detail");
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 🛍️ 02. CURATED ISLAND SPECIALTIES & CATEGORIES */}
+      <section className="container" style={{ marginBottom: "5rem" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "2rem" }}>
+          <div>
+            <div style={{ fontSize: "0.8rem", fontWeight: 800, color: "#00B49F", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+              Explore By Department
+            </div>
+            <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "2.4rem", color: "#0A1C36", fontWeight: 800 }}>
+              Curated Island Categories
+            </h2>
+            <p style={{ fontSize: "0.95rem", color: "#64748B" }}>Handcrafted Caymanite, Tortuga rum cakes, luxury Larimar, and reef gear</p>
+          </div>
+
+          <button onClick={() => setActiveTab("categories")} className="btn-outline">
+            View All Categories <ArrowRight size={15} />
+          </button>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(190px, 1fr))", gap: "1.35rem" }}>
+          {categories.map((cat) => (
+            <div
+              key={cat.id}
+              className="category-card"
+              onClick={() => {
+                setHeroCategory(cat.id);
+                setActiveTab("categories");
+              }}
+              style={{
+                background: "#FFFFFF",
+                borderRadius: "22px",
+                overflow: "hidden",
+                border: "1px solid #E2E8F0",
+                boxShadow: "var(--shadow-subtle)",
+                cursor: "pointer",
+                textAlign: "center"
+              }}
+            >
+              <div style={{ height: "125px", overflow: "hidden" }}>
+                <img src={cat.image} alt={cat.name} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.5s ease" }} />
+              </div>
+              <div style={{ padding: "1.1rem" }}>
+                <div style={{ fontWeight: 800, fontSize: "0.95rem", color: "#0A1C36" }}>{cat.name}</div>
+                <div style={{ fontSize: "0.78rem", color: "#00B49F", fontWeight: 700, marginTop: "0.25rem" }}>{cat.count} Items Available</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 🎪 03. FEATURED ISLAND STORES & BOUTIQUES (With High-End Retail Photography) */}
+      <section id="stores-section" className="container" style={{ marginBottom: "5rem" }}>
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "2.25rem", flexWrap: "wrap", gap: "1rem" }}>
+          <div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "#00B49F", fontSize: "0.84rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em" }}>
+              <Store size={16} /> Grand Cayman Promenade of Boutiques
+            </div>
+            <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "2.6rem", color: "#0A1C36", fontWeight: 800, letterSpacing: "-0.02em" }}>
+              Featured Island Stores & Boutiques
+            </h2>
+            <p style={{ fontSize: "1rem", color: "#64748B" }}>
+              Discover verified local boutiques across Georgetown, Seven Mile Beach, Rum Point & Bodden Town
+            </p>
+          </div>
+
+          <button onClick={() => setActiveTab("stores")} className="btn-outline">
+            Browse All Stores ({liveVendors.length}) <ArrowRight size={15} />
+          </button>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(310px, 1fr))", gap: "1.85rem" }}>
+          {featuredStores.map((vendor, idx) => (
+            <div key={vendor.id} className={`animate-entrance stagger-${idx + 1}`}>
+              <StoreCard
+                vendor={vendor}
+                onVisitStore={(v) => {
+                  setSelectedVendor(v);
+                  setActiveTab("store-detail");
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 🏝️ 04. DISTRICT FILTER PROMENADE */}
+      <section style={{ padding: "3rem 0 2rem 0", background: "#F8FAFC", borderTop: "1px solid #E2E8F0", borderBottom: "1px solid #E2E8F0", marginBottom: "5rem" }}>
         <div className="container">
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
             <div>
               <div style={{ fontSize: "0.78rem", fontWeight: 800, color: "#00B49F", textTransform: "uppercase", letterSpacing: "0.08em" }}>
                 Filter by Island Location
@@ -322,46 +449,11 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
         </div>
       </section>
 
-      {/* 🎪 VIRTUAL BOUTIQUE STORES SECTION */}
-      <section id="stores-section" className="container" style={{ marginBottom: "5rem" }}>
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "2.25rem", flexWrap: "wrap", gap: "1rem" }}>
-          <div>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "#00B49F", fontSize: "0.84rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em" }}>
-              <Store size={16} /> Grand Cayman Promenade of Boutiques
-            </div>
-            <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "2.6rem", color: "#0A1C36", fontWeight: 800, letterSpacing: "-0.02em" }}>
-              Featured Island Stores & Boutiques
-            </h2>
-            <p style={{ fontSize: "1rem", color: "#64748B" }}>
-              Discover authentic local boutiques across Georgetown, Seven Mile Beach, Rum Point & Bodden Town
-            </p>
-          </div>
-
-          <button onClick={() => setActiveTab("stores")} className="btn-outline">
-            Browse All Stores ({liveVendors.length}) <ArrowRight size={15} />
-          </button>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(310px, 1fr))", gap: "1.85rem" }}>
-          {featuredStores.map((vendor, idx) => (
-            <div key={vendor.id} className={`animate-entrance stagger-${idx + 1}`}>
-              <StoreCard
-                vendor={vendor}
-                onVisitStore={(v) => {
-                  setSelectedVendor(v);
-                  setActiveTab("store-detail");
-                }}
-              />
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 💎 3 PILLAR EXPERIENCES: WHATSAPP DIRECT, COURIER COD, INDEPENDENT STORES */}
+      {/* 💎 05. 3 PILLARS: WHATSAPP DIRECT, COURIER COD, INDEPENDENT BOUTIQUES */}
       <section className="container" style={{ marginBottom: "5rem" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.75rem" }}>
           
-          {/* Card 1: PIN Reserve */}
+          {/* Card 1: WhatsApp Commerce */}
           <div className="animate-entrance stagger-1" style={{ height: "100%" }}>
             <div
               className="pillar-card pillar-card-gold"
@@ -491,91 +583,6 @@ export default function Home({ setActiveTab, setSelectedVendor, setSelectedProdu
             </div>
           </div>
 
-        </div>
-      </section>
-
-      {/* 🛍️ CURATED ISLAND SPECIALTIES */}
-      <section className="container" style={{ marginBottom: "5rem" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "2rem" }}>
-          <div>
-            <h2 style={{ fontSize: "2.4rem", color: "#0A1C36", fontWeight: 900 }}>Island Specialties</h2>
-            <p style={{ fontSize: "0.95rem", color: "#64748B" }}>Handcrafted Caymanite, Tortuga rum cakes, luxury Larimar, and reef gear</p>
-          </div>
-
-          <button onClick={() => setActiveTab("categories")} className="btn-outline">
-            View All Categories <ArrowRight size={15} />
-          </button>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(190px, 1fr))", gap: "1.35rem" }}>
-          {categories.map((cat) => (
-            <div
-              key={cat.id}
-              className="category-card"
-              onClick={() => {
-                setHeroCategory(cat.id);
-                setActiveTab("categories");
-              }}
-              style={{
-                background: "#FFFFFF",
-                borderRadius: "22px",
-                overflow: "hidden",
-                border: "1px solid #E2E8F0",
-                boxShadow: "var(--shadow-subtle)",
-                cursor: "pointer",
-                textAlign: "center"
-              }}
-            >
-              <div style={{ height: "125px", overflow: "hidden" }}>
-                <img src={cat.image} alt={cat.name} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.5s ease" }} />
-              </div>
-              <div style={{ padding: "1.1rem" }}>
-                <div style={{ fontWeight: 800, fontSize: "0.95rem", color: "#0A1C36" }}>{cat.name}</div>
-                <div style={{ fontSize: "0.78rem", color: "#00B49F", fontWeight: 700, marginTop: "0.25rem" }}>{cat.count} Items Available</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 🔥 TRENDING PRODUCTS */}
-      <section className="container" style={{ marginBottom: "4rem" }}>
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "2rem", flexWrap: "wrap", gap: "1rem" }}>
-          <div>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "#F59E0B", fontSize: "0.82rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em" }}>
-              <Sparkles size={15} /> Island Customer Favorites
-            </div>
-            <h2 style={{ fontSize: "2.4rem", color: "#0A1C36", fontWeight: 900 }}>Trending Products from Island Stores</h2>
-            <p style={{ fontSize: "0.95rem", color: "#64748B" }}>
-              Order via WhatsApp for fast store pickup or request Cash on Delivery
-            </p>
-          </div>
-
-          <button onClick={() => setActiveTab("categories")} className="btn-outline">
-            Explore All Products <ArrowRight size={15} />
-          </button>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))", gap: "1.75rem" }}>
-          {trendingItems.map((prod, idx) => (
-            <div key={prod.id} className={`animate-entrance stagger-${(idx % 4) + 1}`}>
-              <ProductCard
-                product={prod}
-                onSelectProduct={(p, directReserve = false) => {
-                  if (directReserve) {
-                    setSelectedProduct(p);
-                    setActiveTab("checkout");
-                  } else {
-                    setQuickViewProduct(p);
-                  }
-                }}
-                onVisitStore={(v) => {
-                  setSelectedVendor(v);
-                  setActiveTab("store-detail");
-                }}
-              />
-            </div>
-          ))}
         </div>
       </section>
 
