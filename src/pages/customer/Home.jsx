@@ -77,7 +77,7 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
               style={{
                 width: "100%",
                 height: "auto",
-                maxHeight: "420px",
+                maxHeight: "460px",
                 objectFit: "cover",
                 display: "block"
               }}

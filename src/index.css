@@ -143,9 +143,10 @@ input:focus, select:focus, textarea:focus {
 
 /* Container */
 .container {
-  max-width: 1360px;
+  max-width: 1560px;
+  width: 96%;
   margin: 0 auto;
-  padding: 0 1.75rem;
+  padding: 0 1.25rem;
 }
 
 /* Glassmorphism Classes */

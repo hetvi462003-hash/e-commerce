@@ -127,7 +127,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
             {/* Centered Search Bar (EE345 style) with Live Search Dropdown */}
             <div style={{
               flex: 1,
-              maxWidth: "540px",
+              maxWidth: "620px",
               position: "relative"
             }}>
               <div style={{

@@ -295,7 +295,7 @@ export default function CheckoutPage({ setActiveTab }) {
       )}
 
       {/* Main Container */}
-      <div className="container" style={{ maxWidth: "1140px", margin: "0 auto", padding: "0 1.25rem" }}>
+      <div className="container" style={{ maxWidth: "1420px", margin: "0 auto", padding: "0 1.25rem" }}>
         
         {/* Back Link */}
         <div style={{ marginBottom: "1.25rem" }}>

@@ -64,7 +64,7 @@ export default function CartPage({ setActiveTab, setSelectedProduct }) {
 
   return (
     <div style={{ background: "#F8FAFC", minHeight: "85vh", padding: "2.5rem 0 5rem" }}>
-      <div className="container" style={{ maxWidth: "1180px", margin: "0 auto", padding: "0 1.25rem" }}>
+      <div className="container" style={{ maxWidth: "1420px", margin: "0 auto", padding: "0 1.25rem" }}>
         
         {/* Page Title */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.75rem" }}>
