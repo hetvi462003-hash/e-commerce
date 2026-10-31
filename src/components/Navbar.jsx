@@ -785,25 +785,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                     gap: "0.5rem"
                   }}
                 >
-                  <Compass size={16} /> Marketplace
-                </button>
-
-                <button
-                  onClick={() => { setActiveTab("stores"); setIsMobileMenuOpen(false); }}
-                  style={{
-                    background: activeTab === "stores" ? "rgba(0, 229, 201, 0.2)" : "#091322",
-                    border: activeTab === "stores" ? "1px solid #00E5C9" : "1px solid rgba(255, 255, 255, 0.1)",
-                    borderRadius: "12px",
-                    padding: "0.75rem",
-                    color: activeTab === "stores" ? "#00E5C9" : "#E2E8F0",
-                    fontWeight: 700,
-                    fontSize: "0.88rem",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem"
-                  }}
-                >
-                  <Store size={16} /> Island Stores
+                  <Compass size={16} /> Home
                 </button>
 
                 <button

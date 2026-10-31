@@ -90,7 +90,6 @@ function MainApp() {
             {activeTab === "categories" && (
               <CategoriesPage
                 setActiveTab={setActiveTab}
-                setSelectedVendor={setSelectedVendor}
                 setSelectedProduct={setSelectedProduct}
               />
             )}

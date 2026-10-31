@@ -3,10 +3,9 @@ import { useMarketplace } from "../../context/MarketplaceContext";
 import ProductCard from "../../components/ProductCard";
 import { Grid, Search, SlidersHorizontal, Sparkles, ArrowUpDown } from "lucide-react";
 
-export default function CategoriesPage({ setActiveTab, setSelectedVendor, setSelectedProduct }) {
-  const { products, categories, vendors } = useMarketplace();
+export default function CategoriesPage({ setActiveTab, setSelectedProduct }) {
+  const { products, categories } = useMarketplace();
   const [selectedCat, setSelectedCat] = useState("all");
-  const [selectedVendorFilter, setSelectedVendorFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("featured");
   const [inStockOnly, setInStockOnly] = useState(false);
@@ -14,12 +13,11 @@ export default function CategoriesPage({ setActiveTab, setSelectedVendor, setSel
   // Filter products
   const filteredProducts = products.filter((p) => {
     const matchesCat = selectedCat === "all" || p.category_id === selectedCat;
-    const matchesVendor = selectedVendorFilter === "all" || p.vendor_id === selectedVendorFilter;
     const matchesSearch =
       p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStock = inStockOnly ? p.stock_count > 0 : true;
-    return matchesCat && matchesVendor && matchesSearch && matchesStock;
+    return matchesCat && matchesSearch && matchesStock;
   });
 
   // Sort products
@@ -184,10 +182,6 @@ export default function CategoriesPage({ setActiveTab, setSelectedVendor, setSel
                 onSelectProduct={(prod) => {
                   setSelectedProduct(prod);
                   setActiveTab("product-detail");
-                }}
-                onVisitStore={(v) => {
-                  setSelectedVendor(v);
-                  setActiveTab("store-detail");
                 }}
               />
             ))}

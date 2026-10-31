@@ -147,7 +147,7 @@ export default function ProductDetailPage({ product, setActiveTab, setSelectedVe
             
             {/* Top Badges: Tag & In Stock */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem", flexWrap: "wrap", gap: "0.5rem" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <div>
                 <span style={{
                   background: "#E0F2FE",
                   color: "#0369A1",
@@ -160,26 +160,6 @@ export default function ProductDetailPage({ product, setActiveTab, setSelectedVe
                 }}>
                   {currentProd.price >= 20 ? "TRENDING" : "NEW ARRIVAL"}
                 </span>
-
-                {vendorObj && (
-                  <span
-                    onClick={() => {
-                      if (setSelectedVendor) setSelectedVendor(vendorObj);
-                      setActiveTab("store-detail");
-                    }}
-                    style={{
-                      fontSize: "0.76rem",
-                      color: "#64748B",
-                      fontWeight: 600,
-                      cursor: "pointer",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "0.25rem"
-                    }}
-                  >
-                    <Store size={13} color="#00A896" /> {vendorObj.store_name}
-                  </span>
-                )}
               </div>
 
               {/* Stock Status Indicator */}
