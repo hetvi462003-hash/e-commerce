@@ -111,13 +111,14 @@ export default function ProductCard({ product, onSelectProduct }) {
       {/* Product Image */}
       <div
         style={{
-          height: "210px",
+          height: "220px",
+          width: "100%",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#FFFFFF",
+          background: "#F8FAFC",
           overflow: "hidden",
-          borderRadius: "8px",
+          borderRadius: "12px",
           marginBottom: "0.75rem"
         }}
       >
@@ -125,10 +126,10 @@ export default function ProductCard({ product, onSelectProduct }) {
           src={product.images[0]}
           alt={product.title}
           style={{
-            maxHeight: "100%",
-            maxWidth: "100%",
-            objectFit: "contain",
-            transition: "transform 0.3s ease"
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            transition: "transform 0.35s ease"
           }}
         />
       </div>

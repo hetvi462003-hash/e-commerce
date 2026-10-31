@@ -174,7 +174,7 @@ export default function CategoriesPage({ setActiveTab, setSelectedProduct }) {
             <p style={{ color: "#64748B", fontSize: "0.88rem" }}>Try adjusting your search terms or category filter.</p>
           </div>
         ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.5rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))", gap: "1.5rem" }}>
             {sortedProducts.map((p) => (
               <ProductCard
                 key={p.id}

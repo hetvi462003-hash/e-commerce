@@ -55,7 +55,7 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
   const specialOffers = filteredProducts.filter((p) => p.price >= 20).slice(0, 4);
 
   return (
-    <div style={{ background: "#FFFFFF", minHeight: "100vh", paddingBottom: "5rem" }}>
+    <div style={{ background: "#FFFFFF", minHeight: "100vh", paddingBottom: "2.5rem" }}>
       
       {/* 🌴 01. EE345-STYLE PROMOTIONAL HERO BANNER (Clean, Light & Vibrant) */}
       <section style={{ paddingTop: "1.25rem", marginBottom: "2rem" }}>
@@ -133,7 +133,7 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
         </div>
 
         {/* Categories Grid (EE345 clean card style) */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(170px, 1fr))", gap: "1.25rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1.25rem" }}>
           {categories.map((cat) => (
             <div
               key={cat.id}
@@ -162,22 +162,24 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
             >
               <div
                 style={{
-                  height: "110px",
+                  height: "120px",
+                  width: "100%",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   marginBottom: "0.75rem",
-                  overflow: "hidden"
+                  overflow: "hidden",
+                  borderRadius: "10px"
                 }}
               >
                 <img
                   src={cat.image}
                   alt={cat.name}
                   style={{
-                    maxHeight: "100%",
-                    maxWidth: "100%",
+                    width: "100%",
+                    height: "100%",
                     objectFit: "cover",
-                    borderRadius: "10px"
+                    display: "block"
                   }}
                 />
               </div>
@@ -197,7 +199,7 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
           </h2>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.25rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem" }}>
           {caymansChoice.map((prod) => (
             <ProductCard
               key={prod.id}
@@ -233,7 +235,7 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
           </button>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.25rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem" }}>
           {newArrivals.map((prod) => (
             <ProductCard
               key={prod.id}
@@ -245,7 +247,7 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
       </section>
 
       {/* 🔥 05. SPECIAL OFFERS (Matching EE345) */}
-      <section id="special-offers-section" className="container" style={{ marginBottom: "4rem" }}>
+      <section id="special-offers-section" className="container" style={{ marginBottom: "2.5rem" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
           <h2 style={{ fontSize: "1.55rem", color: "#111827", fontWeight: 800, margin: 0 }}>
             Special Offers
@@ -269,7 +271,7 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
           </button>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.25rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem" }}>
           {specialOffers.map((prod) => (
             <ProductCard
               key={prod.id}
@@ -281,7 +283,7 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
       </section>
 
       {/* 🛡️ 06. WHY SHOP WITH US (Matching EE345 exactly) */}
-      <section style={{ padding: "3.5rem 0", background: "#F9FAFB", borderTop: "1px solid #E5E7EB", borderBottom: "1px solid #E5E7EB", marginBottom: "4rem" }}>
+      <section style={{ padding: "2.5rem 0", background: "#F9FAFB", borderTop: "1px solid #E5E7EB", borderBottom: "1px solid #E5E7EB", marginBottom: "2.5rem" }}>
         <div className="container">
           <div style={{ marginBottom: "2rem" }}>
             <h2 style={{ fontSize: "1.55rem", color: "#111827", fontWeight: 800, margin: 0 }}>
@@ -366,7 +368,7 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
       </section>
 
       {/* 💬 07. KEEP UP WITH CAYMANBAZAAR (Matching EE345) */}
-      <section className="container" style={{ marginBottom: "5rem" }}>
+      <section className="container" style={{ marginBottom: "3rem" }}>
         <div style={{ maxWidth: "600px", margin: "0 auto", textAlign: "center" }}>
           <h2 style={{ fontSize: "1.6rem", fontWeight: 800, color: "#111827", marginBottom: "0.5rem" }}>
             Keep up with CaymanBazaar
