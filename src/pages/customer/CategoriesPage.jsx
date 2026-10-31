@@ -1,157 +1,200 @@
 import React, { useState } from "react";
 import { useMarketplace } from "../../context/MarketplaceContext";
 import ProductCard from "../../components/ProductCard";
-import { Grid, Search, SlidersHorizontal, Sparkles } from "lucide-react";
+import { Grid, Search, SlidersHorizontal, Sparkles, ArrowUpDown } from "lucide-react";
 
 export default function CategoriesPage({ setActiveTab, setSelectedVendor, setSelectedProduct }) {
   const { products, categories, vendors } = useMarketplace();
   const [selectedCat, setSelectedCat] = useState("all");
   const [selectedVendorFilter, setSelectedVendorFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("featured");
+  const [inStockOnly, setInStockOnly] = useState(false);
 
+  // Filter products
   const filteredProducts = products.filter((p) => {
     const matchesCat = selectedCat === "all" || p.category_id === selectedCat;
     const matchesVendor = selectedVendorFilter === "all" || p.vendor_id === selectedVendorFilter;
     const matchesSearch =
       p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCat && matchesVendor && matchesSearch;
+    const matchesStock = inStockOnly ? p.stock_count > 0 : true;
+    return matchesCat && matchesVendor && matchesSearch && matchesStock;
+  });
+
+  // Sort products
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortBy === "price-low") return a.price - b.price;
+    if (sortBy === "price-high") return b.price - a.price;
+    if (sortBy === "newest") return b.id.localeCompare(a.id);
+    // default featured
+    if (a.featured && !b.featured) return -1;
+    if (!a.featured && b.featured) return 1;
+    return 0;
   });
 
   return (
-    <div className="container" style={{ padding: "3rem 1.5rem", paddingBottom: "5rem" }}>
-      
-      {/* Page Header */}
-      <div style={{ marginBottom: "2.5rem" }}>
-        <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "#00897B", fontSize: "0.82rem", fontWeight: 800, textTransform: "uppercase" }}>
-          <Sparkles size={15} /> Authentic Cayman Marketplace Catalog
+    <div style={{ background: "#FFFFFF", minHeight: "85vh", paddingBottom: "5rem" }}>
+      <div className="container" style={{ padding: "2.5rem 1.5rem" }}>
+        
+        {/* Header */}
+        <div style={{ marginBottom: "2rem" }}>
+          <h1 style={{ fontSize: "2rem", fontWeight: 800, color: "#111827", marginBottom: "0.35rem" }}>
+            Grand Cayman Online Catalog
+          </h1>
+          <p style={{ color: "#64748B", fontSize: "0.95rem", margin: 0 }}>
+            Browse authentic local crafts, Tortuga rum treats, dive equipment, and island specialties.
+          </p>
         </div>
-        <h1 style={{ fontSize: "2.6rem", color: "#0A2540", fontWeight: 900, marginBottom: "0.5rem" }}>
-          Island Specialties & Product Catalog
-        </h1>
-        <p style={{ color: "#64748B", fontSize: "1rem" }}>
-          Explore genuine Caymanite gems, Tortuga rum cakes, reef gear, and luxury items from licensed local vendors.
-        </p>
-      </div>
 
-      {/* Category Pills Scroller */}
-      <div style={{ display: "flex", gap: "0.6rem", overflowX: "auto", paddingBottom: "0.75rem", marginBottom: "2rem" }}>
-        <button
-          onClick={() => setSelectedCat("all")}
-          style={{
-            background: selectedCat === "all" ? "#0A2540" : "#FFFFFF",
-            color: selectedCat === "all" ? "#FFFFFF" : "#334155",
-            border: "1.5px solid",
-            borderColor: selectedCat === "all" ? "#0A2540" : "#E2E8F0",
-            padding: "0.55rem 1.25rem",
-            borderRadius: "999px",
-            fontSize: "0.85rem",
-            fontWeight: 800,
-            flexShrink: 0,
-            boxShadow: "var(--shadow-xs)"
-          }}
-        >
-          All Items ({products.length})
-        </button>
-
-        {categories.map((c) => (
+        {/* Category Pills (EE345 style) */}
+        <div style={{ display: "flex", gap: "0.5rem", overflowX: "auto", paddingBottom: "0.75rem", marginBottom: "1.75rem" }}>
           <button
-            key={c.id}
-            onClick={() => setSelectedCat(c.id)}
+            onClick={() => setSelectedCat("all")}
             style={{
-              background: selectedCat === c.id ? "#00BFA5" : "#FFFFFF",
-              color: selectedCat === c.id ? "#07101E" : "#334155",
-              border: "1.5px solid",
-              borderColor: selectedCat === c.id ? "#00BFA5" : "#E2E8F0",
-              padding: "0.55rem 1.25rem",
+              background: selectedCat === "all" ? "#0F172A" : "#FFFFFF",
+              color: selectedCat === "all" ? "#FFFFFF" : "#334155",
+              border: "1px solid",
+              borderColor: selectedCat === "all" ? "#0F172A" : "#D1D5DB",
+              padding: "0.45rem 1.15rem",
               borderRadius: "999px",
-              fontSize: "0.85rem",
-              fontWeight: 800,
-              flexShrink: 0,
-              boxShadow: "var(--shadow-xs)"
+              fontSize: "0.84rem",
+              fontWeight: 700,
+              cursor: "pointer",
+              flexShrink: 0
             }}
           >
-            {c.name} ({c.count})
+            All Items ({products.length})
           </button>
-        ))}
-      </div>
 
-      {/* Filter Toolbar */}
-      <div
-        style={{
-          background: "#FFFFFF",
-          padding: "1.25rem 1.5rem",
-          borderRadius: "20px",
-          border: "1px solid #E2E8F0",
-          boxShadow: "var(--shadow-sm)",
-          marginBottom: "2.5rem",
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "1rem",
-          alignItems: "center",
-          justifyContent: "space-between"
-        }}
-      >
-        {/* Search */}
-        <div style={{ flex: "1 1 300px", position: "relative" }}>
-          <input
-            type="text"
-            placeholder="Search products, descriptions, or SKUs..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ paddingLeft: "2.6rem", borderRadius: "12px", background: "#F8FAFC" }}
-          />
-          <Search size={17} color="#00BFA5" style={{ position: "absolute", left: "0.95rem", top: "50%", transform: "translateY(-50%)" }} />
-        </div>
-
-        {/* Vendor Filter */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-          <span style={{ fontSize: "0.85rem", color: "#64748B", fontWeight: 700 }}>Filter Store:</span>
-          <select
-            value={selectedVendorFilter}
-            onChange={(e) => setSelectedVendorFilter(e.target.value)}
-            style={{ width: "auto", borderRadius: "12px", fontWeight: 700, color: "#0A2540" }}
-          >
-            <option value="all">All Cayman Stores</option>
-            {vendors.filter(v => v.status === "active").map((v) => (
-              <option key={v.id} value={v.id}>
-                {v.district ? `${v.district} • ` : ""}{v.store_name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      {/* Product Grid */}
-      {filteredProducts.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "4rem 1rem", background: "#FFFFFF", borderRadius: "20px", border: "1px solid #E2E8F0" }}>
-          <Grid size={48} color="#CBD5E1" style={{ marginBottom: "1rem" }} />
-          <h3 style={{ color: "#475569" }}>No products found</h3>
-          <p style={{ color: "#94A3B8", fontSize: "0.9rem" }}>Try adjusting your search terms or category filter.</p>
-        </div>
-      ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.75rem" }}>
-          {filteredProducts.map((p) => (
-            <ProductCard
-              key={p.id}
-              product={p}
-              onSelectProduct={(prod, directReserve = false) => {
-                setSelectedProduct(prod);
-                if (directReserve) {
-                  setActiveTab("checkout");
-                } else {
-                  setActiveTab("product-detail");
-                }
+          {categories.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => setSelectedCat(c.id)}
+              style={{
+                background: selectedCat === c.id ? "#0F172A" : "#FFFFFF",
+                color: selectedCat === c.id ? "#FFFFFF" : "#334155",
+                border: "1px solid",
+                borderColor: selectedCat === c.id ? "#0F172A" : "#D1D5DB",
+                padding: "0.45rem 1.15rem",
+                borderRadius: "999px",
+                fontSize: "0.84rem",
+                fontWeight: 700,
+                cursor: "pointer",
+                flexShrink: 0
               }}
-              onVisitStore={(v) => {
-                setSelectedVendor(v);
-                setActiveTab("store-detail");
-              }}
-            />
+            >
+              {c.name} ({c.count})
+            </button>
           ))}
         </div>
-      )}
 
+        {/* Filter & Sort Controls Bar */}
+        <div
+          style={{
+            background: "#F8FAFC",
+            border: "1px solid #E5E7EB",
+            borderRadius: "12px",
+            padding: "0.85rem 1.25rem",
+            marginBottom: "2rem",
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "1rem",
+            alignItems: "center",
+            justifyContent: "space-between"
+          }}
+        >
+          {/* Search Input */}
+          <div style={{ flex: "1 1 260px", position: "relative" }}>
+            <input
+              type="text"
+              placeholder="Filter by keyword, title, or SKU..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "0.6rem 0.85rem 0.6rem 2.35rem",
+                borderRadius: "8px",
+                border: "1px solid #CBD5E1",
+                fontSize: "0.88rem",
+                background: "#FFFFFF"
+              }}
+            />
+            <Search size={16} color="#94A3B8" style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)" }} />
+          </div>
+
+          {/* Right Controls: In-Stock checkbox & Sort By dropdown */}
+          <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", flexWrap: "wrap" }}>
+            
+            {/* In-Stock Only */}
+            <label style={{ display: "flex", alignItems: "center", gap: "0.45rem", fontSize: "0.84rem", fontWeight: 600, color: "#374151", cursor: "pointer" }}>
+              <input
+                type="checkbox"
+                checked={inStockOnly}
+                onChange={(e) => setInStockOnly(e.target.checked)}
+              />
+              <span>In Stock Only</span>
+            </label>
+
+            {/* Sort Dropdown */}
+            <div style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
+              <span style={{ fontSize: "0.84rem", color: "#6B7280", fontWeight: 600 }}>Sort by:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                style={{
+                  padding: "0.55rem 0.85rem",
+                  borderRadius: "8px",
+                  border: "1px solid #CBD5E1",
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  color: "#1E293B",
+                  background: "#FFFFFF",
+                  cursor: "pointer"
+                }}
+              >
+                <option value="featured">Featured First</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="newest">Newest Arrivals</option>
+              </select>
+            </div>
+
+            {/* Total Count */}
+            <span style={{ fontSize: "0.82rem", color: "#64748B", fontWeight: 600 }}>
+              {sortedProducts.length} {sortedProducts.length === 1 ? "item" : "items"}
+            </span>
+
+          </div>
+        </div>
+
+        {/* Product Grid (4 Columns matching EE345) */}
+        {sortedProducts.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "4rem 1rem", background: "#F8FAFC", borderRadius: "16px", border: "1px solid #E5E7EB" }}>
+            <Grid size={44} color="#94A3B8" style={{ marginBottom: "0.75rem" }} />
+            <h3 style={{ color: "#1E293B", fontSize: "1.2rem", fontWeight: 700 }}>No products found</h3>
+            <p style={{ color: "#64748B", fontSize: "0.88rem" }}>Try adjusting your search terms or category filter.</p>
+          </div>
+        ) : (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.5rem" }}>
+            {sortedProducts.map((p) => (
+              <ProductCard
+                key={p.id}
+                product={p}
+                onSelectProduct={(prod) => {
+                  setSelectedProduct(prod);
+                  setActiveTab("product-detail");
+                }}
+                onVisitStore={(v) => {
+                  setSelectedVendor(v);
+                  setActiveTab("store-detail");
+                }}
+              />
+            ))}
+          </div>
+        )}
+
+      </div>
     </div>
   );
 }

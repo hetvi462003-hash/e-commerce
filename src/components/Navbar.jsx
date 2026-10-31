@@ -22,13 +22,18 @@ import {
   MessageSquare,
   MessageCircle,
   Menu,
+  Heart,
   X
 } from "lucide-react";
 
-export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
-  const { userRole, cart, activeVendor, orders, reviews = [], customerPhoneSession, isCustomerLoggedIn, customerDisplayName } = useMarketplace();
+export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSelectedProduct }) {
+  const { userRole, cart, activeVendor, orders, reviews = [], products = [], customerPhoneSession, isCustomerLoggedIn, customerDisplayName } = useMarketplace();
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const searchResults = searchQuery.trim().length >= 2
+    ? products.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()) || (p.category_name && p.category_name.toLowerCase().includes(searchQuery.toLowerCase()))).slice(0, 5)
+    : [];
 
   const totalCartCount = cart.reduce((acc, item) => acc + item.qty, 0);
   const flaggedCount = reviews.filter((r) => r.is_flagged).length;
@@ -119,54 +124,113 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
               </div>
             </div>
 
-            {/* Centered Search Bar (EE345 style) */}
+            {/* Centered Search Bar (EE345 style) with Live Search Dropdown */}
             <div style={{
               flex: 1,
               maxWidth: "540px",
-              display: "flex",
-              alignItems: "center",
-              background: "#F1F5F9",
-              borderRadius: "999px",
-              padding: "0.25rem 0.35rem 0.25rem 1rem",
-              border: "1.5px solid #CBD5E1"
+              position: "relative"
             }}>
-              <input
-                type="text"
-                placeholder="Search products, rum cake, dive gear, electronics..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") setActiveTab("categories");
-                }}
-                style={{
-                  flex: 1,
-                  border: "none",
-                  background: "transparent",
-                  outline: "none",
-                  fontSize: "0.88rem",
-                  color: "#0F172A",
-                  fontWeight: 500
-                }}
-              />
-              <button
-                type="button"
-                onClick={() => setActiveTab("categories")}
-                style={{
-                  background: "#00A896",
-                  color: "#FFFFFF",
-                  border: "none",
-                  borderRadius: "999px",
-                  width: "36px",
-                  height: "36px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  flexShrink: 0
-                }}
-              >
-                <Search size={16} />
-              </button>
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                background: "#F1F5F9",
+                borderRadius: "999px",
+                padding: "0.25rem 0.35rem 0.25rem 1rem",
+                border: "1.5px solid #CBD5E1"
+              }}>
+                <input
+                  type="text"
+                  placeholder="Search products, rum cake, dive gear, electronics..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") setActiveTab("categories");
+                  }}
+                  style={{
+                    flex: 1,
+                    border: "none",
+                    background: "transparent",
+                    outline: "none",
+                    fontSize: "0.88rem",
+                    color: "#0F172A",
+                    fontWeight: 500
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("categories")}
+                  style={{
+                    background: "#00A896",
+                    color: "#FFFFFF",
+                    border: "none",
+                    borderRadius: "999px",
+                    width: "36px",
+                    height: "36px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    cursor: "pointer",
+                    flexShrink: 0
+                  }}
+                >
+                  <Search size={16} />
+                </button>
+              </div>
+
+              {/* Live Search Suggestions Dropdown */}
+              {searchResults.length > 0 && (
+                <div style={{
+                  position: "absolute",
+                  top: "calc(100% + 8px)",
+                  left: 0,
+                  right: 0,
+                  background: "#FFFFFF",
+                  borderRadius: "14px",
+                  boxShadow: "0 10px 30px rgba(0,0,0,0.12)",
+                  border: "1px solid #E2E8F0",
+                  padding: "0.5rem",
+                  zIndex: 1000
+                }}>
+                  {searchResults.map((prod) => (
+                    <div
+                      key={prod.id}
+                      onClick={() => {
+                        if (setSelectedProduct) setSelectedProduct(prod);
+                        setActiveTab("product-detail");
+                        setSearchQuery("");
+                      }}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.75rem",
+                        padding: "0.55rem 0.75rem",
+                        borderRadius: "10px",
+                        cursor: "pointer",
+                        transition: "background 0.15s ease"
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = "#F8FAFC")}
+                      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                    >
+                      <img
+                        src={prod.images?.[0] || prod.image || prod.image_url}
+                        alt=""
+                        style={{ width: "38px", height: "38px", borderRadius: "8px", objectFit: "cover" }}
+                      />
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0F172A", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {prod.title}
+                        </div>
+                        <div style={{ fontSize: "0.74rem", color: "#64748B" }}>
+                          {prod.category_name || "Catalog"}
+                        </div>
+                      </div>
+                      <div style={{ fontSize: "0.88rem", fontWeight: 800, color: "#0F172A" }}>
+                        CI${Number(prod.price).toFixed(2)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Customer Navigation Icons (EE345 style: Support, Account, Wishlist, Cart) */}
@@ -193,6 +257,27 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen }) {
                 <MessageCircle size={15} color="#25D366" />
                 <span>Support</span>
               </a>
+
+              {/* Wishlist Icon (EE345 style) */}
+              <button
+                onClick={() => setActiveTab("categories")}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "#334155",
+                  fontSize: "0.82rem",
+                  fontWeight: 700,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.35rem",
+                  cursor: "pointer",
+                  padding: "0.45rem 0.65rem",
+                  borderRadius: "8px"
+                }}
+              >
+                <Heart size={18} color="#0F172A" />
+                <span className="hide-on-mobile">Wishlist</span>
+              </button>
 
               {/* My Orders / Account */}
               <button

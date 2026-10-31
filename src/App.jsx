@@ -68,7 +68,12 @@ function MainApp() {
       <RoleBanner setActiveTab={setActiveTab} />
 
       {/* Global Navbar */}
-      <Navbar activeTab={activeTab} setActiveTab={setActiveTab} setIsCartOpen={setIsCartOpen} />
+      <Navbar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        setIsCartOpen={setIsCartOpen}
+        setSelectedProduct={setSelectedProduct}
+      />
 
       {/* Main Content Area */}
       <main style={{ flex: 1 }}>
@@ -107,6 +112,7 @@ function MainApp() {
                 product={selectedProduct}
                 setActiveTab={setActiveTab}
                 setSelectedVendor={setSelectedVendor}
+                setSelectedProduct={setSelectedProduct}
               />
             )}
             {activeTab === "cart" && (

@@ -14,9 +14,9 @@ import {
   Copy,
   Check,
   ExternalLink,
-  AlertTriangle,
+  ShieldCheck,
   Clock,
-  Sparkles
+  ArrowLeft
 } from "lucide-react";
 
 export default function CheckoutPage({ setActiveTab }) {
@@ -28,21 +28,21 @@ export default function CheckoutPage({ setActiveTab }) {
     showToast,
     customerPhoneSession,
     customerProfile,
-    updateCustomerProfile,
-    clearCustomerSession,
     CENTRAL_MARKETPLACE_PHONE_DISPLAY
   } = useMarketplace();
 
-  // Fulfillment Selection: 'Store Pickup' or 'Island Courier Delivery'
-  const [fulfillmentType, setFulfillmentType] = useState("Store Pickup");
+  // Fulfillment Selection: 'Island Courier Delivery' or 'Store Pickup'
+  const [fulfillmentType, setFulfillmentType] = useState("Island Courier Delivery");
 
-  // Form Fields - Start clean and empty for every order (no sticky dummy data)
-  const [countryCode, setCountryCode] = useState("+91"); // Default to +91 India for live testing
-  const [customerName, setCustomerName] = useState("");
-  const [customerPhone, setCustomerPhone] = useState("");
-  const [customerEmail, setCustomerEmail] = useState("");
+  // Form Fields - Default country code to +1 (345) Cayman, with +91 available for live testing
+  const [countryCode, setCountryCode] = useState("+1345");
+  const [customerName, setCustomerName] = useState(customerProfile?.name || "");
+  const [customerPhone, setCustomerPhone] = useState(customerPhoneSession || "");
+  const [customerEmail, setCustomerEmail] = useState(customerProfile?.email || "");
+  const [district, setDistrict] = useState("George Town");
   const [deliveryAddress, setDeliveryAddress] = useState("");
   const [specialNotes, setSpecialNotes] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("cod"); // 'cod' | 'pickup' | 'card'
 
   // Post-submission WhatsApp Modal state
   const [confirmedOrder, setConfirmedOrder] = useState(null);
@@ -50,26 +50,50 @@ export default function CheckoutPage({ setActiveTab }) {
 
   if (cart.length === 0 && !confirmedOrder) {
     return (
-      <div className="container" style={{ padding: "4rem 1.5rem", textAlign: "center" }}>
-        <ShoppingBag size={54} color="#CBD5E1" style={{ marginBottom: "1rem" }} />
-        <h2 style={{ color: "#0F172A", marginBottom: "0.5rem" }}>Your Shopping Bag is Empty</h2>
-        <p style={{ color: "#64748B", marginBottom: "1.5rem" }}>
-          Browse island stores across Grand Cayman and add items before proceeding to checkout.
-        </p>
-        <button onClick={() => setActiveTab("categories")} className="btn-primary">
-          Browse Catalog <ArrowRight size={16} />
-        </button>
+      <div style={{ background: "#F8FAFC", minHeight: "80vh", padding: "4rem 1.5rem", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{
+          background: "#FFFFFF",
+          border: "1px solid #E5E7EB",
+          borderRadius: "16px",
+          padding: "3.5rem 2.5rem",
+          textAlign: "center",
+          maxWidth: "480px"
+        }}>
+          <ShoppingBag size={48} color="#94A3B8" style={{ marginBottom: "1rem" }} />
+          <h2 style={{ color: "#111827", fontSize: "1.4rem", fontWeight: 800, marginBottom: "0.5rem" }}>
+            Your Shopping Cart is Empty
+          </h2>
+          <p style={{ color: "#64748B", fontSize: "0.9rem", marginBottom: "1.75rem" }}>
+            Add your favorite items from Grand Cayman shops before proceeding to checkout.
+          </p>
+          <button
+            onClick={() => setActiveTab("categories")}
+            style={{
+              background: "#0F172A",
+              color: "#FFFFFF",
+              border: "none",
+              borderRadius: "999px",
+              padding: "0.75rem 1.75rem",
+              fontSize: "0.92rem",
+              fontWeight: 700,
+              cursor: "pointer"
+            }}
+          >
+            Explore Catalog
+          </button>
+        </div>
       </div>
     );
   }
 
   const grandTotalKYD = cart.reduce((acc, item) => acc + item.product.price * item.qty, 0);
+  const qualifiesForFreeDelivery = grandTotalKYD >= 50.0 || fulfillmentType === "Store Pickup";
 
   const handleSubmitOrder = (e) => {
     e.preventDefault();
 
     if (!customerName.trim() || !customerPhone.trim()) {
-      showToast("Please enter your Name and WhatsApp phone number.", "warning");
+      showToast("Please enter your name and phone number.", "warning");
       return;
     }
 
@@ -81,7 +105,6 @@ export default function CheckoutPage({ setActiveTab }) {
     const cleanRawPhone = customerPhone.trim();
     const digitsOnly = cleanRawPhone.replace(/\D/g, "");
 
-    // Calculate exact WhatsApp recipient so ANY entered number opens in WhatsApp
     let waRecipient = digitsOnly;
     if (countryCode === "+91") {
       waRecipient = digitsOnly.length === 10 ? `91${digitsOnly}` : (digitsOnly.startsWith("91") ? digitsOnly : `91${digitsOnly}`);
@@ -93,6 +116,10 @@ export default function CheckoutPage({ setActiveTab }) {
       ? cleanRawPhone
       : `${countryCode} ${cleanRawPhone}`;
 
+    const fullAddress = fulfillmentType === "Island Courier Delivery"
+      ? `${deliveryAddress.trim()} (${district}, Grand Cayman)`
+      : `Store Pickup (${district})`;
+
     const createdOrders = placeOrder({
       fulfillment_type: fulfillmentType,
       type: fulfillmentType === "Island Courier Delivery" ? "COD" : "PICKUP",
@@ -101,7 +128,7 @@ export default function CheckoutPage({ setActiveTab }) {
       target_whatsapp: waRecipient,
       country_code: countryCode,
       customer_email: customerEmail.trim(),
-      delivery_address: deliveryAddress.trim(),
+      delivery_address: fullAddress,
       special_notes: specialNotes.trim()
     });
 
@@ -109,7 +136,6 @@ export default function CheckoutPage({ setActiveTab }) {
       const primaryOrder = createdOrders[0];
       setConfirmedOrder(primaryOrder);
 
-      // Attempt automatic WhatsApp tab launch
       if (primaryOrder.whatsapp_url) {
         try {
           window.open(primaryOrder.whatsapp_url, "_blank");
@@ -130,125 +156,73 @@ export default function CheckoutPage({ setActiveTab }) {
   };
 
   return (
-    <div className="container" style={{ padding: "2.5rem 1.5rem", paddingBottom: "5rem" }}>
+    <div style={{ background: "#F8FAFC", minHeight: "85vh", padding: "2.5rem 0 5rem" }}>
       
-      {/* 🟢 WHATSAPP ORDER SUBMITTED CONFIRMATION MODAL */}
+      {/* 🟢 ORDER SUBMISSION CONFIRMATION MODAL */}
       {confirmedOrder && (
         <div
           style={{
             position: "fixed",
             inset: 0,
-            background: "rgba(10, 25, 47, 0.85)",
-            backdropFilter: "blur(10px)",
-            WebkitBackdropFilter: "blur(10px)",
-            zIndex: 9999,
+            zIndex: 1000,
+            background: "rgba(15, 23, 42, 0.7)",
+            backdropFilter: "blur(6px)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            padding: "1.25rem"
+            padding: "1rem"
           }}
         >
           <div
             style={{
               background: "#FFFFFF",
-              borderRadius: "24px",
-              maxWidth: "580px",
+              borderRadius: "20px",
+              padding: "2.25rem",
+              maxWidth: "520px",
               width: "100%",
-              padding: "2.25rem 2rem",
-              boxShadow: "0 25px 60px rgba(0, 0, 0, 0.4)",
-              position: "relative",
-              border: "1.5px solid #E2E8F0",
-              maxHeight: "92vh",
-              overflowY: "auto"
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              animation: "modalPopIn 0.3s ease-out"
             }}
           >
-            {/* Header */}
             <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
               <div
                 style={{
-                  width: "66px",
-                  height: "66px",
+                  width: "60px",
+                  height: "60px",
                   borderRadius: "50%",
-                  background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
-                  display: "inline-flex",
+                  background: "#DCFCE7",
+                  color: "#16A34A",
+                  display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  color: "#FFFFFF",
-                  boxShadow: "0 10px 25px rgba(37, 211, 102, 0.4)",
-                  marginBottom: "1rem"
+                  margin: "0 auto 1rem"
                 }}
               >
-                <MessageSquare size={34} />
+                <CheckCircle2 size={34} />
               </div>
-
-              <div style={{ display: "inline-block", background: "#E6FBF2", color: "#00A896", fontSize: "0.82rem", fontWeight: 800, padding: "0.25rem 0.8rem", borderRadius: "999px", marginBottom: "0.5rem" }}>
-                ORDER CREATED: #{confirmedOrder.id || confirmedOrder.order_id}
-              </div>
-
-              <h2 style={{ fontSize: "1.65rem", fontWeight: 900, color: "#0A192F", margin: 0 }}>
-                Order Sent to WhatsApp!
+              <h2 style={{ fontSize: "1.45rem", fontWeight: 800, color: "#111827", margin: 0 }}>
+                Order #{confirmedOrder.id} Placed!
               </h2>
+              <p style={{ color: "#4B5563", fontSize: "0.88rem", marginTop: "0.35rem" }}>
+                Thank you, <strong>{confirmedOrder.customer_name}</strong>! Your order details have been prepared for WhatsApp confirmation.
+              </p>
             </div>
 
-            {/* ⚠️ CRITICAL INSTRUCTION (Section 6.2 SOW Requirement) */}
-            <div
-              style={{
-                background: "#FEF3C7",
-                border: "1.5px solid #F59E0B",
-                borderRadius: "16px",
-                padding: "1rem 1.25rem",
-                marginBottom: "1.5rem",
-                display: "flex",
-                gap: "0.85rem",
-                alignItems: "flex-start"
-              }}
-            >
-              <AlertTriangle size={22} color="#D97706" style={{ flexShrink: 0, marginTop: "2px" }} />
-              <div style={{ fontSize: "0.88rem", color: "#92400E", lineHeight: 1.5 }}>
-                <strong style={{ color: "#78350F", display: "block", marginBottom: "2px", fontSize: "0.92rem" }}>
-                  Action Required: Click "Send" in WhatsApp
-                </strong>
-                You must click <strong>Send</strong> in WhatsApp to transmit this order request. 
-                Opening WhatsApp alone does not confirm or send your order to our team.
+            <div style={{ background: "#F8FAFC", border: "1px solid #E5E7EB", borderRadius: "12px", padding: "1rem", marginBottom: "1.5rem", fontSize: "0.85rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.4rem" }}>
+                <span style={{ color: "#64748B" }}>Total Amount:</span>
+                <strong style={{ color: "#111827" }}>CI${confirmedOrder.total_amount.toFixed(2)}</strong>
               </div>
-            </div>
-
-            {/* Order Details Card */}
-            <div
-              style={{
-                background: "#F8FAFC",
-                borderRadius: "16px",
-                border: "1px solid #E2E8F0",
-                padding: "1.25rem",
-                marginBottom: "1.5rem",
-                fontSize: "0.88rem"
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-                <span style={{ color: "#64748B" }}>Order Reference:</span>
-                <strong style={{ color: "#0A192F" }}>#{confirmedOrder.id}</strong>
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-                <span style={{ color: "#64748B" }}>Customer:</span>
-                <strong style={{ color: "#0A192F" }}>{confirmedOrder.customer_name} ({confirmedOrder.customer_phone})</strong>
-              </div>
-              {confirmedOrder.target_whatsapp && (
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem", background: "#F0FDFA", padding: "0.4rem 0.75rem", borderRadius: "10px", border: "1px solid #CCFBF1" }}>
-                  <span style={{ color: "#0D9488", fontWeight: 700, fontSize: "0.82rem" }}>WhatsApp Destination:</span>
-                  <strong style={{ color: "#0F766E", fontSize: "0.84rem" }}>+{confirmedOrder.target_whatsapp}</strong>
-                </div>
-              )}
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.4rem" }}>
                 <span style={{ color: "#64748B" }}>Fulfillment:</span>
                 <strong style={{ color: "#00A896" }}>{confirmedOrder.fulfillment_type}</strong>
               </div>
-              <div style={{ display: "flex", justifyContent: "space-between", borderTop: "1px solid #E2E8F0", paddingTop: "0.6rem", marginTop: "0.6rem" }}>
-                <span style={{ color: "#0A192F", fontWeight: 700 }}>Total Due:</span>
-                <strong style={{ color: "#00A896", fontSize: "1.05rem" }}>{formatPrice(confirmedOrder.total_amount)}</strong>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ color: "#64748B" }}>Destination:</span>
+                <strong style={{ color: "#111827" }}>Grand Cayman</strong>
               </div>
             </div>
 
-            {/* CTAs */}
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               <a
                 href={confirmedOrder.whatsapp_url}
@@ -259,20 +233,18 @@ export default function CheckoutPage({ setActiveTab }) {
                   color: "#FFFFFF",
                   textDecoration: "none",
                   fontWeight: 800,
-                  fontSize: "1rem",
-                  padding: "0.95rem 1.25rem",
-                  borderRadius: "14px",
+                  fontSize: "0.95rem",
+                  padding: "0.85rem 1.25rem",
+                  borderRadius: "10px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: "0.5rem",
-                  boxShadow: "0 6px 20px rgba(37, 211, 102, 0.4)",
-                  cursor: "pointer"
+                  gap: "0.5rem"
                 }}
               >
-                <MessageSquare size={20} />
-                <span>Open WhatsApp to Send Order</span>
-                <ExternalLink size={16} />
+                <MessageSquare size={18} />
+                <span>Open WhatsApp to Confirm Order</span>
+                <ExternalLink size={15} />
               </a>
 
               <button
@@ -280,12 +252,12 @@ export default function CheckoutPage({ setActiveTab }) {
                 onClick={handleCopyMessage}
                 style={{
                   background: copied ? "#F0FDF4" : "#FFFFFF",
-                  border: copied ? "1.5px solid #22C55E" : "1.5px solid #CBD5E1",
-                  color: copied ? "#16A34A" : "#475569",
+                  border: "1px solid #D1D5DB",
+                  color: copied ? "#16A34A" : "#374151",
                   fontWeight: 700,
-                  fontSize: "0.88rem",
+                  fontSize: "0.85rem",
                   padding: "0.75rem 1rem",
-                  borderRadius: "14px",
+                  borderRadius: "10px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -293,8 +265,8 @@ export default function CheckoutPage({ setActiveTab }) {
                   cursor: "pointer"
                 }}
               >
-                {copied ? <Check size={18} color="#16A34A" /> : <Copy size={18} />}
-                <span>{copied ? "Copied Order Text!" : "Copy WhatsApp Message Text"}</span>
+                {copied ? <Check size={16} /> : <Copy size={16} />}
+                <span>{copied ? "Copied to Clipboard!" : "Copy WhatsApp Order Text"}</span>
               </button>
 
               <button
@@ -304,374 +276,443 @@ export default function CheckoutPage({ setActiveTab }) {
                   setActiveTab("my-orders");
                 }}
                 style={{
-                  background: "#0A192F",
+                  background: "#0F172A",
                   color: "#FFFFFF",
                   fontWeight: 700,
-                  fontSize: "0.88rem",
-                  padding: "0.8rem 1rem",
-                  borderRadius: "14px",
+                  fontSize: "0.85rem",
+                  padding: "0.75rem 1rem",
+                  borderRadius: "10px",
                   border: "none",
                   cursor: "pointer",
                   marginTop: "0.25rem"
                 }}
               >
-                Track in My Orders ➔
+                View in My Orders ➔
               </button>
             </div>
-
           </div>
         </div>
       )}
 
-      {/* Page Header */}
-      <div style={{ marginBottom: "2rem" }}>
-        <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "#00A896", fontSize: "0.82rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.3rem" }}>
-          <MessageSquare size={16} /> WhatsApp Checkout Flow
-        </div>
-        <h1 style={{ fontSize: "2.2rem", color: "#0A192F", fontWeight: 900, marginBottom: "0.35rem" }}>
-          Complete Your Order
-        </h1>
-        <p style={{ color: "#64748B", fontSize: "0.95rem" }}>
-          Submit your order request directly via WhatsApp to our central Cayman team. Choose between <strong>Store Pickup</strong> or <strong>Grand Cayman Courier Delivery</strong>.
-        </p>
-      </div>
-
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2.5rem", alignItems: "flex-start" }}>
+      {/* Main Container */}
+      <div className="container" style={{ maxWidth: "1140px", margin: "0 auto", padding: "0 1.25rem" }}>
         
-        {/* Left: Customer Info & Fulfillment Selector */}
-        <div>
+        {/* Back Link */}
+        <div style={{ marginBottom: "1.25rem" }}>
+          <button
+            onClick={() => setActiveTab("cart")}
+            style={{
+              background: "none",
+              border: "none",
+              color: "#64748B",
+              fontSize: "0.85rem",
+              fontWeight: 600,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.35rem"
+            }}
+          >
+            <ArrowLeft size={16} /> Back to Shopping Cart
+          </button>
+        </div>
 
-          {/* Fulfillment Toggle (Collection vs Delivery) */}
-          <div style={{ marginBottom: "1.75rem" }}>
-            <label style={{ fontSize: "0.85rem", fontWeight: 800, color: "#0A192F", display: "block", marginBottom: "0.6rem" }}>
-              Select Fulfillment Preference *
-            </label>
+        <h1 style={{ fontSize: "1.75rem", fontWeight: 800, color: "#111827", marginBottom: "1.75rem" }}>
+          Checkout & Order Placement
+        </h1>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
-              
-              {/* Option 1: Store Pickup */}
-              <div
-                onClick={() => setFulfillmentType("Store Pickup")}
-                style={{
-                  background: fulfillmentType === "Store Pickup" ? "#F0FDFA" : "#FFFFFF",
-                  border: fulfillmentType === "Store Pickup" ? "2px solid #00A896" : "1.5px solid #E2E8F0",
-                  borderRadius: "16px",
-                  padding: "1.1rem 1rem",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                  boxShadow: fulfillmentType === "Store Pickup" ? "0 4px 15px rgba(0, 168, 150, 0.15)" : "none"
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.35rem" }}>
-                  <Store size={20} color={fulfillmentType === "Store Pickup" ? "#00A896" : "#64748B"} />
-                  <strong style={{ fontSize: "0.92rem", color: fulfillmentType === "Store Pickup" ? "#0A192F" : "#334155" }}>
-                    Store Pickup
-                  </strong>
-                </div>
-                <div style={{ fontSize: "0.78rem", color: "#64748B", lineHeight: 1.4 }}>
-                  Pick up directly from the vendor's physical store or boutique counter on Grand Cayman.
-                </div>
-                <div style={{ marginTop: "0.5rem", fontSize: "0.76rem", color: "#00A896", fontWeight: 800 }}>
-                  FREE PICKUP
-                </div>
-              </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "2rem", alignItems: "flex-start" }}>
+          
+          {/* 📝 Left Column: Form Details */}
+          <div>
+            
+            {/* 1. Fulfillment Preference */}
+            <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "14px", padding: "1.5rem", marginBottom: "1.5rem" }}>
+              <h2 style={{ fontSize: "1.05rem", fontWeight: 800, color: "#111827", marginBottom: "1rem" }}>
+                1. Delivery or Pickup
+              </h2>
 
-              {/* Option 2: Island Courier Delivery */}
-              <div
-                onClick={() => setFulfillmentType("Island Courier Delivery")}
-                style={{
-                  background: fulfillmentType === "Island Courier Delivery" ? "#F0FDFA" : "#FFFFFF",
-                  border: fulfillmentType === "Island Courier Delivery" ? "2px solid #00A896" : "1.5px solid #E2E8F0",
-                  borderRadius: "16px",
-                  padding: "1.1rem 1rem",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                  boxShadow: fulfillmentType === "Island Courier Delivery" ? "0 4px 15px rgba(0, 168, 150, 0.15)" : "none"
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.35rem" }}>
-                  <Truck size={20} color={fulfillmentType === "Island Courier Delivery" ? "#00A896" : "#64748B"} />
-                  <strong style={{ fontSize: "0.92rem", color: fulfillmentType === "Island Courier Delivery" ? "#0A192F" : "#334155" }}>
-                    Island Courier
-                  </strong>
-                </div>
-                <div style={{ fontSize: "0.78rem", color: "#64748B", lineHeight: 1.4 }}>
-                  Dispatched by courier to your residence, condo, hotel, or resort on Grand Cayman.
-                </div>
-                <div style={{ marginTop: "0.5rem", fontSize: "0.76rem", color: "#16A34A", fontWeight: 800 }}>
-                  ISLAND-WIDE
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          {/* Customer Details Form */}
-          <form onSubmit={handleSubmitOrder} style={{ background: "#FFFFFF", borderRadius: "20px", border: "1.5px solid #E2E8F0", padding: "1.75rem", boxShadow: "0 4px 20px rgba(0,0,0,0.04)" }}>
-            <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0A192F", marginBottom: "1.25rem" }}>
-              Customer Details
-            </h3>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.5rem" }}>
-              
-              {/* Full Name */}
-              {/* Full Name */}
-              <div>
-                <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "#1E293B", marginBottom: "0.4rem", display: "block" }}>
-                  Customer Full Name *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={customerName}
-                  onChange={(e) => setCustomerName(e.target.value)}
-                  placeholder="e.g. Enter your full name"
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                
+                {/* Courier Delivery */}
+                <div
+                  onClick={() => setFulfillmentType("Island Courier Delivery")}
                   style={{
-                    width: "100%",
-                    padding: "0.8rem 1rem",
+                    background: fulfillmentType === "Island Courier Delivery" ? "#F0FDF4" : "#FFFFFF",
+                    border: fulfillmentType === "Island Courier Delivery" ? "2px solid #16A34A" : "1px solid #E5E7EB",
                     borderRadius: "12px",
-                    border: "1.5px solid #CBD5E1",
-                    fontSize: "0.95rem"
+                    padding: "1rem",
+                    cursor: "pointer"
                   }}
-                />
-              </div>
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.45rem", marginBottom: "0.35rem" }}>
+                    <Truck size={18} color={fulfillmentType === "Island Courier Delivery" ? "#16A34A" : "#64748B"} />
+                    <strong style={{ fontSize: "0.9rem", color: "#111827" }}>
+                      Island Delivery
+                    </strong>
+                  </div>
+                  <div style={{ fontSize: "0.76rem", color: "#64748B", lineHeight: 1.4 }}>
+                    Dispatched across Grand Cayman (Condo, Hotel, Residence).
+                  </div>
+                  <div style={{ fontSize: "0.74rem", color: "#16A34A", fontWeight: 800, marginTop: "0.5rem" }}>
+                    FREE OVER CI$50.00
+                  </div>
+                </div>
 
-              {/* WhatsApp Phone Number (Full Width with compact country selector) */}
-              <div>
-                <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "#1E293B", marginBottom: "0.4rem", display: "block" }}>
-                  WhatsApp Phone Number *
-                </label>
-                <div style={{ display: "flex", gap: "0.6rem", alignItems: "stretch" }}>
-                  <select
-                    value={countryCode}
-                    onChange={(e) => setCountryCode(e.target.value)}
+                {/* Store Pickup */}
+                <div
+                  onClick={() => setFulfillmentType("Store Pickup")}
+                  style={{
+                    background: fulfillmentType === "Store Pickup" ? "#F0FDF4" : "#FFFFFF",
+                    border: fulfillmentType === "Store Pickup" ? "2px solid #16A34A" : "1px solid #E5E7EB",
+                    borderRadius: "12px",
+                    padding: "1rem",
+                    cursor: "pointer"
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.45rem", marginBottom: "0.35rem" }}>
+                    <Store size={18} color={fulfillmentType === "Store Pickup" ? "#16A34A" : "#64748B"} />
+                    <strong style={{ fontSize: "0.9rem", color: "#111827" }}>
+                      Store Pickup
+                    </strong>
+                  </div>
+                  <div style={{ fontSize: "0.76rem", color: "#64748B", lineHeight: 1.4 }}>
+                    Ready for quick collection at local partner shops.
+                  </div>
+                  <div style={{ fontSize: "0.74rem", color: "#16A34A", fontWeight: 800, marginTop: "0.5rem" }}>
+                    ALWAYS FREE
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            {/* 2. Customer Contact & Address */}
+            <form onSubmit={handleSubmitOrder} style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "14px", padding: "1.5rem", marginBottom: "1.5rem" }}>
+              <h2 style={{ fontSize: "1.05rem", fontWeight: 800, color: "#111827", marginBottom: "1.25rem" }}>
+                2. Contact & Delivery Address
+              </h2>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
+                
+                {/* Full Name */}
+                <div>
+                  <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 700, color: "#374151", marginBottom: "0.35rem" }}>
+                    Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                    placeholder="Enter your name"
                     style={{
-                      width: "125px",
-                      minWidth: "125px",
-                      flexShrink: 0,
-                      padding: "0.8rem 0.5rem",
-                      borderRadius: "12px",
-                      border: "1.5px solid #CBD5E1",
-                      fontSize: "0.92rem",
-                      background: "#F8FAFC",
-                      color: "#0F172A",
-                      fontWeight: 700,
-                      cursor: "pointer"
+                      width: "100%",
+                      padding: "0.75rem 0.95rem",
+                      borderRadius: "8px",
+                      border: "1px solid #D1D5DB",
+                      fontSize: "0.9rem"
+                    }}
+                  />
+                </div>
+
+                {/* WhatsApp Phone */}
+                <div>
+                  <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 700, color: "#374151", marginBottom: "0.35rem" }}>
+                    WhatsApp Phone Number *
+                  </label>
+                  <div style={{ display: "flex", gap: "0.5rem" }}>
+                    <select
+                      value={countryCode}
+                      onChange={(e) => setCountryCode(e.target.value)}
+                      style={{
+                        padding: "0.75rem 0.65rem",
+                        borderRadius: "8px",
+                        border: "1px solid #D1D5DB",
+                        background: "#F8FAFC",
+                        fontSize: "0.85rem",
+                        fontWeight: 700,
+                        color: "#1E293B"
+                      }}
+                    >
+                      <option value="+1345">🇰🇾 +1 (345) Cayman</option>
+                      <option value="+1">🇺🇸/🇨🇦 +1 US/CA</option>
+                      <option value="+91">🇮🇳 +91 India (Live Test)</option>
+                    </select>
+                    <input
+                      type="tel"
+                      required
+                      value={customerPhone}
+                      onChange={(e) => setCustomerPhone(e.target.value)}
+                      placeholder={countryCode === "+1345" ? "e.g. 949-2299" : countryCode === "+91" ? "10-digit number" : "Mobile number"}
+                      style={{
+                        flex: 1,
+                        padding: "0.75rem 0.95rem",
+                        borderRadius: "8px",
+                        border: "1px solid #D1D5DB",
+                        fontSize: "0.9rem"
+                      }}
+                    />
+                  </div>
+                  <span style={{ fontSize: "0.74rem", color: "#64748B", marginTop: "0.25rem", display: "block" }}>
+                    We send order dispatch and delivery updates via WhatsApp.
+                  </span>
+                </div>
+
+                {/* Email Address */}
+                <div>
+                  <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 700, color: "#374151", marginBottom: "0.35rem" }}>
+                    Email Address (Optional)
+                  </label>
+                  <input
+                    type="email"
+                    value={customerEmail}
+                    onChange={(e) => setCustomerEmail(e.target.value)}
+                    placeholder="e.g. customer@example.com"
+                    style={{
+                      width: "100%",
+                      padding: "0.75rem 0.95rem",
+                      borderRadius: "8px",
+                      border: "1px solid #D1D5DB",
+                      fontSize: "0.9rem"
+                    }}
+                  />
+                </div>
+
+                {/* Island District Selector */}
+                <div>
+                  <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 700, color: "#374151", marginBottom: "0.35rem" }}>
+                    Grand Cayman District *
+                  </label>
+                  <select
+                    value={district}
+                    onChange={(e) => setDistrict(e.target.value)}
+                    style={{
+                      width: "100%",
+                      padding: "0.75rem 0.95rem",
+                      borderRadius: "8px",
+                      border: "1px solid #D1D5DB",
+                      fontSize: "0.9rem",
+                      background: "#FFFFFF"
                     }}
                   >
-                    <option value="+91">🇮🇳 +91 (IN)</option>
-                    <option value="+1345">🇰🇾 +1 345 (KY)</option>
+                    <option value="George Town">George Town (Capital & Port)</option>
+                    <option value="Seven Mile Beach">Seven Mile Beach (Resort Corridor)</option>
+                    <option value="West Bay">West Bay</option>
+                    <option value="Bodden Town">Bodden Town</option>
+                    <option value="North Side">North Side & Cayman Kai</option>
+                    <option value="East End">East End</option>
                   </select>
-                  <input
-                    type="tel"
-                    required
-                    value={customerPhone}
-                    onChange={(e) => setCustomerPhone(e.target.value)}
-                    placeholder={countryCode === "+91" ? "Enter 10-digit WhatsApp number (e.g. 9825012345)" : "Enter Cayman phone (e.g. 9265544)"}
-                    style={{
-                      flex: 1,
-                      minWidth: 0,
-                      width: "100%",
-                      padding: "0.8rem 1rem",
-                      borderRadius: "12px",
-                      border: "1.5px solid #CBD5E1",
-                      fontSize: "1rem",
-                      fontWeight: 600,
-                      color: "#0F172A"
-                    }}
-                  />
                 </div>
-                <span style={{ fontSize: "0.78rem", color: "#00A896", marginTop: "5px", display: "block", fontWeight: 700 }}>
-                  {countryCode === "+91"
-                    ? "✅ Live Testing: Enter ANY 10-digit Indian number. WhatsApp will open directly with this number!"
-                    : "🇰🇾 Cayman area code +1 (345)"}
-                </span>
-              </div>
 
-              {/* Email Address */}
-              <div>
-                <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "#1E293B", marginBottom: "0.4rem", display: "block" }}>
-                  Email Address (Optional)
-                </label>
-                <input
-                  type="email"
-                  value={customerEmail}
-                  onChange={(e) => setCustomerEmail(e.target.value)}
-                  placeholder="e.g. customer@example.com"
-                  style={{
-                    width: "100%",
-                    padding: "0.8rem 1rem",
-                    borderRadius: "12px",
-                    border: "1.5px solid #CBD5E1",
-                    fontSize: "0.95rem"
-                  }}
-                />
-              </div>
+                {/* Delivery Address (if Delivery selected) */}
+                {fulfillmentType === "Island Courier Delivery" && (
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 700, color: "#374151", marginBottom: "0.35rem" }}>
+                      Street Address / Resort & Room # *
+                    </label>
+                    <textarea
+                      rows={2}
+                      required
+                      value={deliveryAddress}
+                      onChange={(e) => setDeliveryAddress(e.target.value)}
+                      placeholder="e.g. Westin Resort, Room 412, West Bay Road"
+                      style={{
+                        width: "100%",
+                        padding: "0.75rem 0.95rem",
+                        borderRadius: "8px",
+                        border: "1px solid #D1D5DB",
+                        fontSize: "0.9rem"
+                      }}
+                    />
+                  </div>
+                )}
 
-              {/* Delivery Address (if Delivery selected) */}
-              {fulfillmentType === "Island Courier Delivery" && (
+                {/* Order Notes */}
                 <div>
-                  <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.35rem", display: "block" }}>
-                    Grand Cayman Delivery Address *
+                  <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 700, color: "#374151", marginBottom: "0.35rem" }}>
+                    Order Notes / Delivery Instructions
                   </label>
-                  <textarea
-                    rows={3}
-                    required
-                    value={deliveryAddress}
-                    onChange={(e) => setDeliveryAddress(e.target.value)}
-                    placeholder="Resort Name, Room/Condo #, Street, District (e.g. Westin Resort, Room 314, Seven Mile Beach)"
+                  <input
+                    type="text"
+                    value={specialNotes}
+                    onChange={(e) => setSpecialNotes(e.target.value)}
+                    placeholder="e.g. Leave at front reception, gift wrapping"
                     style={{
                       width: "100%",
-                      padding: "0.75rem 1rem",
-                      borderRadius: "12px",
-                      border: "1.5px solid #CBD5E1",
-                      fontSize: "0.95rem",
-                      fontFamily: "inherit"
+                      padding: "0.75rem 0.95rem",
+                      borderRadius: "8px",
+                      border: "1px solid #D1D5DB",
+                      fontSize: "0.9rem"
                     }}
                   />
                 </div>
-              )}
 
-              {/* Order Notes */}
-              <div>
-                <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.35rem", display: "block" }}>
-                  Special Instructions / Requests
-                </label>
-                <input
-                  type="text"
-                  value={specialNotes}
-                  onChange={(e) => setSpecialNotes(e.target.value)}
-                  placeholder="e.g. Preferred collection time, gift packaging..."
-                  style={{
-                    width: "100%",
-                    padding: "0.75rem 1rem",
-                    borderRadius: "12px",
-                    border: "1.5px solid #CBD5E1",
-                    fontSize: "0.95rem"
-                  }}
-                />
               </div>
 
-            </div>
+              {/* 3. Payment Method */}
+              <div style={{ marginTop: "1.75rem", paddingTop: "1.5rem", borderTop: "1px solid #F1F5F9" }}>
+                <h2 style={{ fontSize: "1.05rem", fontWeight: 800, color: "#111827", marginBottom: "0.85rem" }}>
+                  3. Payment Method
+                </h2>
 
-            {/* Offline Payment Information */}
-            <div
-              style={{
-                background: "#F8FAFC",
-                border: "1px solid #E2E8F0",
-                borderRadius: "14px",
-                padding: "1rem",
-                marginBottom: "1.5rem",
-                fontSize: "0.82rem",
-                color: "#475569",
-                lineHeight: 1.5
-              }}
-            >
-              <div style={{ fontWeight: 800, color: "#0A192F", marginBottom: "0.25rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                💵 Payment Arranged Upon Order Confirmation
-              </div>
-              Online credit card processing is excluded for initial launch. 
-              You can pay via <strong>Cash on Collection</strong>, <strong>Cash on Delivery</strong>, or <strong>Local Cayman Bank Transfer</strong> (Butterfield / CNB) directly with the store.
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              style={{
-                width: "100%",
-                background: "#25D366",
-                color: "#FFFFFF",
-                border: "none",
-                padding: "1rem 1.25rem",
-                fontSize: "1.05rem",
-                fontWeight: 900,
-                borderRadius: "16px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.6rem",
-                boxShadow: "0 8px 25px rgba(37, 211, 102, 0.4)",
-                transition: "all 0.2s ease"
-              }}
-            >
-              <MessageSquare size={22} />
-              <span>Submit Order via WhatsApp</span>
-              <ArrowRight size={18} />
-            </button>
-
-            <div style={{ textAlign: "center", fontSize: "0.82rem", color: "#64748B", marginTop: "0.85rem" }}>
-              💬 Order will open directly in WhatsApp with: <strong style={{ color: "#0A192F" }}>{customerPhone ? `${countryCode} ${customerPhone}` : "your entered WhatsApp number"}</strong>
-            </div>
-
-          </form>
-
-        </div>
-
-        {/* Right: Order Summary Breakdown */}
-        <div>
-          <div style={{ background: "#FFFFFF", borderRadius: "20px", border: "1.5px solid #E2E8F0", padding: "1.75rem", boxShadow: "0 4px 20px rgba(0,0,0,0.04)" }}>
-            <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0A192F", marginBottom: "1.25rem" }}>
-              Order Summary ({cart.reduce((sum, item) => sum + item.qty, 0)} items)
-            </h3>
-
-            {/* Item List */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.5rem", maxHeight: "360px", overflowY: "auto" }}>
-              {cart.map((item, idx) => (
-                <div key={idx} style={{ display: "flex", gap: "0.85rem", alignItems: "center", borderBottom: "1px solid #F1F5F9", paddingBottom: "0.85rem" }}>
-                  <img
-                    src={item.product.images[0]}
-                    alt={item.product.title}
-                    style={{ width: "56px", height: "56px", borderRadius: "12px", objectFit: "cover" }}
-                  />
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: "0.88rem", fontWeight: 700, color: "#0A192F", lineHeight: 1.3 }}>
-                      {item.product.title}
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                  <label style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.75rem",
+                    padding: "0.85rem 1rem",
+                    border: paymentMethod === "cod" ? "1.5px solid #16A34A" : "1px solid #E5E7EB",
+                    borderRadius: "10px",
+                    background: paymentMethod === "cod" ? "#F0FDF4" : "#FFFFFF",
+                    cursor: "pointer"
+                  }}>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="cod"
+                      checked={paymentMethod === "cod"}
+                      onChange={() => setPaymentMethod("cod")}
+                    />
+                    <div>
+                      <strong style={{ fontSize: "0.88rem", color: "#111827", display: "block" }}>
+                        Cash on Delivery (COD) / Cash on Pickup
+                      </strong>
+                      <span style={{ fontSize: "0.76rem", color: "#64748B" }}>
+                        Pay in cash upon receiving your order on Grand Cayman.
+                      </span>
                     </div>
-                    <div style={{ fontSize: "0.76rem", color: "#00A896", fontWeight: 600, marginTop: "2px" }}>
-                      {item.product.vendor_name}
+                  </label>
+
+                  <label style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.75rem",
+                    padding: "0.85rem 1rem",
+                    border: paymentMethod === "card" ? "1.5px solid #16A34A" : "1px solid #E5E7EB",
+                    borderRadius: "10px",
+                    background: paymentMethod === "card" ? "#F0FDF4" : "#FFFFFF",
+                    cursor: "pointer"
+                  }}>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="card"
+                      checked={paymentMethod === "card"}
+                      onChange={() => setPaymentMethod("card")}
+                    />
+                    <div>
+                      <strong style={{ fontSize: "0.88rem", color: "#111827", display: "block" }}>
+                        Credit / Debit Card on Delivery
+                      </strong>
+                      <span style={{ fontSize: "0.76rem", color: "#64748B" }}>
+                        Visa, Mastercard, Amex accepted via mobile POS terminal.
+                      </span>
                     </div>
-                    <div style={{ fontSize: "0.78rem", color: "#64748B" }}>
-                      Qty: <strong>{item.qty}</strong>
-                    </div>
-                  </div>
-                  <div style={{ fontSize: "0.95rem", fontWeight: 800, color: "#0A192F" }}>
-                    {formatPrice(item.product.price * item.qty)}
-                  </div>
+                  </label>
                 </div>
-              ))}
-            </div>
+              </div>
 
-            {/* Calculations */}
-            <div style={{ borderTop: "1.5px solid #E2E8F0", paddingTop: "1rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.88rem", color: "#64748B" }}>
-                <span>Subtotal:</span>
-                <span>{formatPrice(grandTotalKYD)}</span>
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.88rem", color: "#64748B" }}>
-                <span>Fulfillment ({fulfillmentType === "Store Pickup" ? "Store Pickup" : "Courier"}):</span>
-                <span style={{ color: "#16A34A", fontWeight: 700 }}>FREE</span>
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.88rem", color: "#64748B" }}>
-                <span>Cayman Islands Sales Tax:</span>
-                <span style={{ color: "#00A896", fontWeight: 700 }}>$0.00 (Duty-Free)</span>
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "1.35rem", fontWeight: 900, color: "#0A192F", paddingTop: "0.6rem", borderTop: "1px solid #F1F5F9" }}>
-                <span>Total Due:</span>
-                <span style={{ color: "#00A896" }}>{formatPrice(grandTotalKYD)}</span>
-              </div>
-            </div>
+              {/* Submit CTA */}
+              <button
+                type="submit"
+                style={{
+                  width: "100%",
+                  background: "#D1FAE5",
+                  color: "#065F46",
+                  border: "none",
+                  borderRadius: "10px",
+                  padding: "0.95rem 1.25rem",
+                  fontSize: "0.95rem",
+                  fontWeight: 900,
+                  letterSpacing: "0.03em",
+                  textTransform: "uppercase",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.5rem",
+                  marginTop: "1.75rem",
+                  transition: "all 0.2s ease"
+                }}
+              >
+                <span>COMPLETE ORDER VIA WHATSAPP</span>
+                <ArrowRight size={17} />
+              </button>
 
-            {/* Trust badge */}
-            <div style={{ marginTop: "1.5rem", background: "#F0FDF4", border: "1px solid #BBF7D0", borderRadius: "12px", padding: "0.9rem", fontSize: "0.8rem", color: "#166534", lineHeight: 1.4 }}>
-              🌴 <strong>Direct Island Merchant Fulfillment</strong>: Your order is sent directly to Cayman Bazaar's concierge and fulfilled by verified Grand Cayman artisans and shops.
-            </div>
+            </form>
 
           </div>
+
+          {/* 🧾 Right Column: Order Summary (Sticky matching EE345) */}
+          <div style={{ position: "sticky", top: "100px" }}>
+            <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "16px", padding: "1.5rem" }}>
+              <h2 style={{ fontSize: "1.1rem", fontWeight: 800, color: "#111827", marginBottom: "1rem" }}>
+                Order Summary ({cart.reduce((s, i) => s + i.qty, 0)})
+              </h2>
+
+              {/* Items List */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem", maxHeight: "300px", overflowY: "auto", marginBottom: "1.25rem" }}>
+                {cart.map((item, idx) => (
+                  <div key={idx} style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+                    <img
+                      src={item.product.images?.[0] || item.product.image || item.product.image_url}
+                      alt={item.product.title}
+                      style={{ width: "48px", height: "48px", borderRadius: "8px", objectFit: "cover", flexShrink: 0 }}
+                    />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: "0.84rem", fontWeight: 700, color: "#111827", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        {item.product.title}
+                      </div>
+                      <div style={{ fontSize: "0.75rem", color: "#64748B" }}>
+                        Qty: {item.qty} × CI${item.product.price.toFixed(2)}
+                      </div>
+                    </div>
+                    <div style={{ fontSize: "0.88rem", fontWeight: 800, color: "#111827" }}>
+                      CI${(item.product.price * item.qty).toFixed(2)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Free Delivery Bar */}
+              <div style={{ background: "#F0FDF4", border: "1px solid #BBF7D0", borderRadius: "10px", padding: "0.75rem 0.85rem", marginBottom: "1.25rem" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.45rem", fontSize: "0.78rem", fontWeight: 700, color: "#166534" }}>
+                  <Truck size={15} color="#16A34A" />
+                  <span>
+                    {qualifiesForFreeDelivery
+                      ? "Your order qualifies for free delivery"
+                      : `Add CI$${(50 - grandTotalKYD).toFixed(2)} more for free delivery`}
+                  </span>
+                </div>
+              </div>
+
+              {/* Totals */}
+              <div style={{ borderTop: "1px solid #F1F5F9", paddingTop: "0.85rem", display: "flex", flexDirection: "column", gap: "0.5rem", fontSize: "0.88rem", color: "#4B5563" }}>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span>Subtotal</span>
+                  <span style={{ fontWeight: 700, color: "#111827" }}>CI${grandTotalKYD.toFixed(2)}</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span>Delivery</span>
+                  <span style={{ color: "#16A34A", fontWeight: 700 }}>{qualifiesForFreeDelivery ? "FREE" : "CI$5.00"}</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span>Cayman Sales Tax</span>
+                  <span style={{ color: "#00A896", fontWeight: 700 }}>0% (Tax-Free)</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "1.15rem", fontWeight: 900, color: "#111827", paddingTop: "0.75rem", borderTop: "1px solid #E5E7EB" }}>
+                  <span>Total Due</span>
+                  <span>CI${grandTotalKYD.toFixed(2)}</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div>
 
       </div>
-
     </div>
   );
 }
