@@ -341,7 +341,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
           </div>
         )}
 
-      {/* EE345 Sub-Navigation Category Bar */}
+      {/* Clean Category & Shopping Sub-Bar */}
       {isCustomer && (
         <div style={{
           background: "#FFFFFF",
@@ -350,7 +350,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
           overflowX: "auto",
           whiteSpace: "nowrap"
         }}>
-          <div className="container" style={{ padding: "0.4rem 1.5rem", display: "flex", alignItems: "center", gap: "0.35rem" }}>
+          <div className="container" style={{ padding: "0.45rem 1.25rem", display: "flex", alignItems: "center", gap: "0.45rem" }}>
             <button
               onClick={() => setActiveTab("home")}
               style={{
@@ -366,6 +366,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
             >
               Home
             </button>
+
             <button
               onClick={() => setActiveTab("categories")}
               style={{
@@ -374,88 +375,15 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                 padding: "0.35rem 0.85rem",
                 borderRadius: "999px",
                 fontSize: "0.82rem",
-                fontWeight: 600,
+                fontWeight: 700,
                 border: "none",
                 cursor: "pointer"
               }}
             >
-              Shop
-            </button>
-            <button
-              onClick={() => {
-                setActiveTab("home");
-                setTimeout(() => {
-                  const el = document.getElementById("new-arrivals-section");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }, 100);
-              }}
-              style={{
-                background: "transparent",
-                color: "#334155",
-                padding: "0.35rem 0.85rem",
-                borderRadius: "999px",
-                fontSize: "0.82rem",
-                fontWeight: 600,
-                border: "none",
-                cursor: "pointer"
-              }}
-            >
-              New Arrivals
-            </button>
-            <button
-              onClick={() => {
-                setActiveTab("home");
-                setTimeout(() => {
-                  const el = document.getElementById("special-offers-section");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }, 100);
-              }}
-              style={{
-                background: "transparent",
-                color: "#334155",
-                padding: "0.35rem 0.85rem",
-                borderRadius: "999px",
-                fontSize: "0.82rem",
-                fontWeight: 600,
-                border: "none",
-                cursor: "pointer"
-              }}
-            >
-              Special Offers
-            </button>
-            <a
-              href="https://wa.me/13459492299?text=Hello%20CaymanBazaar%2C%20I%20need%20customer%20support."
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                background: "transparent",
-                color: "#334155",
-                padding: "0.35rem 0.85rem",
-                borderRadius: "999px",
-                fontSize: "0.82rem",
-                fontWeight: 600,
-                textDecoration: "none"
-              }}
-            >
-              Customer Support
-            </a>
-            <button
-              onClick={() => setActiveTab("contact")}
-              style={{
-                background: activeTab === "contact" ? "#0F172A" : "transparent",
-                color: activeTab === "contact" ? "#FFFFFF" : "#334155",
-                padding: "0.35rem 0.85rem",
-                borderRadius: "999px",
-                fontSize: "0.82rem",
-                fontWeight: 600,
-                border: "none",
-                cursor: "pointer"
-              }}
-            >
-              Contact Us
+              All Products
             </button>
 
-            <span style={{ color: "#CBD5E1", margin: "0 0.35rem" }}>|</span>
+            <span style={{ color: "#CBD5E1", margin: "0 0.25rem" }}>•</span>
 
             {[
               { id: "cat-1", name: "Artisanal Crafts" },
@@ -470,17 +398,48 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                 onClick={() => setActiveTab("categories")}
                 style={{
                   background: "transparent",
-                  color: "#64748B",
+                  color: "#475569",
                   padding: "0.35rem 0.75rem",
                   fontSize: "0.82rem",
-                  fontWeight: 500,
+                  fontWeight: 600,
                   border: "none",
-                  cursor: "pointer"
+                  cursor: "pointer",
+                  borderRadius: "6px",
+                  transition: "color 0.15s ease"
                 }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#00A896")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "#475569")}
               >
                 {cat.name}
               </button>
             ))}
+
+            <span style={{ color: "#CBD5E1", margin: "0 0.25rem" }}>•</span>
+
+            <button
+              onClick={() => {
+                setActiveTab("home");
+                setTimeout(() => {
+                  const el = document.getElementById("special-offers-section");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }, 100);
+              }}
+              style={{
+                background: "#FEF2F2",
+                color: "#DC2626",
+                padding: "0.3rem 0.75rem",
+                borderRadius: "999px",
+                fontSize: "0.78rem",
+                fontWeight: 800,
+                border: "1px solid #FECACA",
+                cursor: "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.3rem"
+              }}
+            >
+              <span>🔥 Special Offers</span>
+            </button>
           </div>
         </div>
       )}
