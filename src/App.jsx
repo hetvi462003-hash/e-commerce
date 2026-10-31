@@ -46,6 +46,7 @@ function MainApp() {
   // Tab State
   const [activeTab, setActiveTab] = useState("home");
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
   // Selected Item states
   const [selectedVendor, setSelectedVendor] = useState(null);
@@ -73,6 +74,8 @@ function MainApp() {
         setActiveTab={setActiveTab}
         setIsCartOpen={setIsCartOpen}
         setSelectedProduct={setSelectedProduct}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
       />
 
       {/* Main Content Area */}
@@ -85,12 +88,15 @@ function MainApp() {
                 setActiveTab={setActiveTab}
                 setSelectedVendor={setSelectedVendor}
                 setSelectedProduct={setSelectedProduct}
+                setSelectedCategory={setSelectedCategory}
               />
             )}
             {activeTab === "categories" && (
               <CategoriesPage
                 setActiveTab={setActiveTab}
                 setSelectedProduct={setSelectedProduct}
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
               />
             )}
             {activeTab === "stores" && (

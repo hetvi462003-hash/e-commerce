@@ -22,7 +22,7 @@ import {
   ShoppingCart
 } from "lucide-react";
 
-export default function Home({ setActiveTab, setSelectedProduct }) {
+export default function Home({ setActiveTab, setSelectedProduct, setSelectedCategory }) {
   const { products, categories, formatPrice, addToCart, currency } = useMarketplace();
 
   // Filter & Search states
@@ -115,7 +115,10 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
           </h2>
 
           <button
-            onClick={() => setActiveTab("categories")}
+            onClick={() => {
+              if (setSelectedCategory) setSelectedCategory("all");
+              setActiveTab("categories");
+            }}
             style={{
               background: "none",
               border: "none",
@@ -138,7 +141,7 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
             <div
               key={cat.id}
               onClick={() => {
-                setHeroCategory(cat.id);
+                if (setSelectedCategory) setSelectedCategory(cat.id);
                 setActiveTab("categories");
               }}
               style={{
@@ -218,7 +221,10 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
           </h2>
 
           <button
-            onClick={() => setActiveTab("categories")}
+            onClick={() => {
+              if (setSelectedCategory) setSelectedCategory("all");
+              setActiveTab("categories");
+            }}
             style={{
               background: "none",
               border: "none",
@@ -254,7 +260,10 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
           </h2>
 
           <button
-            onClick={() => setActiveTab("categories")}
+            onClick={() => {
+              if (setSelectedCategory) setSelectedCategory("all");
+              setActiveTab("categories");
+            }}
             style={{
               background: "none",
               border: "none",

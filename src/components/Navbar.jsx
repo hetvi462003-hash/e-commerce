@@ -26,7 +26,7 @@ import {
   X
 } from "lucide-react";
 
-export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSelectedProduct }) {
+export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSelectedProduct, selectedCategory = "all", setSelectedCategory }) {
   const { userRole, cart, activeVendor, orders, reviews = [], products = [], customerPhoneSession, isCustomerLoggedIn, customerDisplayName } = useMarketplace();
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -378,10 +378,13 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
             </button>
 
             <button
-              onClick={() => setActiveTab("categories")}
+              onClick={() => {
+                if (setSelectedCategory) setSelectedCategory("all");
+                setActiveTab("categories");
+              }}
               style={{
-                background: activeTab === "categories" ? "#0F172A" : "transparent",
-                color: activeTab === "categories" ? "#FFFFFF" : "#334155",
+                background: activeTab === "categories" && selectedCategory === "all" ? "#0F172A" : "transparent",
+                color: activeTab === "categories" && selectedCategory === "all" ? "#FFFFFF" : "#334155",
                 padding: "0.35rem 0.85rem",
                 borderRadius: "999px",
                 fontSize: "0.82rem",
@@ -402,27 +405,37 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
               { id: "cat-4", name: "Duty-Free Luxury" },
               { id: "cat-5", name: "Island Apparel" },
               { id: "cat-6", name: "Cayman Souvenirs" }
-            ].map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveTab("categories")}
-                style={{
-                  background: "transparent",
-                  color: "#475569",
-                  padding: "0.35rem 0.75rem",
-                  fontSize: "0.82rem",
-                  fontWeight: 600,
-                  border: "none",
-                  cursor: "pointer",
-                  borderRadius: "6px",
-                  transition: "color 0.15s ease"
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#00A896")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#475569")}
-              >
-                {cat.name}
-              </button>
-            ))}
+            ].map((cat) => {
+              const isCatActive = activeTab === "categories" && selectedCategory === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => {
+                    if (setSelectedCategory) setSelectedCategory(cat.id);
+                    setActiveTab("categories");
+                  }}
+                  style={{
+                    background: isCatActive ? "#0F172A" : "transparent",
+                    color: isCatActive ? "#FFFFFF" : "#475569",
+                    padding: "0.35rem 0.85rem",
+                    fontSize: "0.82rem",
+                    fontWeight: isCatActive ? 700 : 600,
+                    border: "none",
+                    cursor: "pointer",
+                    borderRadius: "999px",
+                    transition: "all 0.15s ease"
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isCatActive) e.currentTarget.style.color = "#00A896";
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isCatActive) e.currentTarget.style.color = "#475569";
+                  }}
+                >
+                  {cat.name}
+                </button>
+              );
+            })}
 
             <span style={{ color: "#CBD5E1", margin: "0 0.25rem" }}>•</span>
 

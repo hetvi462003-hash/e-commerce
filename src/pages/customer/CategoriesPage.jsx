@@ -3,9 +3,17 @@ import { useMarketplace } from "../../context/MarketplaceContext";
 import ProductCard from "../../components/ProductCard";
 import { Grid, Search, SlidersHorizontal, Sparkles, ArrowUpDown } from "lucide-react";
 
-export default function CategoriesPage({ setActiveTab, setSelectedProduct }) {
+export default function CategoriesPage({
+  setActiveTab,
+  setSelectedProduct,
+  selectedCategory = "all",
+  setSelectedCategory
+}) {
   const { products, categories } = useMarketplace();
-  const [selectedCat, setSelectedCat] = useState("all");
+  const selectedCat = selectedCategory;
+  const setSelectedCat = (val) => {
+    if (setSelectedCategory) setSelectedCategory(val);
+  };
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("featured");
   const [inStockOnly, setInStockOnly] = useState(false);
@@ -35,13 +43,20 @@ export default function CategoriesPage({ setActiveTab, setSelectedProduct }) {
     <div style={{ background: "#FFFFFF", minHeight: "85vh", paddingBottom: "5rem" }}>
       <div className="container" style={{ padding: "2.5rem 1.5rem" }}>
         
-        {/* Header */}
+        {/* Header with Breadcrumb */}
         <div style={{ marginBottom: "2rem" }}>
+          <div style={{ fontSize: "0.82rem", color: "#0284C7", fontWeight: 700, marginBottom: "0.4rem" }}>
+            <span style={{ cursor: "pointer", color: "#64748B" }} onClick={() => setActiveTab("home")}>Home</span>
+            {" › "}
+            <span>{selectedCat === "all" ? "All Products" : categories.find((c) => c.id === selectedCat)?.name || "Catalog"}</span>
+          </div>
           <h1 style={{ fontSize: "2rem", fontWeight: 800, color: "#111827", marginBottom: "0.35rem" }}>
-            Grand Cayman Online Catalog
+            {selectedCat === "all" ? "Grand Cayman Online Catalog" : categories.find((c) => c.id === selectedCat)?.name || "Catalog"}
           </h1>
           <p style={{ color: "#64748B", fontSize: "0.95rem", margin: 0 }}>
-            Browse authentic local crafts, Tortuga rum treats, dive equipment, and island specialties.
+            {selectedCat === "all"
+              ? "Browse authentic local crafts, Tortuga rum treats, dive equipment, and island specialties."
+              : `Showing authentic island products in ${categories.find((c) => c.id === selectedCat)?.name || "this category"}.`}
           </p>
         </div>
 
