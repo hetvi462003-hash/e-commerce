@@ -350,7 +350,17 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
           overflowX: "auto",
           whiteSpace: "nowrap"
         }}>
-          <div className="container" style={{ padding: "0.45rem 1.25rem", display: "flex", alignItems: "center", gap: "0.45rem" }}>
+          <div
+            className="container"
+            style={{
+              padding: "0.45rem 1.25rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              minWidth: "max-content",
+              gap: "0.5rem"
+            }}
+          >
             <button
               onClick={() => setActiveTab("home")}
               style={{

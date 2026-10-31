@@ -58,7 +58,7 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
     <div style={{ background: "#FFFFFF", minHeight: "100vh", paddingBottom: "5rem" }}>
       
       {/* 🌴 01. EE345-STYLE PROMOTIONAL HERO BANNER (Clean, Light & Vibrant) */}
-      <section style={{ paddingTop: "1.5rem", marginBottom: "2.5rem" }}>
+      <section style={{ paddingTop: "1.25rem", marginBottom: "2rem" }}>
         <div className="container">
           <div
             style={{
@@ -108,7 +108,7 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
       </section>
 
       {/* 🛍️ 02. SHOP BY CATEGORY (Matching EE345 exactly) */}
-      <section id="categories-section" className="container" style={{ marginBottom: "3.5rem" }}>
+      <section id="categories-section" className="container" style={{ marginBottom: "2.25rem" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
           <h2 style={{ fontSize: "1.55rem", color: "#111827", fontWeight: 800, margin: 0 }}>
             Shop by Category
@@ -190,7 +190,7 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
       </section>
 
       {/* ⭐ 03. ESSIE'S CHOICE / CAYMAN'S CHOICE (Matching EE345) */}
-      <section className="container" style={{ marginBottom: "3.5rem" }}>
+      <section className="container" style={{ marginBottom: "2.25rem" }}>
         <div style={{ marginBottom: "1.25rem" }}>
           <h2 style={{ fontSize: "1.55rem", color: "#111827", fontWeight: 800, margin: 0 }}>
             Essie's Choice
@@ -209,7 +209,7 @@ export default function Home({ setActiveTab, setSelectedProduct }) {
       </section>
 
       {/* ✨ 04. NEW ARRIVALS (Matching EE345) */}
-      <section id="new-arrivals-section" className="container" style={{ marginBottom: "3.5rem" }}>
+      <section id="new-arrivals-section" className="container" style={{ marginBottom: "2.5rem" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
           <h2 style={{ fontSize: "1.55rem", color: "#111827", fontWeight: 800, margin: 0 }}>
             New Arrivals
