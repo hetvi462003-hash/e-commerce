@@ -31,6 +31,7 @@ export default function VendorProducts() {
   const [price, setPrice] = useState("");
   const [stockCount, setStockCount] = useState(10);
   const [categoryId, setCategoryId] = useState(categories[0]?.id || "");
+  const [customCategoryName, setCustomCategoryName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [description, setDescription] = useState("");
   const [variationsJson, setVariationsJson] = useState(`{\n  "size": ["Small", "Medium", "Large"]\n}`);
@@ -46,6 +47,7 @@ export default function VendorProducts() {
     setPrice("25.00");
     setStockCount(15);
     setCategoryId(categories[0]?.id || "");
+    setCustomCategoryName("");
     setImageUrl("https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=800&q=80");
     setDescription("Locally crafted island specialty item.");
     setVariationsJson(`{\n  "size": ["Small", "Medium", "Large"]\n}`);
@@ -58,7 +60,14 @@ export default function VendorProducts() {
     setSku(prod.sku);
     setPrice(prod.price.toString());
     setStockCount(prod.stock_count);
-    setCategoryId(prod.category_id);
+    const existingCat = categories.find((c) => c.id === prod.category_id);
+    if (existingCat) {
+      setCategoryId(prod.category_id);
+      setCustomCategoryName("");
+    } else {
+      setCategoryId("custom");
+      setCustomCategoryName(prod.category_name || "");
+    }
     setImageUrl(prod.images[0] || "");
     setDescription(prod.description);
     setVariationsJson(JSON.stringify(prod.variations || {}, null, 2));
@@ -76,7 +85,16 @@ export default function VendorProducts() {
       return;
     }
 
-    const catObj = categories.find((c) => c.id === categoryId);
+    let finalCatId = categoryId;
+    let finalCatName = "";
+    if (categoryId === "custom") {
+      finalCatName = customCategoryName.trim() || "General";
+      finalCatId = "cat-" + finalCatName.toLowerCase().replace(/[^a-z0-9]/g, "-");
+    } else {
+      const catObj = categories.find((c) => c.id === categoryId);
+      finalCatId = categoryId;
+      finalCatName = catObj?.name || "General";
+    }
 
     saveProduct({
       id: editingProduct?.id,
@@ -86,8 +104,8 @@ export default function VendorProducts() {
       sku,
       price: parseFloat(price),
       stock_count: parseInt(stockCount),
-      category_id: categoryId,
-      category_name: catObj?.name || "General",
+      category_id: finalCatId,
+      category_name: finalCatName,
       images: [imageUrl],
       description,
       variations: parsedVariations,
@@ -259,7 +277,18 @@ export default function VendorProducts() {
                     {categories.map((c) => (
                       <option key={c.id} value={c.id}>{c.name}</option>
                     ))}
+                    <option value="custom">+ Other / Add Custom Category...</option>
                   </select>
+                  {categoryId === "custom" && (
+                    <input
+                      type="text"
+                      required
+                      placeholder="Enter custom category name (e.g. Pet Supplies)..."
+                      value={customCategoryName}
+                      onChange={(e) => setCustomCategoryName(e.target.value)}
+                      style={{ marginTop: "0.5rem" }}
+                    />
+                  )}
                 </div>
               </div>
 

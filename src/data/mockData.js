@@ -18,6 +18,9 @@ export const CATEGORIES = [
   { id: "cat-4", name: "Duty-Free Luxury", icon: "Watch", count: 15, image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80" },
   { id: "cat-5", name: "Island Apparel", icon: "Shirt", count: 29, image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=600&q=80" },
   { id: "cat-6", name: "Cayman Souvenirs", icon: "Gift", count: 41, image: "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=600&q=80" },
+  { id: "cat-7", name: "Electronics & Tech", icon: "Smartphone", count: 28, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80" },
+  { id: "cat-8", name: "Home Essentials", icon: "Home", count: 35, image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80" },
+  { id: "cat-9", name: "Beauty & Personal Care", icon: "Sparkles", count: 20, image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80" }
 ];
 
 export const INITIAL_VENDORS = [
@@ -403,6 +406,75 @@ export const INITIAL_PRODUCTS = [
       color: ["Crisp Resort White", "Breezy Sky Blue"]
     },
     description: "Crafted from 100% natural breathable European linen with mother-of-pearl buttons. Tailored specifically for warm Caribbean ocean breezes and Seven Mile Beach evening dining."
+  },
+  {
+    id: "p-10",
+    vendor_id: "v-102",
+    vendor_name: "Seven Mile Surf & Watersports",
+    title: "MagSafe Fast Wireless Magnetic Power Bank (10,000mAh)",
+    slug: "magsafe-magnetic-power-bank",
+    price: 38.00,
+    price_usd: 45.60,
+    category_id: "cat-7",
+    category_name: "Electronics & Tech",
+    sku: "TECH-PWR-010",
+    stock_count: 25,
+    status: "active",
+    featured: true,
+    sponsored: false,
+    images: [
+      "https://images.unsplash.com/photo-1622445262464-84b1456045b6?auto=format&fit=crop&w=800&q=80"
+    ],
+    variations: {
+      color: ["Midnight Black", "Arctic White", "Deep Island Navy"]
+    },
+    description: "Slim magnetic snap-on wireless power bank compatible with iPhone 12-16 & Qi devices. Dual USB-C 20W PD output for fast charging on the go across Grand Cayman."
+  },
+  {
+    id: "p-11",
+    vendor_id: "v-101",
+    vendor_name: "Grand Cayman Artisan Hub",
+    title: "Smart Ultrasonic Island Aroma Diffuser & Essential Oils Set",
+    slug: "ultrasonic-aroma-diffuser-set",
+    price: 29.00,
+    price_usd: 34.80,
+    category_id: "cat-8",
+    category_name: "Home Essentials",
+    sku: "HOME-DIF-011",
+    stock_count: 14,
+    status: "active",
+    featured: true,
+    sponsored: false,
+    images: [
+      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80"
+    ],
+    variations: {
+      wood_finish: ["Natural Bamboo", "Dark Walnut"]
+    },
+    description: "Quiet ultrasonic cool mist humidifier and aromatherapy diffuser with 7 ambient LED mood lights and pure lavender and eucalyptus island essential oils."
+  },
+  {
+    id: "p-12",
+    vendor_id: "v-105",
+    vendor_name: "Bodden Town Artisan Collective",
+    title: "Organic Cayman Sea Mineral Hydrating Facial Mist & Serum",
+    slug: "cayman-sea-mineral-facial-mist",
+    price: 22.00,
+    price_usd: 26.40,
+    category_id: "cat-9",
+    category_name: "Beauty & Personal Care",
+    sku: "BEAUTY-MST-012",
+    stock_count: 20,
+    status: "active",
+    featured: false,
+    sponsored: false,
+    images: [
+      "https://images.unsplash.com/photo-1608248597359-0026e6cb81b8?auto=format&fit=crop&w=800&q=80"
+    ],
+    variations: {
+      size: ["100ml Travel Spray", "200ml Full Size"]
+    },
+    description: "Infused with Grand Cayman ocean minerals, organic aloe vera, and botanical rose water. Refreshes and protects sun-kissed skin after Seven Mile Beach strolls."
   }
 ];
 

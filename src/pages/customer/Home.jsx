@@ -136,7 +136,7 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
         </div>
 
         {/* Categories Grid (EE345 clean card style) */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1.25rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "1.25rem" }}>
           {categories.map((cat) => (
             <div
               key={cat.id}

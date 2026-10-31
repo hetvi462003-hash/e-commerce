@@ -27,7 +27,7 @@ import {
 } from "lucide-react";
 
 export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSelectedProduct, selectedCategory = "all", setSelectedCategory }) {
-  const { userRole, cart, activeVendor, orders, reviews = [], products = [], customerPhoneSession, isCustomerLoggedIn, customerDisplayName } = useMarketplace();
+  const { userRole, cart, activeVendor, orders, reviews = [], products = [], categories = [], customerPhoneSession, isCustomerLoggedIn, customerDisplayName } = useMarketplace();
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -398,14 +398,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
 
             <span style={{ color: "#CBD5E1", margin: "0 0.25rem" }}>•</span>
 
-            {[
-              { id: "cat-1", name: "Artisanal Crafts" },
-              { id: "cat-2", name: "Beach & Watersports" },
-              { id: "cat-3", name: "Gourmet Food & Rum" },
-              { id: "cat-4", name: "Duty-Free Luxury" },
-              { id: "cat-5", name: "Island Apparel" },
-              { id: "cat-6", name: "Cayman Souvenirs" }
-            ].map((cat) => {
+            {categories.map((cat) => {
               const isCatActive = activeTab === "categories" && selectedCategory === cat.id;
               return (
                 <button
