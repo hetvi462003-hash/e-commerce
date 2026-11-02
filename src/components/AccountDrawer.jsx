@@ -523,16 +523,9 @@ export default function AccountDrawer({ isOpen, onClose, setActiveTab, setSelect
               <span>{isCustomerLoggedIn ? "Manage Account Profile" : "Sign in to your account"}</span>
             </div>
 
-            {/* Vendor Portal */}
+            {/* Track My Orders */}
             <div
-              onClick={() => {
-                onClose();
-                if (userRole === "vendor") {
-                  setActiveTab("vendor-dashboard");
-                } else {
-                  openAuthModal("vendor");
-                }
-              }}
+              onClick={() => handleNav("my-orders")}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -548,37 +541,8 @@ export default function AccountDrawer({ isOpen, onClose, setActiveTab, setSelect
               onMouseEnter={(e) => (e.currentTarget.style.background = "#F8FAFC")}
               onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
             >
-              <Store size={16} color="#0D9488" />
-              <span>Sell on CaymanBazaar (Vendor Portal)</span>
-            </div>
-
-            {/* Admin Console */}
-            <div
-              onClick={() => {
-                onClose();
-                if (userRole === "admin") {
-                  setActiveTab("admin-dashboard");
-                } else {
-                  openAuthModal("admin");
-                }
-              }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.75rem",
-                padding: "0.65rem 0.75rem",
-                borderRadius: "10px",
-                cursor: "pointer",
-                fontSize: "0.86rem",
-                color: "#1E293B",
-                fontWeight: 600,
-                transition: "background 0.15s ease"
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#F8FAFC")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-            >
-              <Shield size={16} color="#D97706" />
-              <span>Administrator Console</span>
+              <PackageCheck size={16} color="#00A896" />
+              <span>Track Orders & History</span>
             </div>
 
             {/* WhatsApp Support */}

@@ -1,7 +1,9 @@
 import React from "react";
-import { MessageCircle, Phone, Mail, Clock, ShieldCheck, Heart } from "lucide-react";
+import { useMarketplace } from "../context/MarketplaceContext";
+import { MessageCircle, Phone, Mail, Clock, ShieldCheck, Heart, Store, Shield } from "lucide-react";
 
 export default function Footer({ setActiveTab }) {
+  const { userRole, openAuthModal } = useMarketplace();
   return (
     <footer style={{ background: "#0F172A", color: "#F8FAFC", paddingTop: "4rem", paddingBottom: "2rem", borderTop: "1px solid #1E293B" }}>
       <div className="container">
@@ -69,6 +71,20 @@ export default function Footer({ setActiveTab }) {
               <li>
                 <span style={{ cursor: "pointer" }} onClick={() => setActiveTab("contact")}>
                   Contact Us
+                </span>
+              </li>
+              <li>
+                <span
+                  style={{ cursor: "pointer", color: "#00E5C9", fontWeight: 700 }}
+                  onClick={() => {
+                    if (userRole === "vendor") {
+                      setActiveTab("vendor-dashboard");
+                    } else {
+                      openAuthModal("vendor");
+                    }
+                  }}
+                >
+                  🏪 Sell on CaymanBazaar
                 </span>
               </li>
             </ul>
@@ -183,6 +199,44 @@ export default function Footer({ setActiveTab }) {
           <div>
             © 2026 CaymanBazaar. All rights reserved. Grand Cayman, Cayman Islands.
           </div>
+
+          {/* Discreet Portals (For Merchants & SuperAdmin) */}
+          <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", fontSize: "0.8rem" }}>
+            <span
+              onClick={() => {
+                if (userRole === "vendor") {
+                  setActiveTab("vendor-dashboard");
+                } else {
+                  openAuthModal("vendor");
+                }
+              }}
+              style={{ cursor: "pointer", color: "#94A3B8", display: "inline-flex", alignItems: "center", gap: "0.35rem", transition: "color 0.15s ease" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#00E5C9")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#94A3B8")}
+              title="Access Vendor Merchant Portal"
+            >
+              <Store size={14} /> Vendor Portal
+            </span>
+
+            <span style={{ opacity: 0.3 }}>•</span>
+
+            <span
+              onClick={() => {
+                if (userRole === "admin") {
+                  setActiveTab("admin-dashboard");
+                } else {
+                  openAuthModal("admin");
+                }
+              }}
+              style={{ cursor: "pointer", color: "#64748B", display: "inline-flex", alignItems: "center", gap: "0.35rem", transition: "color 0.15s ease" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#F59E0B")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#64748B")}
+              title="Access SuperAdministrator Console"
+            >
+              <Shield size={14} /> Admin Console
+            </span>
+          </div>
+
           <div>
             Shop local. Support Cayman Islands business.
           </div>
