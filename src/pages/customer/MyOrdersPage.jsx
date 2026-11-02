@@ -53,7 +53,7 @@ export default function MyOrdersPage({ setActiveTab }) {
     const oPhone = cleanDigits(o.customer_phone);
 
     const matchesPhone = Boolean(sPhone && oPhone && (oPhone.includes(sPhone) || sPhone.includes(oPhone)));
-    
+
     const userEmail = (customerProfile?.email || (customerPhoneSession && customerPhoneSession.includes("@") ? customerPhoneSession : "")).toLowerCase().trim();
     const matchesEmail = Boolean(userEmail && o.customer_email && o.customer_email.toLowerCase().trim() === userEmail);
 
@@ -125,7 +125,7 @@ export default function MyOrdersPage({ setActiveTab }) {
 
   return (
     <div className="container" style={{ padding: "2.5rem 1.5rem", paddingBottom: "5rem" }}>
-      
+
       {/* Verified Buyer Review Modal */}
       {selectedReviewOrder && (
         <ReviewModal order={selectedReviewOrder} onClose={() => setSelectedReviewOrder(null)} />
@@ -193,7 +193,7 @@ export default function MyOrdersPage({ setActiveTab }) {
       {/* PRIVACY GATE: If no session or no matching orders */}
       {customerOrders.length === 0 ? (
         <div style={{ maxWidth: "620px", margin: "2rem auto", background: "#FFFFFF", borderRadius: "24px", border: "1.5px solid #E2E8F0", padding: "2.5rem 2rem", boxShadow: "var(--shadow-sm)", textAlign: "center" }}>
-          
+
           <div style={{ background: "#F0FDFA", width: "72px", height: "72px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1.25rem auto", border: "2px solid #CCFBF1" }}>
             <Lock size={34} color="#00A896" />
           </div>

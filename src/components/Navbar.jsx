@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useMarketplace } from "../context/MarketplaceContext";
+import AccountDrawer from "./AccountDrawer";
 import {
   ShoppingBag,
   Store,
@@ -23,13 +24,16 @@ import {
   MessageCircle,
   Menu,
   Heart,
-  X
+  X,
+  User,
+  ChevronDown
 } from "lucide-react";
 
 export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSelectedProduct, selectedCategory = "all", setSelectedCategory }) {
   const { userRole, cart, activeVendor, orders, reviews = [], products = [], categories = [], customerPhoneSession, isCustomerLoggedIn, customerDisplayName } = useMarketplace();
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAccountDrawerOpen, setIsAccountDrawerOpen] = useState(false);
 
   const searchResults = searchQuery.trim().length >= 2
     ? products.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()) || (p.category_name && p.category_name.toLowerCase().includes(searchQuery.toLowerCase()))).slice(0, 5)
@@ -258,6 +262,52 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                 <span>Support</span>
               </a>
 
+              {/* EE345 Account & Side Menu Toggle */}
+              <div
+                id="account-drawer-toggle"
+                onClick={() => setIsAccountDrawerOpen(true)}
+                style={{
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  padding: "0.35rem 0.65rem",
+                  borderRadius: "10px",
+                  background: isAccountDrawerOpen ? "#F1F5F9" : "transparent",
+                  transition: "background 0.15s ease",
+                  userSelect: "none"
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "#F1F5F9")}
+                onMouseLeave={(e) => {
+                  if (!isAccountDrawerOpen) e.currentTarget.style.background = "transparent";
+                }}
+                title="Hello, Sign in / Account Shortcuts"
+              >
+                <div
+                  style={{
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: "50%",
+                    background: "#0F172A",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#00E5C9",
+                    flexShrink: 0
+                  }}
+                >
+                  <User size={17} />
+                </div>
+                <div className="hide-on-mobile" style={{ textAlign: "left", lineHeight: 1.15 }}>
+                  <div style={{ fontSize: "0.7rem", color: "#64748B", fontWeight: 500 }}>
+                    {isCustomerLoggedIn ? `Hello, ${customerDisplayName}` : "Hello, sign in"}
+                  </div>
+                  <div style={{ fontSize: "0.82rem", fontWeight: 800, color: "#0F172A", display: "flex", alignItems: "center", gap: "2px" }}>
+                    Account <ChevronDown size={12} color="#64748B" />
+                  </div>
+                </div>
+              </div>
+
               {/* Wishlist Icon (EE345 style) */}
               <button
                 onClick={() => setActiveTab("categories")}
@@ -277,27 +327,6 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
               >
                 <Heart size={18} color="#0F172A" />
                 <span className="hide-on-mobile">Wishlist</span>
-              </button>
-
-              {/* My Orders / Account */}
-              <button
-                onClick={() => setActiveTab("my-orders")}
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: "#334155",
-                  fontSize: "0.82rem",
-                  fontWeight: 700,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  cursor: "pointer",
-                  padding: "0.45rem 0.65rem",
-                  borderRadius: "8px"
-                }}
-              >
-                <PackageCheck size={18} color="#0F172A" />
-                <span className="hide-on-mobile">My Orders</span>
               </button>
 
                 {/* Cart Page Trigger (EE345 style) */}
@@ -361,6 +390,38 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
               gap: "0.5rem"
             }}
           >
+            {/* All Categories & Shortcuts Toggle (EE345 & Amazon style) */}
+            <button
+              onClick={() => setIsAccountDrawerOpen(true)}
+              style={{
+                background: isAccountDrawerOpen ? "#0F172A" : "#F1F5F9",
+                color: isAccountDrawerOpen ? "#FFFFFF" : "#0F172A",
+                border: "1px solid #E2E8F0",
+                borderRadius: "999px",
+                padding: "0.35rem 0.85rem",
+                fontSize: "0.82rem",
+                fontWeight: 800,
+                display: "flex",
+                alignItems: "center",
+                gap: "0.35rem",
+                cursor: "pointer",
+                transition: "all 0.15s ease"
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#0F172A";
+                e.currentTarget.style.color = "#FFFFFF";
+              }}
+              onMouseLeave={(e) => {
+                if (!isAccountDrawerOpen) {
+                  e.currentTarget.style.background = "#F1F5F9";
+                  e.currentTarget.style.color = "#0F172A";
+                }
+              }}
+              title="Open Navigation Menu & Categories"
+            >
+              <Menu size={14} /> All
+            </button>
+
             <button
               onClick={() => setActiveTab("home")}
               style={{
@@ -701,11 +762,17 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
             )}
 
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={() => {
+                if (userRole === "customer") {
+                  setIsAccountDrawerOpen(true);
+                } else {
+                  setIsMobileMenuOpen(!isMobileMenuOpen);
+                }
+              }}
               style={{
-                background: isMobileMenuOpen ? "rgba(0, 229, 201, 0.2)" : "rgba(255, 255, 255, 0.08)",
-                border: isMobileMenuOpen ? "1.5px solid #00E5C9" : "1px solid rgba(255, 255, 255, 0.15)",
-                color: isMobileMenuOpen ? "#00E5C9" : "#FFFFFF",
+                background: (isMobileMenuOpen || isAccountDrawerOpen) ? "rgba(0, 229, 201, 0.2)" : "rgba(255, 255, 255, 0.08)",
+                border: (isMobileMenuOpen || isAccountDrawerOpen) ? "1.5px solid #00E5C9" : "1px solid rgba(255, 255, 255, 0.15)",
+                color: (isMobileMenuOpen || isAccountDrawerOpen) ? "#00E5C9" : "#FFFFFF",
                 padding: "0.55rem 0.75rem",
                 borderRadius: "12px",
                 cursor: "pointer",
@@ -715,7 +782,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
               }}
               aria-label="Toggle Navigation Menu"
             >
-              {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+              {(isMobileMenuOpen || isAccountDrawerOpen) ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
 
@@ -859,6 +926,13 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
           </div>
         </div>
       )}
+      {/* 🚀 EE345 Slide-In Toggle Navigation & Account Drawer */}
+      <AccountDrawer
+        isOpen={isAccountDrawerOpen}
+        onClose={() => setIsAccountDrawerOpen(false)}
+        setActiveTab={setActiveTab}
+        setSelectedCategory={setSelectedCategory}
+      />
     </header>
   );
 }
