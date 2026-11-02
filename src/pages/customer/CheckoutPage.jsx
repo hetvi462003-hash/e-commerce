@@ -133,7 +133,6 @@ export default function CheckoutPage({ setActiveTab }) {
       type: fulfillmentType === "Island Courier Delivery" ? "COD" : "PICKUP",
       customer_name: customerName.trim(),
       customer_phone: formattedPhone,
-      target_whatsapp: "13459492299", // Central CaymanBazaar Marketplace Concierge
       country_code: "+1345",
       customer_email: customerEmail.trim(),
       delivery_address: fullAddress,
@@ -225,6 +224,12 @@ export default function CheckoutPage({ setActiveTab }) {
                 <span style={{ color: "#64748B" }}>Fulfillment:</span>
                 <strong style={{ color: "#00A896" }}>{confirmedOrder.fulfillment_type}</strong>
               </div>
+              {confirmedOrder.vendor_phone && (
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.4rem" }}>
+                  <span style={{ color: "#64748B" }}>Direct Shop WhatsApp:</span>
+                  <strong style={{ color: "#16A34A" }}>{confirmedOrder.vendor_phone}</strong>
+                </div>
+              )}
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <span style={{ color: "#64748B" }}>Destination:</span>
                 <strong style={{ color: "#111827" }}>Grand Cayman</strong>

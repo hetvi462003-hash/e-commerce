@@ -58,7 +58,7 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
 
   return (
     <div style={{ background: "#F8FAFC", minHeight: "100vh", color: "#0F172A", paddingBottom: "5rem" }}>
-      
+
       {/* 1. LUXURY STALL COMMAND HERO */}
       <div
         style={{
@@ -74,7 +74,7 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
         <div style={{ position: "absolute", bottom: "-60px", left: "10%", width: "350px", height: "350px", background: "radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%)", pointerEvents: "none" }} />
 
         <div className="container" style={{ position: "relative", zIndex: 2 }}>
-          
+
           {/* Top Status & Verification Pill */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "1.25rem" }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
@@ -219,7 +219,7 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
       </div>
 
       <div className="container" style={{ padding: "2.5rem 1.5rem" }}>
-        
+
         {/* Alerts / Notices */}
         {activeVendor?.status === "pending_approval" && (
           <div style={{ background: "#FEF3C7", border: "1.5px solid #F59E0B", color: "#92400E", padding: "1.25rem 1.5rem", borderRadius: "16px", marginBottom: "2rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
@@ -242,7 +242,7 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
 
         {/* 2. CLEAN STALL METRICS */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem", marginBottom: "2.5rem" }}>
-          
+
           {/* Total Sales */}
           <div style={{ background: "#FFFFFF", border: "1.5px solid #E2E8F0", borderRadius: "20px", padding: "1.75rem", boxShadow: "0 2px 10px rgba(0,0,0,0.04)" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
@@ -339,7 +339,7 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
                 Manage WhatsApp Order Requests
               </h3>
               <p style={{ color: "#334155", fontSize: "0.92rem", lineHeight: 1.55 }}>
-                When shoppers submit items from your store, orders are placed in the central system and sent via WhatsApp. 
+                When shoppers submit items from your store, orders are placed in the central system and sent via WhatsApp.
                 Use the dedicated Orders portal to contact customers directly, advance fulfillment status (Processing, Ready for Collection, Out for Delivery), and mark orders Completed.
               </p>
             </div>

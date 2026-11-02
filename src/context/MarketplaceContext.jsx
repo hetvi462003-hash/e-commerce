@@ -396,9 +396,11 @@ export const MarketplaceProvider = ({ children }) => {
         specialNotes: orderData.special_notes
       });
 
-      // Target WhatsApp recipient
+      // Target WhatsApp recipient: Directly route to this specific vendor/shopkeeper's WhatsApp phone number!
       let targetWhatsApp = CENTRAL_MARKETPLACE_WHATSAPP;
-      if (orderData.target_whatsapp) {
+      if (vendorObj?.phone || vendorObj?.whatsapp) {
+        targetWhatsApp = toWhatsAppWaMeNumber(vendorObj.phone || vendorObj.whatsapp);
+      } else if (orderData.target_whatsapp) {
         targetWhatsApp = toWhatsAppWaMeNumber(orderData.target_whatsapp);
       } else if (orderData.customer_phone) {
         const cleanCust = toWhatsAppWaMeNumber(orderData.customer_phone);
@@ -420,6 +422,7 @@ export const MarketplaceProvider = ({ children }) => {
         type: effectiveFulfillment === "Island Courier Delivery" ? "COD" : "PICKUP",
         vendor_id: vId,
         vendor_name: vendorObj?.store_name || "Cayman Vendor",
+        vendor_phone: vendorObj?.phone || "",
         items: formattedItems,
         total_amount: subTotal,
         commission_amount: commissionAmount,
