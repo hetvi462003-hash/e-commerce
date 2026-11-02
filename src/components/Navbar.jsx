@@ -26,7 +26,10 @@ import {
   Heart,
   X,
   User,
-  ChevronDown
+  ChevronDown,
+  Sun,
+  Moon,
+  Monitor
 } from "lucide-react";
 
 export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSelectedProduct, selectedCategory = "all", setSelectedCategory }) {
@@ -88,42 +91,71 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
         <div className="container" style={{ padding: "0.75rem 1.5rem" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1.25rem" }}>
             
-            {/* Brand Logo (EE345 style) */}
-            <div
-              onClick={() => setActiveTab("home")}
-              style={{ display: "flex", alignItems: "center", gap: "0.6rem", cursor: "pointer", flexShrink: 0 }}
-            >
-              <div style={{
-                background: "#0F172A",
-                width: "38px",
-                height: "38px",
-                borderRadius: "10px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#00E5C9"
-              }}>
-                <ShoppingBag size={22} />
-              </div>
-              <div>
+            {/* 3-Line Hamburger Menu & Brand Logo (EE345 style) */}
+            <div style={{ display: "flex", alignItems: "center", gap: "0.85rem", flexShrink: 0 }}>
+              {/* 3 Lines Hamburger Menu Button */}
+              <button
+                id="header-hamburger-trigger"
+                onClick={() => setIsAccountDrawerOpen(true)}
+                style={{
+                  background: isAccountDrawerOpen ? "#F1F5F9" : "transparent",
+                  border: "none",
+                  color: "#0F172A",
+                  cursor: "pointer",
+                  padding: "0.45rem",
+                  borderRadius: "8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  transition: "background 0.15s ease"
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "#F1F5F9")}
+                onMouseLeave={(e) => {
+                  if (!isAccountDrawerOpen) e.currentTarget.style.background = "transparent";
+                }}
+                title="Toggle Menu"
+                aria-label="Toggle Navigation Menu"
+              >
+                <Menu size={24} strokeWidth={2.2} />
+              </button>
+
+              {/* Brand Logo */}
+              <div
+                onClick={() => setActiveTab("home")}
+                style={{ display: "flex", alignItems: "center", gap: "0.6rem", cursor: "pointer" }}
+              >
                 <div style={{
-                  fontFamily: "var(--font-heading)",
-                  fontSize: "1.35rem",
-                  fontWeight: 900,
-                  color: isCustomer ? "#0F172A" : "#FFFFFF",
-                  lineHeight: 1,
-                  letterSpacing: "-0.03em"
+                  background: "#0F172A",
+                  width: "38px",
+                  height: "38px",
+                  borderRadius: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#00E5C9"
                 }}>
-                  CAYMAN<span style={{ color: "#00A896" }}>BAZAAR</span>
+                  <ShoppingBag size={22} />
                 </div>
-                <div style={{
-                  fontSize: "0.65rem",
-                  color: isCustomer ? "#64748B" : "#94A3B8",
-                  fontWeight: 800,
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase"
-                }}>
-                  Online Shopping • Grand Cayman
+                <div>
+                  <div style={{
+                    fontFamily: "var(--font-heading)",
+                    fontSize: "1.35rem",
+                    fontWeight: 900,
+                    color: isCustomer ? "#0F172A" : "#FFFFFF",
+                    lineHeight: 1,
+                    letterSpacing: "-0.03em"
+                  }}>
+                    CAYMAN<span style={{ color: "#00A896" }}>BAZAAR</span>
+                  </div>
+                  <div style={{
+                    fontSize: "0.65rem",
+                    color: isCustomer ? "#64748B" : "#94A3B8",
+                    fontWeight: 800,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase"
+                  }}>
+                    Online Shopping • Grand Cayman
+                  </div>
                 </div>
               </div>
             </div>
@@ -262,6 +294,64 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                 <span>Support</span>
               </a>
 
+              {/* Theme Toggle Pill (EE345 style) */}
+              <div
+                className="hide-on-mobile"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  background: "#F1F5F9",
+                  borderRadius: "999px",
+                  padding: "0.2rem 0.35rem",
+                  border: "1px solid #E2E8F0",
+                  gap: "0.2rem"
+                }}
+              >
+                <div
+                  style={{
+                    background: "#D1FAE5",
+                    borderRadius: "50%",
+                    width: "24px",
+                    height: "24px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#065F46"
+                  }}
+                  title="Light mode"
+                >
+                  <Sun size={13} />
+                </div>
+                <div
+                  style={{
+                    borderRadius: "50%",
+                    width: "24px",
+                    height: "24px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#64748B"
+                  }}
+                  title="Dark mode"
+                >
+                  <Moon size={13} />
+                </div>
+                <div
+                  style={{
+                    borderRadius: "50%",
+                    width: "24px",
+                    height: "24px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#64748B"
+                  }}
+                  title="System mode"
+                >
+                  <Monitor size={13} />
+                </div>
+              </div>
+
               {/* EE345 Account & Side Menu Toggle */}
               <div
                 id="account-drawer-toggle"
@@ -390,38 +480,6 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
               gap: "0.5rem"
             }}
           >
-            {/* All Categories & Shortcuts Toggle (EE345 & Amazon style) */}
-            <button
-              onClick={() => setIsAccountDrawerOpen(true)}
-              style={{
-                background: isAccountDrawerOpen ? "#0F172A" : "#F1F5F9",
-                color: isAccountDrawerOpen ? "#FFFFFF" : "#0F172A",
-                border: "1px solid #E2E8F0",
-                borderRadius: "999px",
-                padding: "0.35rem 0.85rem",
-                fontSize: "0.82rem",
-                fontWeight: 800,
-                display: "flex",
-                alignItems: "center",
-                gap: "0.35rem",
-                cursor: "pointer",
-                transition: "all 0.15s ease"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#0F172A";
-                e.currentTarget.style.color = "#FFFFFF";
-              }}
-              onMouseLeave={(e) => {
-                if (!isAccountDrawerOpen) {
-                  e.currentTarget.style.background = "#F1F5F9";
-                  e.currentTarget.style.color = "#0F172A";
-                }
-              }}
-              title="Open Navigation Menu & Categories"
-            >
-              <Menu size={14} /> All
-            </button>
-
             <button
               onClick={() => setActiveTab("home")}
               style={{
