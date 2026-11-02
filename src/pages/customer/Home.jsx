@@ -198,11 +198,11 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
         </div>
       </section>
 
-      {/* ⭐ 03. ESSIE'S CHOICE / CAYMAN'S CHOICE (Matching EE345) */}
+      {/* ⭐ 03. CAYMAN'S CHOICE (Curated Island Finds) */}
       <section className="container" style={{ marginBottom: "2.25rem" }}>
         <div style={{ marginBottom: "1.25rem" }}>
           <h2 style={{ fontSize: "1.55rem", color: "#111827", fontWeight: 800, margin: 0 }}>
-            Essie's Choice
+            Cayman's Choice
           </h2>
         </div>
 

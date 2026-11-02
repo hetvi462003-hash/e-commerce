@@ -190,7 +190,7 @@ export default function ProductDetailPage({ product, setActiveTab, setSelectedVe
             {/* SKU and Rating Row */}
             <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.25rem", flexWrap: "wrap" }}>
               <span style={{ fontSize: "0.78rem", color: "#6B7280", fontWeight: 600, textTransform: "uppercase" }}>
-                SKU: {currentProd.sku || `EE345-${currentProd.id?.slice(0, 5).toUpperCase()}`}
+                SKU: {currentProd.sku || `CB-${currentProd.id?.slice(0, 5).toUpperCase()}`}
               </span>
 
               <div style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>

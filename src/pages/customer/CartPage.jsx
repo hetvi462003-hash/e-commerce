@@ -155,7 +155,7 @@ export default function CartPage({ setActiveTab, setSelectedProduct }) {
             <div>
               <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 {cart.map((item, index) => {
-                  const sku = item.product.sku || `EE345-${item.product.id.slice(0, 4).toUpperCase()}-${item.product.category_id || "GEN"}-${index + 100}`;
+                  const sku = item.product.sku || `CB-${item.product.id.slice(0, 4).toUpperCase()}-${item.product.category_id || "GEN"}-${index + 100}`;
                   const unitPrice = item.product.price;
                   const itemTotal = unitPrice * item.qty;
 

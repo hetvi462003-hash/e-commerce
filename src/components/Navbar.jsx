@@ -30,6 +30,8 @@ import {
   Sun,
   Moon,
   Monitor,
+  Mic,
+  ShoppingCart,
   ExternalLink,
   ShieldCheck
 } from "lucide-react";
@@ -178,7 +180,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
               }}>
                 <input
                   type="text"
-                  placeholder="Search products, rum cake, dive gear, electronics..."
+                  placeholder="Search"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => {
@@ -189,29 +191,48 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                     border: "none",
                     background: "transparent",
                     outline: "none",
-                    fontSize: "0.88rem",
+                    fontSize: "0.9rem",
                     color: "#0F172A",
                     fontWeight: 500
                   }}
                 />
                 <button
                   type="button"
+                  title="Voice Search"
+                  style={{
+                    background: "transparent",
+                    border: "none",
+                    color: "#64748B",
+                    cursor: "pointer",
+                    padding: "0.25rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginRight: "0.35rem"
+                  }}
+                >
+                  <Mic size={17} strokeWidth={2} />
+                </button>
+                <button
+                  type="button"
                   onClick={() => setActiveTab("categories")}
                   style={{
-                    background: "#00A896",
-                    color: "#FFFFFF",
+                    background: "#D1FAE5",
+                    color: "#047857",
                     border: "none",
-                    borderRadius: "999px",
+                    borderRadius: "12px",
                     width: "36px",
                     height: "36px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     cursor: "pointer",
-                    flexShrink: 0
+                    flexShrink: 0,
+                    transition: "all 0.15s ease"
                   }}
+                  title="Search"
                 >
-                  <Search size={16} />
+                  <Search size={17} strokeWidth={2.2} />
                 </button>
               </div>
 
@@ -354,7 +375,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                 </div>
               </div>
 
-              {/* EE345 Account & Side Menu Toggle */}
+              {/* EE345 Account Pill Toggle */}
               <div
                 id="account-drawer-toggle"
                 onClick={() => setIsAccountDrawerOpen(true)}
@@ -362,40 +383,37 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
-                  gap: "0.5rem",
-                  padding: "0.35rem 0.65rem",
-                  borderRadius: "10px",
-                  background: isAccountDrawerOpen ? "#F1F5F9" : "transparent",
-                  transition: "background 0.15s ease",
+                  gap: "0.55rem",
+                  padding: "0.35rem 0.85rem",
+                  borderRadius: "999px",
+                  border: "1.5px solid #CBD5E1",
+                  background: isAccountDrawerOpen ? "#F1F5F9" : "#FFFFFF",
+                  transition: "all 0.15s ease",
                   userSelect: "none"
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "#F1F5F9")}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "#F8FAFC")}
                 onMouseLeave={(e) => {
-                  if (!isAccountDrawerOpen) e.currentTarget.style.background = "transparent";
+                  if (!isAccountDrawerOpen) e.currentTarget.style.background = "#FFFFFF";
                 }}
                 title="Hello, Sign in / Account Shortcuts"
               >
                 <div
                   style={{
-                    width: "32px",
-                    height: "32px",
-                    borderRadius: "50%",
-                    background: "#0F172A",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    color: "#00E5C9",
+                    color: "#0F172A",
                     flexShrink: 0
                   }}
                 >
-                  <User size={17} />
+                  <User size={19} strokeWidth={2} />
                 </div>
                 <div className="hide-on-mobile" style={{ textAlign: "left", lineHeight: 1.15 }}>
-                  <div style={{ fontSize: "0.7rem", color: "#64748B", fontWeight: 500 }}>
+                  <div style={{ fontSize: "0.68rem", color: "#64748B", fontWeight: 500 }}>
                     {isCustomerLoggedIn ? `Hello, ${customerDisplayName}` : "Hello, sign in"}
                   </div>
-                  <div style={{ fontSize: "0.82rem", fontWeight: 800, color: "#0F172A", display: "flex", alignItems: "center", gap: "2px" }}>
-                    Account <ChevronDown size={12} color="#64748B" />
+                  <div style={{ fontSize: "0.82rem", fontWeight: 800, color: "#0F172A" }}>
+                    Account
                   </div>
                 </div>
               </div>
@@ -406,57 +424,66 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                 style={{
                   background: "none",
                   border: "none",
-                  color: "#334155",
-                  fontSize: "0.82rem",
-                  fontWeight: 700,
+                  color: "#0F172A",
+                  cursor: "pointer",
+                  padding: "0.45rem",
+                  borderRadius: "8px",
                   display: "flex",
                   alignItems: "center",
-                  gap: "0.35rem",
-                  cursor: "pointer",
-                  padding: "0.45rem 0.65rem",
-                  borderRadius: "8px"
+                  justifyContent: "center",
+                  transition: "transform 0.15s ease"
                 }}
+                title="Wishlist"
+                aria-label="Wishlist"
               >
-                <Heart size={18} color="#0F172A" />
-                <span className="hide-on-mobile">Wishlist</span>
+                <Heart size={22} strokeWidth={1.8} color="#0F172A" />
               </button>
 
-                {/* Cart Page Trigger (EE345 style) */}
-                <button
-                  onClick={() => setActiveTab("cart")}
-                  style={{
-                    background: "#00A896",
-                    color: "#FFFFFF",
-                    border: "none",
-                    borderRadius: "999px",
-                    padding: "0.45rem 1.15rem",
-                    fontSize: "0.86rem",
-                    fontWeight: 800,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.45rem",
-                    cursor: "pointer",
-                    boxShadow: "0 2px 8px rgba(0, 168, 150, 0.3)"
-                  }}
-                >
-                  <ShoppingBag size={17} />
-                  <span>Cart</span>
-                  {totalCartCount > 0 && (
-                    <span
-                      style={{
-                        background: "#FFFFFF",
-                        color: "#00A896",
-                        fontSize: "0.74rem",
-                        fontWeight: 900,
-                        borderRadius: "999px",
-                        padding: "0.1rem 0.45rem",
-                        marginLeft: "0.2rem"
-                      }}
-                    >
-                      {totalCartCount}
-                    </span>
-                  )}
-                </button>
+              {/* Cart Icon with Red Counter Badge (EE345 style) */}
+              <button
+                onClick={() => setActiveTab("cart")}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "#0F172A",
+                  cursor: "pointer",
+                  padding: "0.45rem",
+                  borderRadius: "8px",
+                  position: "relative",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  transition: "transform 0.15s ease"
+                }}
+                title="Shopping Cart"
+                aria-label="Shopping Cart"
+              >
+                <ShoppingCart size={22} strokeWidth={1.8} color="#0F172A" />
+                {totalCartCount > 0 && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "0px",
+                      right: "-2px",
+                      background: "#EF4444",
+                      color: "#FFFFFF",
+                      fontSize: "0.68rem",
+                      fontWeight: 800,
+                      minWidth: "18px",
+                      height: "18px",
+                      borderRadius: "999px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: "0 4px",
+                      lineHeight: 1,
+                      boxShadow: "0 1px 3px rgba(0,0,0,0.2)"
+                    }}
+                  >
+                    {totalCartCount}
+                  </span>
+                )}
+              </button>
               </div>
             </div>
           </div>

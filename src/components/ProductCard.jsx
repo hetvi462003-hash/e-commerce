@@ -204,7 +204,7 @@ export default function ProductCard({ product, onSelectProduct }) {
           NEW ARRIVAL
         </span>
         <span style={{ background: "#F1F5F9", color: "#475569", fontSize: "0.65rem", fontWeight: 700, padding: "0.15rem 0.45rem", borderRadius: "3px" }}>
-          Essie's Choice
+          Cayman's Choice
         </span>
       </div>
 
