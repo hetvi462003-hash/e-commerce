@@ -92,11 +92,13 @@ export default function CartDrawer({ isOpen, onClose, onProceedCheckout, onViewC
                         const globalIndex = cart.findIndex((ci) => ci === item);
                         return (
                           <div key={idx} style={{ display: "flex", gap: "0.85rem", alignItems: "center" }}>
-                            <img
-                              src={item.product.images[0]}
-                              alt={item.product.title}
-                              style={{ width: "60px", height: "60px", borderRadius: "10px", objectFit: "cover" }}
-                            />
+                            <div style={{ width: "60px", height: "60px", borderRadius: "10px", background: "#F8FAFC", border: "1px solid #E2E8F0", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexShrink: 0, padding: "3px" }}>
+                              <img
+                                src={item.product.images[0]}
+                                alt={item.product.title}
+                                style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
+                              />
+                            </div>
 
                             <div style={{ flex: 1 }}>
                               <h5 style={{ fontSize: "0.88rem", fontWeight: 700, color: "#0F172A", marginBottom: "0.2rem" }}>

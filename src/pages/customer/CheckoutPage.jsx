@@ -739,11 +739,13 @@ export default function CheckoutPage({ setActiveTab }) {
               <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem", maxHeight: "300px", overflowY: "auto", marginBottom: "1.25rem" }}>
                 {cart.map((item, idx) => (
                   <div key={idx} style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
-                    <img
-                      src={item.product.images?.[0] || item.product.image || item.product.image_url}
-                      alt={item.product.title}
-                      style={{ width: "48px", height: "48px", borderRadius: "8px", objectFit: "cover", flexShrink: 0 }}
-                    />
+                    <div style={{ width: "48px", height: "48px", borderRadius: "8px", background: "#F8FAFC", border: "1px solid #E5E7EB", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexShrink: 0, padding: "2px" }}>
+                      <img
+                        src={item.product.images?.[0] || item.product.image || item.product.image_url}
+                        alt={item.product.title}
+                        style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
+                      />
+                    </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: "0.84rem", fontWeight: 700, color: "#111827", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                         {item.product.title}

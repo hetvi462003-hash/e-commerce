@@ -154,7 +154,9 @@ export default function VendorProducts() {
               <tr key={p.id} style={{ borderBottom: "1px solid #F1F5F9" }}>
                 <td style={{ padding: "1rem" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
-                    <img src={p.images[0]} alt={p.title} style={{ width: "48px", height: "48px", borderRadius: "10px", objectFit: "cover" }} />
+                    <div style={{ width: "48px", height: "48px", borderRadius: "8px", background: "#F8FAFC", border: "1px solid #E2E8F0", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexShrink: 0, padding: "2px" }}>
+                      <img src={p.images[0]} alt={p.title} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
+                    </div>
                     <div>
                       <div style={{ fontWeight: 700, color: "#0F172A" }}>{p.title}</div>
                       <div style={{ fontSize: "0.78rem", color: "#94A3B8" }}>

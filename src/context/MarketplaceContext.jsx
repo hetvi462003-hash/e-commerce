@@ -101,10 +101,10 @@ const MarketplaceContext = createContext();
 export const MarketplaceProvider = ({ children }) => {
   // Roles: 'customer' | 'vendor' | 'admin'
   const [userRole, setUserRole] = useState("customer");
-  
+
   // Selected Vendor when in Vendor Portal mode
   const [activeVendorId, setActiveVendorId] = useState("v-101");
-  
+
   // Currency: 'KYD' ($1.00 KYD) | 'USD' ($1.20 USD)
   const [currency, setCurrency] = useState("KYD");
   const KYD_TO_USD_RATE = 1.20;
@@ -132,7 +132,7 @@ export const MarketplaceProvider = ({ children }) => {
   useEffect(() => {
     try {
       localStorage.setItem("cb_marketplace_reviews", JSON.stringify(reviews));
-    } catch (e) {}
+    } catch (e) { }
   }, [reviews]);
 
   const [ledger, setLedger] = useState(INITIAL_LEDGER);
@@ -171,7 +171,7 @@ export const MarketplaceProvider = ({ children }) => {
       } else {
         localStorage.removeItem("cayman_customer_phone");
       }
-    } catch (e) {}
+    } catch (e) { }
   };
 
   const updateCustomerProfile = (profileData) => {
@@ -179,7 +179,7 @@ export const MarketplaceProvider = ({ children }) => {
       const updated = { ...(prev || {}), ...profileData };
       try {
         localStorage.setItem("cayman_customer_profile", JSON.stringify(updated));
-      } catch (e) {}
+      } catch (e) { }
       return updated;
     });
     if (profileData.phone) {
@@ -195,7 +195,7 @@ export const MarketplaceProvider = ({ children }) => {
     try {
       localStorage.removeItem("cayman_customer_phone");
       localStorage.removeItem("cayman_customer_profile");
-    } catch (e) {}
+    } catch (e) { }
     showToast("Signed out successfully.");
   };
 
@@ -264,9 +264,9 @@ export const MarketplaceProvider = ({ children }) => {
   useEffect(() => {
     try {
       localStorage.setItem("cayman_marketplace_orders", JSON.stringify(orders));
-    } catch (e) {}
+    } catch (e) { }
   }, [orders]);
-  
+
   // Toast notifications
   const [toast, setToast] = useState(null);
 
@@ -323,7 +323,7 @@ export const MarketplaceProvider = ({ children }) => {
       const updated = [...prev];
       const item = updated[index];
       const newQty = item.qty + delta;
-      
+
       if (newQty <= 0) {
         updated.splice(index, 1);
       } else if (newQty > item.product.stock_count) {
@@ -523,7 +523,7 @@ export const MarketplaceProvider = ({ children }) => {
         ...(paymentStatus ? { payment_status: paymentStatus } : {}),
         ...(paymentMethod ? { payment_method: paymentMethod } : {})
       });
-    } catch (e) {}
+    } catch (e) { }
   };
 
   // Backwards-compatible pickup completion helper
@@ -577,7 +577,7 @@ export const MarketplaceProvider = ({ children }) => {
     // Persist wallet top-up in MongoDB
     try {
       api.topupWallet(vendorId, topAmt);
-    } catch (e) {}
+    } catch (e) { }
   };
 
   // Add / Edit Product
@@ -700,7 +700,7 @@ export const MarketplaceProvider = ({ children }) => {
     // Persist profile updates in MongoDB
     try {
       api.updateVendor(vendorId, updatedFields);
-    } catch (e) {}
+    } catch (e) { }
   };
 
   // Create Ad Campaign

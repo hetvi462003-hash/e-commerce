@@ -402,7 +402,9 @@ export default function MyOrdersPage({ setActiveTab }) {
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginBottom: "1.5rem" }}>
                   {ord.items.map((item, idx) => (
                     <div key={idx} style={{ display: "flex", alignItems: "center", gap: "1rem", background: "#F8FAFC", padding: "0.75rem 1rem", borderRadius: "12px", border: "1px solid #F1F5F9" }}>
-                      <img src={item.image} alt={item.title} style={{ width: "48px", height: "48px", borderRadius: "8px", objectFit: "cover" }} />
+                      <div style={{ width: "48px", height: "48px", borderRadius: "8px", background: "#FFFFFF", border: "1px solid #E2E8F0", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexShrink: 0, padding: "2px" }}>
+                        <img src={item.image} alt={item.title} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
+                      </div>
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: "0.88rem", fontWeight: 700, color: "#0A192F" }}>{item.title}</div>
                         <div style={{ fontSize: "0.78rem", color: "#64748B" }}>Qty: {item.qty} × {formatPrice(item.price)}</div>

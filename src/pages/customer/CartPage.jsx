@@ -194,12 +194,15 @@ export default function CartPage({ setActiveTab, setSelectedProduct }) {
                         }}
                       >
                         <img
-                          src={item.product.image || item.product.image_url}
+                          src={item.product.images?.[0] || item.product.image || item.product.image_url}
                           alt={item.product.title}
                           style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover"
+                            maxWidth: "100%",
+                            maxHeight: "100%",
+                            width: "auto",
+                            height: "auto",
+                            objectFit: "contain",
+                            padding: "4px"
                           }}
                         />
                       </div>
@@ -401,11 +404,13 @@ export default function CartPage({ setActiveTab, setSelectedProduct }) {
                         }}
                       >
                         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                          <img
-                            src={savedItem.product.image || savedItem.product.image_url}
-                            alt={savedItem.product.title}
-                            style={{ width: "56px", height: "56px", borderRadius: "8px", objectFit: "cover" }}
-                          />
+                          <div style={{ width: "56px", height: "56px", borderRadius: "8px", background: "#F8FAFC", border: "1px solid #E2E8F0", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexShrink: 0 }}>
+                            <img
+                              src={savedItem.product.images?.[0] || savedItem.product.image || savedItem.product.image_url}
+                              alt={savedItem.product.title}
+                              style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", padding: "2px" }}
+                            />
+                          </div>
                           <div>
                             <div style={{ fontSize: "0.9rem", fontWeight: 700, color: "#0F172A" }}>
                               {savedItem.product.title}

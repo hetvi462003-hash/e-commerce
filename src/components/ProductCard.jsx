@@ -111,7 +111,7 @@ export default function ProductCard({ product, onSelectProduct }) {
       {/* Product Image */}
       <div
         style={{
-          height: "220px",
+          height: "260px",
           width: "100%",
           display: "flex",
           alignItems: "center",
@@ -119,18 +119,25 @@ export default function ProductCard({ product, onSelectProduct }) {
           background: "#F8FAFC",
           overflow: "hidden",
           borderRadius: "12px",
-          marginBottom: "0.75rem"
+          marginBottom: "0.75rem",
+          padding: "0.75rem",
+          boxSizing: "border-box"
         }}
       >
         <img
           src={product.images[0]}
           alt={product.title}
           style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
+            maxHeight: "100%",
+            maxWidth: "100%",
+            width: "auto",
+            height: "auto",
+            objectFit: "contain",
+            display: "block",
             transition: "transform 0.35s ease"
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
         />
       </div>
 

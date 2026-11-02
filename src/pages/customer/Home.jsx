@@ -202,7 +202,7 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
           </h2>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.25rem" }}>
           {caymansChoice.map((prod) => (
             <ProductCard
               key={prod.id}
@@ -241,7 +241,7 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
           </button>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.25rem" }}>
           {newArrivals.map((prod) => (
             <ProductCard
               key={prod.id}
@@ -280,7 +280,7 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
           </button>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.25rem" }}>
           {specialOffers.map((prod) => (
             <ProductCard
               key={prod.id}
