@@ -151,7 +151,13 @@ export const MarketplaceProvider = ({ children }) => {
   const [customerProfile, setCustomerProfileState] = useState(() => {
     try {
       const saved = localStorage.getItem("cayman_customer_profile");
-      return saved ? JSON.parse(saved) : null;
+      if (!saved) return null;
+      const parsed = JSON.parse(saved);
+      if (parsed?.name?.toLowerCase() === "yash") {
+        localStorage.removeItem("cayman_customer_profile");
+        return null;
+      }
+      return parsed;
     } catch (e) {
       return null;
     }

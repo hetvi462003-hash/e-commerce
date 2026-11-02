@@ -119,6 +119,14 @@ input, select, textarea {
   width: 100%;
 }
 
+input[type="radio"], input[type="checkbox"] {
+  width: auto !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  cursor: pointer;
+}
+
 input:focus, select:focus, textarea:focus {
   border-color: var(--cayman-teal-dark);
   box-shadow: 0 0 0 4px rgba(0, 229, 201, 0.15);
