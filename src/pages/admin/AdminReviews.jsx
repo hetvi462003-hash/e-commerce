@@ -73,11 +73,11 @@ export default function AdminReviews() {
   };
 
   return (
-    <div style={{ background: "#060D19", minHeight: "100vh", color: "#F8FAFC", paddingBottom: "5rem" }}>
+    <div style={{ background: "#F8FAFC", minHeight: "100vh", color: "#0F172A", paddingBottom: "5rem" }}>
       {/* 1. Header Command Banner */}
       <div
         style={{
-          background: "linear-gradient(135deg, #050B14 0%, #0B192E 50%, #0A2540 100%)",
+          background: "linear-gradient(135deg, #0A1C36 0%, #172554 100%)",
           borderBottom: "1px solid rgba(245, 158, 11, 0.25)",
           padding: "2.75rem 1.5rem 2.25rem",
           position: "relative",
@@ -87,7 +87,7 @@ export default function AdminReviews() {
         <div style={{ position: "absolute", top: "-40px", right: "10%", width: "320px", height: "320px", background: "radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
 
         <div className="container" style={{ position: "relative", zIndex: 2 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "rgba(245, 158, 11, 0.12)", border: "1px solid rgba(245, 158, 11, 0.35)", padding: "0.35rem 0.85rem", borderRadius: "999px", color: "#FBBF24", fontSize: "0.8rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "1rem" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "rgba(245, 158, 11, 0.15)", border: "1px solid rgba(245, 158, 11, 0.4)", padding: "0.35rem 0.85rem", borderRadius: "999px", color: "#FBBF24", fontSize: "0.8rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "1rem" }}>
             <ShieldCheck size={16} /> SuperAdmin Trust & Safety
           </div>
 
@@ -105,23 +105,23 @@ export default function AdminReviews() {
               <div
                 onClick={() => setRatingFilter("flagged")}
                 style={{
-                  background: "rgba(239, 68, 68, 0.15)",
-                  border: "1px solid rgba(239, 68, 68, 0.4)",
+                  background: "#FEF2F2",
+                  border: "1.5px solid #FCA5A5",
                   padding: "0.85rem 1.25rem",
                   borderRadius: "16px",
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "0.75rem",
                   cursor: "pointer",
-                  boxShadow: "0 4px 20px rgba(239, 68, 68, 0.2)"
+                  boxShadow: "0 4px 15px rgba(239, 68, 68, 0.1)"
                 }}
               >
-                <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "#EF4444", display: "flex", alignItems: "center", justifyContent: "center", color: "#FFFFFF" }}>
+                <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "#DC2626", display: "flex", alignItems: "center", justifyContent: "center", color: "#FFFFFF" }}>
                   <AlertTriangle size={20} />
                 </div>
                 <div>
-                  <div style={{ fontSize: "0.76rem", color: "#FCA5A5", fontWeight: 700, textTransform: "uppercase" }}>Action Required</div>
-                  <div style={{ fontSize: "1rem", fontWeight: 800, color: "#FFFFFF" }}>{flaggedCount} Flagged by Merchants</div>
+                  <div style={{ fontSize: "0.76rem", color: "#B91C1C", fontWeight: 700, textTransform: "uppercase" }}>Action Required</div>
+                  <div style={{ fontSize: "1rem", fontWeight: 800, color: "#991B1B" }}>{flaggedCount} Flagged by Merchants</div>
                 </div>
               </div>
             )}
@@ -134,40 +134,48 @@ export default function AdminReviews() {
         {/* 2. Metrics Strip */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.25rem", marginBottom: "2rem" }}>
           
-          <div style={{ background: "#0B1526", border: "1px solid #1E293B", borderRadius: "18px", padding: "1.25rem 1.5rem" }}>
+          <div style={{ background: "#FFFFFF", border: "1.5px solid #E2E8F0", borderRadius: "18px", padding: "1.25rem 1.5rem", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-              <span style={{ fontSize: "0.82rem", color: "#94A3B8", fontWeight: 700 }}>TOTAL REVIEWS</span>
-              <MessageSquare size={18} color="#00E5C9" />
+              <span style={{ fontSize: "0.82rem", color: "#64748B", fontWeight: 700 }}>TOTAL REVIEWS</span>
+              <div style={{ background: "#F0FDFA", width: "34px", height: "34px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid #CCFBF1" }}>
+                <MessageSquare size={17} color="#0D9488" />
+              </div>
             </div>
-            <div style={{ fontSize: "2rem", fontWeight: 900, color: "#FFFFFF" }}>{totalReviews}</div>
-            <div style={{ fontSize: "0.78rem", color: "#10B981", marginTop: "0.25rem" }}>100% Verified Buyer Orders</div>
+            <div style={{ fontSize: "2rem", fontWeight: 900, color: "#0F172A" }}>{totalReviews}</div>
+            <div style={{ fontSize: "0.78rem", color: "#166534", marginTop: "0.25rem", fontWeight: 600 }}>100% Verified Buyer Orders</div>
           </div>
 
-          <div style={{ background: "#0B1526", border: "1px solid #1E293B", borderRadius: "18px", padding: "1.25rem 1.5rem" }}>
+          <div style={{ background: "#FFFFFF", border: "1.5px solid #E2E8F0", borderRadius: "18px", padding: "1.25rem 1.5rem", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-              <span style={{ fontSize: "0.82rem", color: "#94A3B8", fontWeight: 700 }}>PLATFORM AVERAGE</span>
-              <Star size={18} color="#FBBF24" fill="#FBBF24" />
+              <span style={{ fontSize: "0.82rem", color: "#64748B", fontWeight: 700 }}>PLATFORM AVERAGE</span>
+              <div style={{ background: "#FFFBEB", width: "34px", height: "34px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid #FEF3C7" }}>
+                <Star size={17} color="#D97706" fill="#D97706" />
+              </div>
             </div>
-            <div style={{ fontSize: "2rem", fontWeight: 900, color: "#FBBF24" }}>{avgRating} <span style={{ fontSize: "1rem", color: "#94A3B8" }}>/ 5.0</span></div>
-            <div style={{ fontSize: "0.78rem", color: "#94A3B8", marginTop: "0.25rem" }}>Grand Cayman Island Quality</div>
+            <div style={{ fontSize: "2rem", fontWeight: 900, color: "#B45309" }}>{avgRating} <span style={{ fontSize: "1rem", color: "#64748B" }}>/ 5.0</span></div>
+            <div style={{ fontSize: "0.78rem", color: "#64748B", marginTop: "0.25rem" }}>Grand Cayman Island Quality</div>
           </div>
 
-          <div style={{ background: "#0B1526", border: "1px solid #1E293B", borderRadius: "18px", padding: "1.25rem 1.5rem" }}>
+          <div style={{ background: "#FFFFFF", border: "1.5px solid #E2E8F0", borderRadius: "18px", padding: "1.25rem 1.5rem", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-              <span style={{ fontSize: "0.82rem", color: "#94A3B8", fontWeight: 700 }}>DISPUTES / FLAGGED</span>
-              <AlertTriangle size={18} color={flaggedCount > 0 ? "#EF4444" : "#10B981"} />
+              <span style={{ fontSize: "0.82rem", color: "#64748B", fontWeight: 700 }}>DISPUTES / FLAGGED</span>
+              <div style={{ background: flaggedCount > 0 ? "#FEF2F2" : "#F0FDF4", width: "34px", height: "34px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", border: `1px solid ${flaggedCount > 0 ? "#FECACA" : "#BBF7D0"}` }}>
+                <AlertTriangle size={17} color={flaggedCount > 0 ? "#DC2626" : "#166534"} />
+              </div>
             </div>
-            <div style={{ fontSize: "2rem", fontWeight: 900, color: flaggedCount > 0 ? "#EF4444" : "#10B981" }}>{flaggedCount}</div>
-            <div style={{ fontSize: "0.78rem", color: "#94A3B8", marginTop: "0.25rem" }}>Merchant spam / fake alerts</div>
+            <div style={{ fontSize: "2rem", fontWeight: 900, color: flaggedCount > 0 ? "#DC2626" : "#166534" }}>{flaggedCount}</div>
+            <div style={{ fontSize: "0.78rem", color: "#64748B", marginTop: "0.25rem" }}>Merchant spam / fake alerts</div>
           </div>
 
-          <div style={{ background: "#0B1526", border: "1px solid #1E293B", borderRadius: "18px", padding: "1.25rem 1.5rem" }}>
+          <div style={{ background: "#FFFFFF", border: "1.5px solid #E2E8F0", borderRadius: "18px", padding: "1.25rem 1.5rem", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-              <span style={{ fontSize: "0.82rem", color: "#94A3B8", fontWeight: 700 }}>MERCHANT REPLY RATE</span>
-              <Sparkles size={18} color="#38BDF8" />
+              <span style={{ fontSize: "0.82rem", color: "#64748B", fontWeight: 700 }}>MERCHANT REPLY RATE</span>
+              <div style={{ background: "#F0F9FF", width: "34px", height: "34px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid #BAE6FD" }}>
+                <Sparkles size={17} color="#0284C7" />
+              </div>
             </div>
-            <div style={{ fontSize: "2rem", fontWeight: 900, color: "#38BDF8" }}>{responseRate}%</div>
-            <div style={{ fontSize: "0.78rem", color: "#94A3B8", marginTop: "0.25rem" }}>{repliedCount} official vendor replies</div>
+            <div style={{ fontSize: "2rem", fontWeight: 900, color: "#0284C7" }}>{responseRate}%</div>
+            <div style={{ fontSize: "0.78rem", color: "#64748B", marginTop: "0.25rem" }}>{repliedCount} official vendor replies</div>
           </div>
 
         </div>
@@ -175,8 +183,8 @@ export default function AdminReviews() {
         {/* 3. Search & Control Bar */}
         <div
           style={{
-            background: "#0B1526",
-            border: "1px solid #1E293B",
+            background: "#FFFFFF",
+            border: "1.5px solid #E2E8F0",
             borderRadius: "20px",
             padding: "1.25rem 1.5rem",
             display: "flex",
@@ -184,28 +192,29 @@ export default function AdminReviews() {
             justifyContent: "space-between",
             flexWrap: "wrap",
             gap: "1rem",
-            marginBottom: "2rem"
+            marginBottom: "2rem",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.03)"
           }}
         >
           {/* Search box */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", background: "#060D19", border: "1px solid #1E293B", padding: "0.6rem 1rem", borderRadius: "12px", minWidth: "280px", flex: 1 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", background: "#F8FAFC", border: "1px solid #CBD5E1", padding: "0.6rem 1rem", borderRadius: "12px", minWidth: "280px", flex: 1 }}>
             <Search size={18} color="#64748B" />
             <input
               type="text"
               placeholder="Search by customer, product, store, or comment..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              style={{ background: "transparent", border: "none", color: "#FFFFFF", outline: "none", fontSize: "0.9rem", width: "100%" }}
+              style={{ background: "transparent", border: "none", color: "#0F172A", outline: "none", fontSize: "0.9rem", width: "100%" }}
             />
           </div>
 
           {/* Vendor Filter */}
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <Store size={16} color="#94A3B8" />
+            <Store size={16} color="#64748B" />
             <select
               value={selectedVendorFilter}
               onChange={(e) => setSelectedVendorFilter(e.target.value)}
-              style={{ background: "#060D19", border: "1px solid #1E293B", color: "#E2E8F0", padding: "0.6rem 0.9rem", borderRadius: "12px", fontSize: "0.88rem", outline: "none", cursor: "pointer" }}
+              style={{ background: "#F8FAFC", border: "1px solid #CBD5E1", color: "#0F172A", padding: "0.6rem 0.9rem", borderRadius: "12px", fontSize: "0.88rem", outline: "none", cursor: "pointer", fontWeight: 600 }}
             >
               <option value="all">All Cayman Stores</option>
               {vendors.map((v) => (
@@ -221,10 +230,10 @@ export default function AdminReviews() {
             <button
               onClick={() => setRatingFilter("all")}
               style={{
-                background: ratingFilter === "all" ? "#00E5C9" : "#060D19",
-                color: ratingFilter === "all" ? "#050B14" : "#94A3B8",
+                background: ratingFilter === "all" ? "#0F172A" : "#F8FAFC",
+                color: ratingFilter === "all" ? "#FFFFFF" : "#64748B",
                 border: "1px solid",
-                borderColor: ratingFilter === "all" ? "#00E5C9" : "#1E293B",
+                borderColor: ratingFilter === "all" ? "#0F172A" : "#E2E8F0",
                 fontWeight: 700,
                 fontSize: "0.84rem",
                 padding: "0.55rem 0.9rem",
@@ -238,10 +247,10 @@ export default function AdminReviews() {
             <button
               onClick={() => setRatingFilter("flagged")}
               style={{
-                background: ratingFilter === "flagged" ? "#EF4444" : "#060D19",
-                color: ratingFilter === "flagged" ? "#FFFFFF" : "#F87171",
+                background: ratingFilter === "flagged" ? "#DC2626" : "#FEF2F2",
+                color: ratingFilter === "flagged" ? "#FFFFFF" : "#DC2626",
                 border: "1px solid",
-                borderColor: ratingFilter === "flagged" ? "#EF4444" : "rgba(239, 68, 68, 0.3)",
+                borderColor: ratingFilter === "flagged" ? "#DC2626" : "#FECACA",
                 fontWeight: 700,
                 fontSize: "0.84rem",
                 padding: "0.55rem 0.9rem",
@@ -258,10 +267,10 @@ export default function AdminReviews() {
             <button
               onClick={() => setRatingFilter("5")}
               style={{
-                background: ratingFilter === "5" ? "#F59E0B" : "#060D19",
-                color: ratingFilter === "5" ? "#050B14" : "#FBBF24",
+                background: ratingFilter === "5" ? "#D97706" : "#FFFBEB",
+                color: ratingFilter === "5" ? "#FFFFFF" : "#B45309",
                 border: "1px solid",
-                borderColor: ratingFilter === "5" ? "#F59E0B" : "rgba(245, 158, 11, 0.3)",
+                borderColor: ratingFilter === "5" ? "#D97706" : "#FEF3C7",
                 fontWeight: 700,
                 fontSize: "0.84rem",
                 padding: "0.55rem 0.9rem",
@@ -275,10 +284,10 @@ export default function AdminReviews() {
             <button
               onClick={() => setRatingFilter("low")}
               style={{
-                background: ratingFilter === "low" ? "#EF4444" : "#060D19",
-                color: ratingFilter === "low" ? "#FFFFFF" : "#CBD5E1",
+                background: ratingFilter === "low" ? "#DC2626" : "#F8FAFC",
+                color: ratingFilter === "low" ? "#FFFFFF" : "#64748B",
                 border: "1px solid",
-                borderColor: ratingFilter === "low" ? "#EF4444" : "#1E293B",
+                borderColor: ratingFilter === "low" ? "#DC2626" : "#E2E8F0",
                 fontWeight: 700,
                 fontSize: "0.84rem",
                 padding: "0.55rem 0.9rem",
@@ -294,12 +303,12 @@ export default function AdminReviews() {
 
         {/* 4. Reviews List */}
         {filteredReviews.length === 0 ? (
-          <div style={{ background: "#0B1526", border: "1px dashed #1E293B", borderRadius: "24px", padding: "4rem 2rem", textAlign: "center" }}>
-            <MessageSquare size={48} color="#64748B" style={{ margin: "0 auto 1rem", opacity: 0.6 }} />
-            <h3 style={{ fontSize: "1.3rem", fontWeight: 700, color: "#FFFFFF", marginBottom: "0.5rem" }}>
+          <div style={{ background: "#FFFFFF", border: "1.5px dashed #CBD5E1", borderRadius: "24px", padding: "4rem 2rem", textAlign: "center" }}>
+            <MessageSquare size={48} color="#94A3B8" style={{ margin: "0 auto 1rem", opacity: 0.6 }} />
+            <h3 style={{ fontSize: "1.3rem", fontWeight: 700, color: "#0F172A", marginBottom: "0.5rem" }}>
               No Reviews Match Current Filter
             </h3>
-            <p style={{ color: "#94A3B8", fontSize: "0.95rem" }}>
+            <p style={{ color: "#64748B", fontSize: "0.95rem" }}>
               Try adjusting your search criteria or resetting filters to see all customer reviews.
             </p>
           </div>
@@ -316,13 +325,13 @@ export default function AdminReviews() {
                 <div
                   key={rev.id}
                   style={{
-                    background: "#0B1526",
-                    border: rev.is_flagged ? "1.5px solid rgba(239, 68, 68, 0.6)" : "1px solid #1E293B",
+                    background: "#FFFFFF",
+                    border: rev.is_flagged ? "1.5px solid #FCA5A5" : "1.5px solid #E2E8F0",
                     borderRadius: "20px",
                     padding: "1.75rem",
                     transition: "all 0.2s ease",
                     position: "relative",
-                    boxShadow: rev.is_flagged ? "0 8px 30px rgba(239, 68, 68, 0.15)" : "none"
+                    boxShadow: rev.is_flagged ? "0 8px 30px rgba(239, 68, 68, 0.08)" : "0 2px 8px rgba(0,0,0,0.03)"
                   }}
                 >
                   {/* Top Header Row */}
@@ -331,28 +340,28 @@ export default function AdminReviews() {
                     {/* Left: Author + Badges */}
                     <div>
                       <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
-                        <span style={{ fontSize: "1.1rem", fontWeight: 800, color: "#FFFFFF" }}>{rev.author}</span>
+                        <span style={{ fontSize: "1.1rem", fontWeight: 800, color: "#0F172A" }}>{rev.author}</span>
                         {rev.verified_purchase && (
-                          <span style={{ display: "inline-flex", alignItems: "center", gap: "0.25rem", background: "rgba(16, 185, 129, 0.15)", border: "1px solid rgba(16, 185, 129, 0.35)", padding: "0.2rem 0.55rem", borderRadius: "999px", color: "#10B981", fontSize: "0.72rem", fontWeight: 800 }}>
+                          <span style={{ display: "inline-flex", alignItems: "center", gap: "0.25rem", background: "#DCFCE7", border: "1px solid #BBF7D0", padding: "0.2rem 0.55rem", borderRadius: "999px", color: "#15803D", fontSize: "0.72rem", fontWeight: 800 }}>
                             <ShieldCheck size={13} /> Verified Buyer
                           </span>
                         )}
                         <span style={{ fontSize: "0.82rem", color: "#64748B" }}>• {formattedDate}</span>
                         {rev.order_id && (
-                          <span style={{ fontSize: "0.78rem", color: "#94A3B8", background: "#060D19", padding: "0.15rem 0.5rem", borderRadius: "6px" }}>
+                          <span style={{ fontSize: "0.78rem", color: "#475569", background: "#F1F5F9", padding: "0.15rem 0.5rem", borderRadius: "6px", fontWeight: 600 }}>
                             Order: #{rev.order_id}
                           </span>
                         )}
                       </div>
 
                       {/* Store & Product Attribution */}
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", marginTop: "0.45rem", fontSize: "0.86rem", color: "#94A3B8", flexWrap: "wrap" }}>
-                        <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", color: "#00E5C9", fontWeight: 700 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", marginTop: "0.45rem", fontSize: "0.86rem", color: "#64748B", flexWrap: "wrap" }}>
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", color: "#0D9488", fontWeight: 700 }}>
                           <Store size={14} /> {rev.vendor_name}
                         </span>
                         <span>•</span>
-                        <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", color: "#E2E8F0" }}>
-                          <Package size={14} color="#FBBF24" /> {rev.product_title}
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", color: "#0F172A", fontWeight: 600 }}>
+                          <Package size={14} color="#D97706" /> {rev.product_title}
                         </span>
                       </div>
                     </div>
@@ -360,16 +369,16 @@ export default function AdminReviews() {
                     {/* Right: Star Rating & Action Buttons */}
                     <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                       {/* Visual Stars */}
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.2rem", background: "#060D19", padding: "0.4rem 0.75rem", borderRadius: "10px", border: "1px solid #1E293B" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.2rem", background: "#FFFBEB", padding: "0.4rem 0.75rem", borderRadius: "10px", border: "1px solid #FEF3C7" }}>
                         {[1, 2, 3, 4, 5].map((star) => (
                           <Star
                             key={star}
                             size={16}
-                            color={star <= rev.rating ? "#F59E0B" : "#334155"}
-                            fill={star <= rev.rating ? "#F59E0B" : "transparent"}
+                            color={star <= rev.rating ? "#D97706" : "#CBD5E1"}
+                            fill={star <= rev.rating ? "#D97706" : "transparent"}
                           />
                         ))}
-                        <span style={{ marginLeft: "0.4rem", fontWeight: 900, color: "#FFFFFF", fontSize: "0.92rem" }}>
+                        <span style={{ marginLeft: "0.4rem", fontWeight: 900, color: "#92400E", fontSize: "0.92rem" }}>
                           {rev.rating}.0
                         </span>
                       </div>
@@ -379,9 +388,9 @@ export default function AdminReviews() {
                         onClick={() => handleDelete(rev)}
                         title="Delete Review & Recalculate Rating"
                         style={{
-                          background: "rgba(239, 68, 68, 0.12)",
-                          border: "1px solid rgba(239, 68, 68, 0.35)",
-                          color: "#EF4444",
+                          background: "#FEF2F2",
+                          border: "1px solid #FECACA",
+                          color: "#DC2626",
                           padding: "0.5rem 0.85rem",
                           borderRadius: "10px",
                           fontWeight: 700,
@@ -400,7 +409,7 @@ export default function AdminReviews() {
                   </div>
 
                   {/* Customer Comment */}
-                  <div style={{ background: "#060D19", border: "1px solid #1E293B", borderRadius: "14px", padding: "1.1rem 1.35rem", fontSize: "0.95rem", lineHeight: 1.6, color: "#E2E8F0", marginBottom: "1rem" }}>
+                  <div style={{ background: "#F8FAFC", border: "1px solid #E2E8F0", borderRadius: "14px", padding: "1.1rem 1.35rem", fontSize: "0.95rem", lineHeight: 1.6, color: "#334155", marginBottom: "1rem" }}>
                     "{rev.comment}"
                   </div>
 
@@ -408,8 +417,8 @@ export default function AdminReviews() {
                   {rev.is_flagged && (
                     <div
                       style={{
-                        background: "rgba(239, 68, 68, 0.1)",
-                        border: "1px solid rgba(239, 68, 68, 0.4)",
+                        background: "#FEF2F2",
+                        border: "1px solid #FCA5A5",
                         borderRadius: "14px",
                         padding: "1rem 1.25rem",
                         marginBottom: "1rem",
@@ -421,12 +430,12 @@ export default function AdminReviews() {
                       }}
                     >
                       <div style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
-                        <AlertTriangle size={20} color="#EF4444" style={{ flexShrink: 0, marginTop: "2px" }} />
+                        <AlertTriangle size={20} color="#DC2626" style={{ flexShrink: 0, marginTop: "2px" }} />
                         <div>
-                          <div style={{ fontSize: "0.82rem", fontWeight: 800, color: "#FCA5A5", textTransform: "uppercase" }}>
+                          <div style={{ fontSize: "0.82rem", fontWeight: 800, color: "#B91C1C", textTransform: "uppercase" }}>
                             Merchant Flagged Report:
                           </div>
-                          <div style={{ fontSize: "0.9rem", color: "#FFFFFF", marginTop: "0.2rem" }}>
+                          <div style={{ fontSize: "0.9rem", color: "#991B1B", marginTop: "0.2rem" }}>
                             {rev.flag_reason || "Reported as inappropriate, fake, or abusive review by merchant."}
                           </div>
                         </div>
@@ -436,9 +445,9 @@ export default function AdminReviews() {
                         <button
                           onClick={() => adminDismissFlag(rev.id)}
                           style={{
-                            background: "rgba(16, 185, 129, 0.15)",
-                            border: "1px solid rgba(16, 185, 129, 0.4)",
-                            color: "#10B981",
+                            background: "#DCFCE7",
+                            border: "1px solid #BBF7D0",
+                            color: "#15803D",
                             padding: "0.45rem 0.85rem",
                             borderRadius: "10px",
                             fontWeight: 700,
@@ -455,7 +464,7 @@ export default function AdminReviews() {
                         <button
                           onClick={() => handleDelete(rev)}
                           style={{
-                            background: "#EF4444",
+                            background: "#DC2626",
                             border: "none",
                             color: "#FFFFFF",
                             padding: "0.45rem 0.85rem",
@@ -478,8 +487,8 @@ export default function AdminReviews() {
                   {rev.vendor_reply && (
                     <div
                       style={{
-                        background: "rgba(0, 229, 201, 0.05)",
-                        border: "1px solid rgba(0, 229, 201, 0.25)",
+                        background: "#F0FDFA",
+                        border: "1px solid #CCFBF1",
                         borderRadius: "14px",
                         padding: "1rem 1.25rem",
                         display: "flex",
@@ -487,17 +496,17 @@ export default function AdminReviews() {
                         gap: "0.75rem"
                       }}
                     >
-                      <MessageSquare size={18} color="#00E5C9" style={{ flexShrink: 0, marginTop: "2px" }} />
+                      <MessageSquare size={18} color="#0D9488" style={{ flexShrink: 0, marginTop: "2px" }} />
                       <div style={{ flex: 1 }}>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.25rem" }}>
-                          <span style={{ fontSize: "0.8rem", fontWeight: 800, color: "#00E5C9", textTransform: "uppercase" }}>
+                          <span style={{ fontSize: "0.8rem", fontWeight: 800, color: "#0D9488", textTransform: "uppercase" }}>
                             Official Response from {rev.vendor_name}
                           </span>
                           <span style={{ fontSize: "0.75rem", color: "#64748B" }}>
                             {new Date(rev.vendor_reply.replied_at || Date.now()).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                           </span>
                         </div>
-                        <p style={{ margin: 0, fontSize: "0.9rem", color: "#E2E8F0", lineHeight: 1.5 }}>
+                        <p style={{ margin: 0, fontSize: "0.9rem", color: "#134E4A", lineHeight: 1.5 }}>
                           "{rev.vendor_reply.text}"
                         </p>
                       </div>

@@ -29,11 +29,13 @@ import {
   ChevronDown,
   Sun,
   Moon,
-  Monitor
+  Monitor,
+  ExternalLink,
+  ShieldCheck
 } from "lucide-react";
 
 export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSelectedProduct, selectedCategory = "all", setSelectedCategory }) {
-  const { userRole, cart, activeVendor, orders, reviews = [], products = [], categories = [], customerPhoneSession, isCustomerLoggedIn, customerDisplayName } = useMarketplace();
+  const { userRole, setUserRole, cart, activeVendor, orders, reviews = [], products = [], categories = [], customerPhoneSession, isCustomerLoggedIn, customerDisplayName } = useMarketplace();
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAccountDrawerOpen, setIsAccountDrawerOpen] = useState(false);
@@ -53,12 +55,12 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
 
   return (
     <header style={{
-      background: isCustomer ? "#FFFFFF" : "rgba(5, 11, 20, 0.94)",
-      borderBottom: isCustomer ? "1px solid #E5E7EB" : "1px solid rgba(255, 255, 255, 0.1)",
+      background: "#FFFFFF",
+      borderBottom: "1px solid #E5E7EB",
       position: "sticky",
       top: 0,
       zIndex: 100,
-      boxShadow: isCustomer ? "0 2px 10px rgba(0, 0, 0, 0.05)" : "0 10px 30px rgba(0, 0, 0, 0.5)"
+      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.05)"
     }}>
       {/* Top Island Trust & Delivery Bar */}
       {isCustomer && (
@@ -579,221 +581,343 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
         </div>
       )}
 
-      {/* Main Container Close for non-customers */}
+      {/* Main Container for non-customers (Vendor & Admin Light Theme) */}
       {!isCustomer && (
         <div className="container" style={{ padding: "0.85rem 1.75rem" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1.5rem" }}>
 
-          {/* Vendor Portal Navigation */}
-          {userRole === "vendor" && (
-            <nav className="desktop-nav-links" style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap", marginLeft: "auto" }}>
-              <button
-                onClick={() => setActiveTab("vendor-dashboard")}
-                style={{
-                  background: activeTab === "vendor-dashboard" ? "rgba(0, 229, 201, 0.18)" : "transparent",
-                  color: activeTab === "vendor-dashboard" ? "#00E5C9" : "#CBD5E1",
-                  fontWeight: 800,
-                  fontSize: "0.86rem",
-                  padding: "0.5rem 0.85rem",
-                  borderRadius: "10px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  border: activeTab === "vendor-dashboard" ? "1px solid rgba(0, 229, 201, 0.4)" : "1px solid transparent"
-                }}
+            {/* Brand Logo & Context Badge */}
+            <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+              <div
+                onClick={() => setActiveTab(userRole === "vendor" ? "vendor-dashboard" : "admin-dashboard")}
+                style={{ display: "flex", alignItems: "center", gap: "0.6rem", cursor: "pointer" }}
               >
-                <LayoutDashboard size={15} /> Dashboard
-              </button>
-
-              <button
-                onClick={() => setActiveTab("vendor-products")}
-                style={{
-                  background: activeTab === "vendor-products" ? "rgba(0, 229, 201, 0.18)" : "transparent",
-                  color: activeTab === "vendor-products" ? "#00E5C9" : "#CBD5E1",
-                  fontWeight: 800,
-                  fontSize: "0.86rem",
-                  padding: "0.5rem 0.85rem",
+                <div style={{
+                  background: "#0F172A",
+                  width: "36px",
+                  height: "36px",
                   borderRadius: "10px",
-                  display: "inline-flex",
+                  display: "flex",
                   alignItems: "center",
-                  gap: "0.35rem",
-                  border: activeTab === "vendor-products" ? "1px solid rgba(0, 229, 201, 0.4)" : "1px solid transparent"
-                }}
-              >
-                <Package size={15} /> Store Products
-              </button>
+                  justifyContent: "center",
+                  color: userRole === "vendor" ? "#00E5C9" : "#F59E0B"
+                }}>
+                  <ShoppingBag size={20} />
+                </div>
+                <div>
+                  <div style={{
+                    fontFamily: "var(--font-heading)",
+                    fontSize: "1.25rem",
+                    fontWeight: 900,
+                    color: "#0F172A",
+                    lineHeight: 1,
+                    letterSpacing: "-0.03em"
+                  }}>
+                    CAYMAN<span style={{ color: "#00A896" }}>BAZAAR</span>
+                  </div>
+                  <div style={{
+                    fontSize: "0.65rem",
+                    color: "#64748B",
+                    fontWeight: 800,
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase"
+                  }}>
+                    {userRole === "vendor" ? "Merchant Workspace" : "SuperAdmin Console"}
+                  </div>
+                </div>
+              </div>
 
-              <button
-                onClick={() => setActiveTab("vendor-orders")}
-                style={{
-                  background: activeTab === "vendor-orders" ? "rgba(0, 229, 201, 0.18)" : "transparent",
-                  color: activeTab === "vendor-orders" ? "#00E5C9" : "#CBD5E1",
-                  fontWeight: 800,
-                  fontSize: "0.86rem",
-                  padding: "0.5rem 0.85rem",
-                  borderRadius: "10px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  border: activeTab === "vendor-orders" ? "1px solid rgba(0, 229, 201, 0.4)" : "1px solid transparent"
-                }}
-              >
-                <Package size={15} /> Orders
-                {vendorPendingOrders > 0 && (
-                  <span style={{ background: "#F59E0B", color: "#FFFFFF", fontSize: "0.72rem", borderRadius: "10px", padding: "0.15rem 0.45rem", fontWeight: 900 }}>
-                    {vendorPendingOrders}
-                  </span>
-                )}
-              </button>
+              {/* Status Badge */}
+              <span style={{
+                background: userRole === "vendor" ? "#F0FDFA" : "#FFFBEB",
+                color: userRole === "vendor" ? "#0D9488" : "#B45309",
+                border: userRole === "vendor" ? "1px solid #CCFBF1" : "1px solid #FEF3C7",
+                padding: "0.25rem 0.65rem",
+                borderRadius: "999px",
+                fontSize: "0.74rem",
+                fontWeight: 800,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.3rem"
+              }}>
+                {userRole === "vendor" ? <Store size={12} /> : <ShieldCheck size={12} />}
+                <span>{userRole === "vendor" ? "Vendor Partner" : "SuperAdmin"}</span>
+              </span>
+            </div>
 
-              <button
-                onClick={() => setActiveTab("vendor-profile")}
-                style={{
-                  background: activeTab === "vendor-profile" ? "rgba(0, 229, 201, 0.18)" : "transparent",
-                  color: activeTab === "vendor-profile" ? "#00E5C9" : "#CBD5E1",
-                  fontWeight: 800,
-                  fontSize: "0.86rem",
-                  padding: "0.5rem 0.85rem",
-                  borderRadius: "10px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  border: activeTab === "vendor-profile" ? "1px solid rgba(0, 229, 201, 0.4)" : "1px solid transparent"
-                }}
-              >
-                <Settings size={15} /> Store Profile
-              </button>
+            {/* Vendor Portal Navigation Links */}
+            {userRole === "vendor" && (
+              <nav className="desktop-nav-links" style={{ display: "flex", alignItems: "center", gap: "0.35rem", flexWrap: "wrap", marginLeft: "auto" }}>
+                <button
+                  onClick={() => setActiveTab("vendor-dashboard")}
+                  style={{
+                    background: activeTab === "vendor-dashboard" ? "#F0FDFA" : "transparent",
+                    color: activeTab === "vendor-dashboard" ? "#0D9488" : "#334155",
+                    fontWeight: activeTab === "vendor-dashboard" ? 800 : 600,
+                    fontSize: "0.86rem",
+                    padding: "0.45rem 0.85rem",
+                    borderRadius: "10px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    border: activeTab === "vendor-dashboard" ? "1px solid #99F6E4" : "1px solid transparent",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease"
+                  }}
+                >
+                  <LayoutDashboard size={15} /> Dashboard
+                </button>
 
-              <button
-                onClick={() => setActiveTab("vendor-reviews")}
-                style={{
-                  background: activeTab === "vendor-reviews" ? "rgba(0, 229, 201, 0.18)" : "transparent",
-                  color: activeTab === "vendor-reviews" ? "#00E5C9" : "#CBD5E1",
-                  fontWeight: 800,
-                  fontSize: "0.86rem",
-                  padding: "0.5rem 0.85rem",
-                  borderRadius: "10px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  border: activeTab === "vendor-reviews" ? "1px solid rgba(0, 229, 201, 0.4)" : "1px solid transparent"
-                }}
-              >
-                <Star size={15} /> Reviews
-              </button>
-            </nav>
-          )}
+                <button
+                  onClick={() => setActiveTab("vendor-products")}
+                  style={{
+                    background: activeTab === "vendor-products" ? "#F0FDFA" : "transparent",
+                    color: activeTab === "vendor-products" ? "#0D9488" : "#334155",
+                    fontWeight: activeTab === "vendor-products" ? 800 : 600,
+                    fontSize: "0.86rem",
+                    padding: "0.45rem 0.85rem",
+                    borderRadius: "10px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    border: activeTab === "vendor-products" ? "1px solid #99F6E4" : "1px solid transparent",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease"
+                  }}
+                >
+                  <Package size={15} /> Products
+                </button>
 
-          {/* Admin Navigation */}
-          {userRole === "admin" && (
-            <nav className="desktop-nav-links" style={{ display: "flex", alignItems: "center", gap: "0.4rem", flexWrap: "wrap", marginLeft: "auto" }}>
-              <button
-                onClick={() => setActiveTab("admin-dashboard")}
-                style={{
-                  background: activeTab === "admin-dashboard" ? "rgba(245, 158, 11, 0.22)" : "transparent",
-                  color: activeTab === "admin-dashboard" ? "#FBBF24" : "#CBD5E1",
-                  fontWeight: 800,
-                  fontSize: "0.84rem",
-                  padding: "0.45rem 0.8rem",
-                  borderRadius: "10px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  border: activeTab === "admin-dashboard" ? "1px solid rgba(245, 158, 11, 0.45)" : "1px solid transparent",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease"
-                }}
-              >
-                <LayoutDashboard size={14} /> Overview
-              </button>
+                <button
+                  onClick={() => setActiveTab("vendor-orders")}
+                  style={{
+                    background: activeTab === "vendor-orders" ? "#F0FDFA" : "transparent",
+                    color: activeTab === "vendor-orders" ? "#0D9488" : "#334155",
+                    fontWeight: activeTab === "vendor-orders" ? 800 : 600,
+                    fontSize: "0.86rem",
+                    padding: "0.45rem 0.85rem",
+                    borderRadius: "10px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    border: activeTab === "vendor-orders" ? "1px solid #99F6E4" : "1px solid transparent",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease"
+                  }}
+                >
+                  <Package size={15} /> Orders
+                  {vendorPendingOrders > 0 && (
+                    <span style={{ background: "#F59E0B", color: "#FFFFFF", fontSize: "0.72rem", borderRadius: "10px", padding: "0.15rem 0.45rem", fontWeight: 900 }}>
+                      {vendorPendingOrders}
+                    </span>
+                  )}
+                </button>
 
-              <button
-                onClick={() => setActiveTab("admin-vendors")}
-                style={{
-                  background: activeTab === "admin-vendors" ? "rgba(245, 158, 11, 0.22)" : "transparent",
-                  color: activeTab === "admin-vendors" ? "#FBBF24" : "#CBD5E1",
-                  fontWeight: 800,
-                  fontSize: "0.84rem",
-                  padding: "0.45rem 0.8rem",
-                  borderRadius: "10px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  border: activeTab === "admin-vendors" ? "1px solid rgba(245, 158, 11, 0.45)" : "1px solid transparent",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease"
-                }}
-              >
-                <Store size={14} /> Vendors
-              </button>
+                <button
+                  onClick={() => setActiveTab("vendor-profile")}
+                  style={{
+                    background: activeTab === "vendor-profile" ? "#F0FDFA" : "transparent",
+                    color: activeTab === "vendor-profile" ? "#0D9488" : "#334155",
+                    fontWeight: activeTab === "vendor-profile" ? 800 : 600,
+                    fontSize: "0.86rem",
+                    padding: "0.45rem 0.85rem",
+                    borderRadius: "10px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    border: activeTab === "vendor-profile" ? "1px solid #99F6E4" : "1px solid transparent",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease"
+                  }}
+                >
+                  <Settings size={15} /> Store Profile
+                </button>
 
-              <button
-                onClick={() => setActiveTab("admin-orders")}
-                style={{
-                  background: activeTab === "admin-orders" ? "rgba(245, 158, 11, 0.22)" : "transparent",
-                  color: activeTab === "admin-orders" ? "#FBBF24" : "#CBD5E1",
-                  fontWeight: 800,
-                  fontSize: "0.84rem",
-                  padding: "0.45rem 0.8rem",
-                  borderRadius: "10px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  border: activeTab === "admin-orders" ? "1px solid rgba(245, 158, 11, 0.45)" : "1px solid transparent",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease"
-                }}
-              >
-                <Package size={14} /> Orders
-              </button>
+                <button
+                  onClick={() => setActiveTab("vendor-reviews")}
+                  style={{
+                    background: activeTab === "vendor-reviews" ? "#F0FDFA" : "transparent",
+                    color: activeTab === "vendor-reviews" ? "#0D9488" : "#334155",
+                    fontWeight: activeTab === "vendor-reviews" ? 800 : 600,
+                    fontSize: "0.86rem",
+                    padding: "0.45rem 0.85rem",
+                    borderRadius: "10px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    border: activeTab === "vendor-reviews" ? "1px solid #99F6E4" : "1px solid transparent",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease"
+                  }}
+                >
+                  <Star size={15} /> Reviews
+                </button>
 
-              <button
-                onClick={() => setActiveTab("admin-reviews")}
-                style={{
-                  background: activeTab === "admin-reviews" ? "rgba(245, 158, 11, 0.22)" : "transparent",
-                  color: activeTab === "admin-reviews" ? "#FBBF24" : "#CBD5E1",
-                  fontWeight: 800,
-                  fontSize: "0.84rem",
-                  padding: "0.45rem 0.8rem",
-                  borderRadius: "10px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  border: activeTab === "admin-reviews" ? "1px solid rgba(245, 158, 11, 0.45)" : "1px solid transparent",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease"
-                }}
-              >
-                <Star size={14} /> Reviews
-                {flaggedCount > 0 && (
-                  <span style={{ background: "#EF4444", color: "#FFFFFF", fontSize: "0.7rem", borderRadius: "999px", padding: "0.1rem 0.45rem", fontWeight: 900 }}>
-                    {flaggedCount}
-                  </span>
-                )}
-              </button>
+                {/* Back to Customer Marketplace */}
+                <button
+                  onClick={() => {
+                    setUserRole("customer");
+                    setActiveTab("home");
+                  }}
+                  style={{
+                    background: "#F1F5F9",
+                    border: "1px solid #E2E8F0",
+                    color: "#0F172A",
+                    fontWeight: 700,
+                    fontSize: "0.82rem",
+                    padding: "0.45rem 0.85rem",
+                    borderRadius: "8px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease",
+                    marginLeft: "0.5rem"
+                  }}
+                  title="View Customer Storefront"
+                >
+                  <span>Storefront</span>
+                  <ExternalLink size={13} />
+                </button>
+              </nav>
+            )}
 
-              <button
-                onClick={() => setActiveTab("admin-reports")}
-                style={{
-                  background: activeTab === "admin-reports" ? "rgba(245, 158, 11, 0.22)" : "transparent",
-                  color: activeTab === "admin-reports" ? "#FBBF24" : "#CBD5E1",
-                  fontWeight: 800,
-                  fontSize: "0.84rem",
-                  padding: "0.45rem 0.8rem",
-                  borderRadius: "10px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  border: activeTab === "admin-reports" ? "1px solid rgba(245, 158, 11, 0.45)" : "1px solid transparent",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease"
-                }}
-              >
-                <BarChart3 size={14} /> Reports
-              </button>
+            {/* Admin Navigation Links */}
+            {userRole === "admin" && (
+              <nav className="desktop-nav-links" style={{ display: "flex", alignItems: "center", gap: "0.35rem", flexWrap: "wrap", marginLeft: "auto" }}>
+                <button
+                  onClick={() => setActiveTab("admin-dashboard")}
+                  style={{
+                    background: activeTab === "admin-dashboard" ? "#FFFBEB" : "transparent",
+                    color: activeTab === "admin-dashboard" ? "#B45309" : "#334155",
+                    fontWeight: activeTab === "admin-dashboard" ? 800 : 600,
+                    fontSize: "0.84rem",
+                    padding: "0.45rem 0.8rem",
+                    borderRadius: "10px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    border: activeTab === "admin-dashboard" ? "1px solid #FDE68A" : "1px solid transparent",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease"
+                  }}
+                >
+                  <LayoutDashboard size={14} /> Overview
+                </button>
 
-            </nav>
-          )}
+                <button
+                  onClick={() => setActiveTab("admin-vendors")}
+                  style={{
+                    background: activeTab === "admin-vendors" ? "#FFFBEB" : "transparent",
+                    color: activeTab === "admin-vendors" ? "#B45309" : "#334155",
+                    fontWeight: activeTab === "admin-vendors" ? 800 : 600,
+                    fontSize: "0.84rem",
+                    padding: "0.45rem 0.8rem",
+                    borderRadius: "10px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    border: activeTab === "admin-vendors" ? "1px solid #FDE68A" : "1px solid transparent",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease"
+                  }}
+                >
+                  <Store size={14} /> Vendors
+                </button>
+
+                <button
+                  onClick={() => setActiveTab("admin-orders")}
+                  style={{
+                    background: activeTab === "admin-orders" ? "#FFFBEB" : "transparent",
+                    color: activeTab === "admin-orders" ? "#B45309" : "#334155",
+                    fontWeight: activeTab === "admin-orders" ? 800 : 600,
+                    fontSize: "0.84rem",
+                    padding: "0.45rem 0.8rem",
+                    borderRadius: "10px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    border: activeTab === "admin-orders" ? "1px solid #FDE68A" : "1px solid transparent",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease"
+                  }}
+                >
+                  <Package size={14} /> Orders
+                </button>
+
+                <button
+                  onClick={() => setActiveTab("admin-reviews")}
+                  style={{
+                    background: activeTab === "admin-reviews" ? "#FFFBEB" : "transparent",
+                    color: activeTab === "admin-reviews" ? "#B45309" : "#334155",
+                    fontWeight: activeTab === "admin-reviews" ? 800 : 600,
+                    fontSize: "0.84rem",
+                    padding: "0.45rem 0.8rem",
+                    borderRadius: "10px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    border: activeTab === "admin-reviews" ? "1px solid #FDE68A" : "1px solid transparent",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease"
+                  }}
+                >
+                  <Star size={14} /> Reviews
+                  {flaggedCount > 0 && (
+                    <span style={{ background: "#EF4444", color: "#FFFFFF", fontSize: "0.7rem", borderRadius: "999px", padding: "0.1rem 0.45rem", fontWeight: 900 }}>
+                      {flaggedCount}
+                    </span>
+                  )}
+                </button>
+
+                <button
+                  onClick={() => setActiveTab("admin-reports")}
+                  style={{
+                    background: activeTab === "admin-reports" ? "#FFFBEB" : "transparent",
+                    color: activeTab === "admin-reports" ? "#B45309" : "#334155",
+                    fontWeight: activeTab === "admin-reports" ? 800 : 600,
+                    fontSize: "0.84rem",
+                    padding: "0.45rem 0.8rem",
+                    borderRadius: "10px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    border: activeTab === "admin-reports" ? "1px solid #FDE68A" : "1px solid transparent",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease"
+                  }}
+                >
+                  <BarChart3 size={14} /> Reports
+                </button>
+
+                {/* Back to Customer Marketplace */}
+                <button
+                  onClick={() => {
+                    setUserRole("customer");
+                    setActiveTab("home");
+                  }}
+                  style={{
+                    background: "#F1F5F9",
+                    border: "1px solid #E2E8F0",
+                    color: "#0F172A",
+                    fontWeight: 700,
+                    fontSize: "0.82rem",
+                    padding: "0.45rem 0.85rem",
+                    borderRadius: "8px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease",
+                    marginLeft: "0.5rem"
+                  }}
+                  title="View Customer Storefront"
+                >
+                  <span>Storefront</span>
+                  <ExternalLink size={13} />
+                </button>
+              </nav>
+            )}
 
           {/* Mobile Responsive Header Controls */}
           <div className="mobile-nav-toggle" style={{ display: "none", alignItems: "center", gap: "0.6rem", marginLeft: "auto" }}>
@@ -964,21 +1088,21 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
 
             {userRole === "vendor" && (
               <>
-                <button onClick={() => { setActiveTab("vendor-dashboard"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#00E5C9", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><LayoutDashboard size={15} /> Dashboard</button>
-                <button onClick={() => { setActiveTab("vendor-products"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Package size={15} /> Products</button>
-                <button onClick={() => { setActiveTab("vendor-orders"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Package size={15} /> Orders</button>
-                <button onClick={() => { setActiveTab("vendor-profile"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Settings size={15} /> Store Profile</button>
-                <button onClick={() => { setActiveTab("vendor-reviews"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Star size={15} /> Reviews</button>
+                <button onClick={() => { setActiveTab("vendor-dashboard"); setIsMobileMenuOpen(false); }} style={{ background: activeTab === "vendor-dashboard" ? "#F0FDFA" : "#FFFFFF", border: activeTab === "vendor-dashboard" ? "1.5px solid #0D9488" : "1px solid #E2E8F0", color: "#0D9488", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><LayoutDashboard size={15} /> Dashboard</button>
+                <button onClick={() => { setActiveTab("vendor-products"); setIsMobileMenuOpen(false); }} style={{ background: activeTab === "vendor-products" ? "#F0FDFA" : "#FFFFFF", border: activeTab === "vendor-products" ? "1.5px solid #0D9488" : "1px solid #E2E8F0", color: "#0F172A", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Package size={15} /> Products</button>
+                <button onClick={() => { setActiveTab("vendor-orders"); setIsMobileMenuOpen(false); }} style={{ background: activeTab === "vendor-orders" ? "#F0FDFA" : "#FFFFFF", border: activeTab === "vendor-orders" ? "1.5px solid #0D9488" : "1px solid #E2E8F0", color: "#0F172A", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Package size={15} /> Orders</button>
+                <button onClick={() => { setActiveTab("vendor-profile"); setIsMobileMenuOpen(false); }} style={{ background: activeTab === "vendor-profile" ? "#F0FDFA" : "#FFFFFF", border: activeTab === "vendor-profile" ? "1.5px solid #0D9488" : "1px solid #E2E8F0", color: "#0F172A", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Settings size={15} /> Store Profile</button>
+                <button onClick={() => { setActiveTab("vendor-reviews"); setIsMobileMenuOpen(false); }} style={{ background: activeTab === "vendor-reviews" ? "#F0FDFA" : "#FFFFFF", border: activeTab === "vendor-reviews" ? "1.5px solid #0D9488" : "1px solid #E2E8F0", color: "#0F172A", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Star size={15} /> Reviews</button>
               </>
             )}
 
             {userRole === "admin" && (
               <>
-                <button onClick={() => { setActiveTab("admin-dashboard"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#FBBF24", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><LayoutDashboard size={15} /> Overview</button>
-                <button onClick={() => { setActiveTab("admin-vendors"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Store size={15} /> Vendors</button>
-                <button onClick={() => { setActiveTab("admin-orders"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Package size={15} /> Orders</button>
-                <button onClick={() => { setActiveTab("admin-reviews"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Star size={15} /> Reviews</button>
-                <button onClick={() => { setActiveTab("admin-reports"); setIsMobileMenuOpen(false); }} style={{ background: "#091322", border: "1px solid rgba(255,255,255,0.1)", color: "#E2E8F0", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><BarChart3 size={15} /> Reports</button>
+                <button onClick={() => { setActiveTab("admin-dashboard"); setIsMobileMenuOpen(false); }} style={{ background: activeTab === "admin-dashboard" ? "#FFFBEB" : "#FFFFFF", border: activeTab === "admin-dashboard" ? "1.5px solid #D97706" : "1px solid #E2E8F0", color: "#B45309", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><LayoutDashboard size={15} /> Overview</button>
+                <button onClick={() => { setActiveTab("admin-vendors"); setIsMobileMenuOpen(false); }} style={{ background: activeTab === "admin-vendors" ? "#FFFBEB" : "#FFFFFF", border: activeTab === "admin-vendors" ? "1.5px solid #D97706" : "1px solid #E2E8F0", color: "#0F172A", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Store size={15} /> Vendors</button>
+                <button onClick={() => { setActiveTab("admin-orders"); setIsMobileMenuOpen(false); }} style={{ background: activeTab === "admin-orders" ? "#FFFBEB" : "#FFFFFF", border: activeTab === "admin-orders" ? "1.5px solid #D97706" : "1px solid #E2E8F0", color: "#0F172A", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Package size={15} /> Orders</button>
+                <button onClick={() => { setActiveTab("admin-reviews"); setIsMobileMenuOpen(false); }} style={{ background: activeTab === "admin-reviews" ? "#FFFBEB" : "#FFFFFF", border: activeTab === "admin-reviews" ? "1.5px solid #D97706" : "1px solid #E2E8F0", color: "#0F172A", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><Star size={15} /> Reviews</button>
+                <button onClick={() => { setActiveTab("admin-reports"); setIsMobileMenuOpen(false); }} style={{ background: activeTab === "admin-reports" ? "#FFFBEB" : "#FFFFFF", border: activeTab === "admin-reports" ? "1.5px solid #D97706" : "1px solid #E2E8F0", color: "#0F172A", padding: "0.75rem", borderRadius: "12px", fontWeight: 700, fontSize: "0.86rem", display: "flex", alignItems: "center", gap: "0.4rem" }}><BarChart3 size={15} /> Reports</button>
               </>
             )}
           </div>

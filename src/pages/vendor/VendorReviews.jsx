@@ -77,12 +77,12 @@ export default function VendorReviews() {
   };
 
   return (
-    <div style={{ background: "#050B14", minHeight: "100vh", color: "#F8FAFC", paddingBottom: "5rem" }}>
+    <div style={{ background: "#F8FAFC", minHeight: "100vh", color: "#0F172A", paddingBottom: "5rem" }}>
       
       {/* 1. Header Banner */}
       <div
         style={{
-          background: "linear-gradient(135deg, #050B14 0%, #0A1E38 50%, #004D40 100%)",
+          background: "linear-gradient(135deg, #07182E 0%, #0D2847 100%)",
           borderBottom: "1px solid rgba(0, 229, 201, 0.25)",
           padding: "2.75rem 1.5rem 2.25rem",
           position: "relative",
@@ -92,7 +92,7 @@ export default function VendorReviews() {
         <div style={{ position: "absolute", top: "-40px", right: "8%", width: "320px", height: "320px", background: "radial-gradient(circle, rgba(0, 229, 201, 0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
 
         <div className="container" style={{ position: "relative", zIndex: 2 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "rgba(0, 229, 201, 0.12)", border: "1px solid rgba(0, 229, 201, 0.35)", padding: "0.35rem 0.85rem", borderRadius: "999px", color: "#00E5C9", fontSize: "0.8rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "1rem" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "rgba(0, 229, 201, 0.15)", border: "1px solid rgba(0, 229, 201, 0.35)", padding: "0.35rem 0.85rem", borderRadius: "999px", color: "#00E5C9", fontSize: "0.8rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "1rem" }}>
             <Store size={15} /> {activeVendor?.store_name || "Store"} • Customer Reputation
           </div>
 
@@ -107,7 +107,7 @@ export default function VendorReviews() {
             </div>
 
             <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-              <div style={{ background: "#061324", border: "1px solid rgba(0, 229, 201, 0.3)", padding: "0.75rem 1.25rem", borderRadius: "16px", textAlign: "right" }}>
+              <div style={{ background: "rgba(255, 255, 255, 0.08)", border: "1px solid rgba(0, 229, 201, 0.3)", padding: "0.75rem 1.25rem", borderRadius: "16px", textAlign: "right" }}>
                 <div style={{ fontSize: "0.75rem", color: "#94A3B8", fontWeight: 700, textTransform: "uppercase" }}>Store Reputation</div>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", justifyContent: "flex-end", fontSize: "1.4rem", fontWeight: 900, color: "#FBBF24" }}>
                   <Star size={20} fill="#FBBF24" /> {avgRating} <span style={{ fontSize: "0.85rem", color: "#94A3B8" }}>({totalCount} reviews)</span>
@@ -123,40 +123,48 @@ export default function VendorReviews() {
         {/* 2. Stall Feedback Metrics */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.25rem", marginBottom: "2rem" }}>
           
-          <div style={{ background: "#0A1628", border: "1px solid #1E293B", borderRadius: "18px", padding: "1.25rem 1.5rem" }}>
+          <div style={{ background: "#FFFFFF", border: "1.5px solid #E2E8F0", borderRadius: "18px", padding: "1.25rem 1.5rem", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-              <span style={{ fontSize: "0.82rem", color: "#94A3B8", fontWeight: 700 }}>VERIFIED REVIEWS</span>
-              <MessageSquare size={18} color="#00E5C9" />
+              <span style={{ fontSize: "0.82rem", color: "#64748B", fontWeight: 700 }}>VERIFIED REVIEWS</span>
+              <div style={{ background: "#F0FDFA", width: "34px", height: "34px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <MessageSquare size={17} color="#0D9488" />
+              </div>
             </div>
-            <div style={{ fontSize: "2rem", fontWeight: 900, color: "#FFFFFF" }}>{totalCount}</div>
-            <div style={{ fontSize: "0.78rem", color: "#10B981", marginTop: "0.25rem" }}>Real Grand Cayman Buyers</div>
+            <div style={{ fontSize: "2rem", fontWeight: 900, color: "#0F172A" }}>{totalCount}</div>
+            <div style={{ fontSize: "0.78rem", color: "#166534", marginTop: "0.25rem", fontWeight: 600 }}>Real Grand Cayman Buyers</div>
           </div>
 
-          <div style={{ background: "#0A1628", border: "1px solid #1E293B", borderRadius: "18px", padding: "1.25rem 1.5rem" }}>
+          <div style={{ background: "#FFFFFF", border: "1.5px solid #E2E8F0", borderRadius: "18px", padding: "1.25rem 1.5rem", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-              <span style={{ fontSize: "0.82rem", color: "#94A3B8", fontWeight: 700 }}>STORE AVERAGE</span>
-              <Star size={18} color="#FBBF24" fill="#FBBF24" />
+              <span style={{ fontSize: "0.82rem", color: "#64748B", fontWeight: 700 }}>STORE AVERAGE</span>
+              <div style={{ background: "#FFFBEB", width: "34px", height: "34px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Star size={17} color="#D97706" fill="#D97706" />
+              </div>
             </div>
-            <div style={{ fontSize: "2rem", fontWeight: 900, color: "#FBBF24" }}>{avgRating} <span style={{ fontSize: "1rem", color: "#94A3B8" }}>/ 5.0</span></div>
-            <div style={{ fontSize: "0.78rem", color: "#94A3B8", marginTop: "0.25rem" }}>Official Marketplace Score</div>
+            <div style={{ fontSize: "2rem", fontWeight: 900, color: "#B45309" }}>{avgRating} <span style={{ fontSize: "1rem", color: "#64748B" }}>/ 5.0</span></div>
+            <div style={{ fontSize: "0.78rem", color: "#64748B", marginTop: "0.25rem" }}>Official Marketplace Score</div>
           </div>
 
-          <div style={{ background: "#0A1628", border: "1px solid #1E293B", borderRadius: "18px", padding: "1.25rem 1.5rem" }}>
+          <div style={{ background: "#FFFFFF", border: "1.5px solid #E2E8F0", borderRadius: "18px", padding: "1.25rem 1.5rem", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-              <span style={{ fontSize: "0.82rem", color: "#94A3B8", fontWeight: 700 }}>AWAITING REPLY</span>
-              <Clock size={18} color={awaitingReplyCount > 0 ? "#F59E0B" : "#10B981"} />
+              <span style={{ fontSize: "0.82rem", color: "#64748B", fontWeight: 700 }}>AWAITING REPLY</span>
+              <div style={{ background: awaitingReplyCount > 0 ? "#FEF3C7" : "#F0FDF4", width: "34px", height: "34px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Clock size={17} color={awaitingReplyCount > 0 ? "#D97706" : "#166534"} />
+              </div>
             </div>
-            <div style={{ fontSize: "2rem", fontWeight: 900, color: awaitingReplyCount > 0 ? "#F59E0B" : "#10B981" }}>{awaitingReplyCount}</div>
-            <div style={{ fontSize: "0.78rem", color: "#94A3B8", marginTop: "0.25rem" }}>Opportunities to engage</div>
+            <div style={{ fontSize: "2rem", fontWeight: 900, color: awaitingReplyCount > 0 ? "#D97706" : "#166534" }}>{awaitingReplyCount}</div>
+            <div style={{ fontSize: "0.78rem", color: "#64748B", marginTop: "0.25rem" }}>Opportunities to engage</div>
           </div>
 
-          <div style={{ background: "#0A1628", border: "1px solid #1E293B", borderRadius: "18px", padding: "1.25rem 1.5rem" }}>
+          <div style={{ background: "#FFFFFF", border: "1.5px solid #E2E8F0", borderRadius: "18px", padding: "1.25rem 1.5rem", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-              <span style={{ fontSize: "0.82rem", color: "#94A3B8", fontWeight: 700 }}>5-STAR DELIGHT</span>
-              <Sparkles size={18} color="#00E5C9" />
+              <span style={{ fontSize: "0.82rem", color: "#64748B", fontWeight: 700 }}>5-STAR DELIGHT</span>
+              <div style={{ background: "#F0FDFA", width: "34px", height: "34px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Sparkles size={17} color="#0D9488" />
+              </div>
             </div>
-            <div style={{ fontSize: "2rem", fontWeight: 900, color: "#00E5C9" }}>{fiveStarCount}</div>
-            <div style={{ fontSize: "0.78rem", color: "#94A3B8", marginTop: "0.25rem" }}>Top-rated experiences</div>
+            <div style={{ fontSize: "2rem", fontWeight: 900, color: "#0D9488" }}>{fiveStarCount}</div>
+            <div style={{ fontSize: "0.78rem", color: "#64748B", marginTop: "0.25rem" }}>Top-rated experiences</div>
           </div>
 
         </div>
@@ -167,15 +175,16 @@ export default function VendorReviews() {
             <button
               onClick={() => setActiveTabFilter("all")}
               style={{
-                background: activeTabFilter === "all" ? "#00E5C9" : "#0A1628",
-                color: activeTabFilter === "all" ? "#050B14" : "#94A3B8",
-                border: "1px solid",
-                borderColor: activeTabFilter === "all" ? "#00E5C9" : "#1E293B",
+                background: activeTabFilter === "all" ? "#0D9488" : "#FFFFFF",
+                color: activeTabFilter === "all" ? "#FFFFFF" : "#475569",
+                border: "1.5px solid",
+                borderColor: activeTabFilter === "all" ? "#0D9488" : "#E2E8F0",
                 fontWeight: 700,
                 fontSize: "0.85rem",
                 padding: "0.55rem 1rem",
                 borderRadius: "12px",
-                cursor: "pointer"
+                cursor: "pointer",
+                boxShadow: activeTabFilter === "all" ? "0 2px 6px rgba(13,148,136,0.25)" : "none"
               }}
             >
               All Store Feedback ({stallReviews.length})
@@ -184,15 +193,16 @@ export default function VendorReviews() {
             <button
               onClick={() => setActiveTabFilter("needs_reply")}
               style={{
-                background: activeTabFilter === "needs_reply" ? "#F59E0B" : "#0A1628",
-                color: activeTabFilter === "needs_reply" ? "#050B14" : "#FBBF24",
-                border: "1px solid",
-                borderColor: activeTabFilter === "needs_reply" ? "#F59E0B" : "rgba(245, 158, 11, 0.3)",
+                background: activeTabFilter === "needs_reply" ? "#D97706" : "#FFFFFF",
+                color: activeTabFilter === "needs_reply" ? "#FFFFFF" : "#B45309",
+                border: "1.5px solid",
+                borderColor: activeTabFilter === "needs_reply" ? "#D97706" : "#E2E8F0",
                 fontWeight: 700,
                 fontSize: "0.85rem",
                 padding: "0.55rem 1rem",
                 borderRadius: "12px",
-                cursor: "pointer"
+                cursor: "pointer",
+                boxShadow: activeTabFilter === "needs_reply" ? "0 2px 6px rgba(217,119,6,0.25)" : "none"
               }}
             >
               Needs Reply ({awaitingReplyCount})
@@ -201,10 +211,10 @@ export default function VendorReviews() {
             <button
               onClick={() => setActiveTabFilter("flagged")}
               style={{
-                background: activeTabFilter === "flagged" ? "#EF4444" : "#0A1628",
-                color: activeTabFilter === "flagged" ? "#FFFFFF" : "#F87171",
-                border: "1px solid",
-                borderColor: activeTabFilter === "flagged" ? "#EF4444" : "rgba(239, 68, 68, 0.3)",
+                background: activeTabFilter === "flagged" ? "#DC2626" : "#FFFFFF",
+                color: activeTabFilter === "flagged" ? "#FFFFFF" : "#DC2626",
+                border: "1.5px solid",
+                borderColor: activeTabFilter === "flagged" ? "#DC2626" : "#E2E8F0",
                 fontWeight: 700,
                 fontSize: "0.85rem",
                 padding: "0.55rem 1rem",
@@ -219,12 +229,12 @@ export default function VendorReviews() {
 
         {/* 4. Stall Reviews Feed */}
         {filteredReviews.length === 0 ? (
-          <div style={{ background: "#0A1628", border: "1px dashed #1E293B", borderRadius: "24px", padding: "4rem 2rem", textAlign: "center" }}>
-            <MessageSquare size={44} color="#64748B" style={{ margin: "0 auto 1rem", opacity: 0.6 }} />
-            <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#FFFFFF", marginBottom: "0.5rem" }}>
+          <div style={{ background: "#FFFFFF", border: "1.5px dashed #CBD5E1", borderRadius: "24px", padding: "4rem 2rem", textAlign: "center" }}>
+            <MessageSquare size={44} color="#94A3B8" style={{ margin: "0 auto 1rem", opacity: 0.6 }} />
+            <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#0F172A", marginBottom: "0.5rem" }}>
               No Reviews Found for this Category
             </h3>
-            <p style={{ color: "#94A3B8", fontSize: "0.95rem" }}>
+            <p style={{ color: "#64748B", fontSize: "0.95rem" }}>
               As customers complete pickup holds or delivery orders, their verified reviews will appear here.
             </p>
           </div>
@@ -243,10 +253,11 @@ export default function VendorReviews() {
                 <div
                   key={rev.id}
                   style={{
-                    background: "#0A1628",
-                    border: rev.is_flagged ? "1.5px solid rgba(239, 68, 68, 0.6)" : "1px solid #1E293B",
+                    background: "#FFFFFF",
+                    border: rev.is_flagged ? "1.5px solid #FCA5A5" : "1.5px solid #E2E8F0",
                     borderRadius: "20px",
                     padding: "1.75rem",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.03)",
                     transition: "all 0.2s ease"
                   }}
                 >
@@ -254,39 +265,39 @@ export default function VendorReviews() {
                   <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
                     <div>
                       <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
-                        <span style={{ fontSize: "1.1rem", fontWeight: 800, color: "#FFFFFF" }}>{rev.author}</span>
+                        <span style={{ fontSize: "1.1rem", fontWeight: 800, color: "#0F172A" }}>{rev.author}</span>
                         {rev.verified_purchase && (
-                          <span style={{ display: "inline-flex", alignItems: "center", gap: "0.25rem", background: "rgba(16, 185, 129, 0.15)", border: "1px solid rgba(16, 185, 129, 0.35)", padding: "0.2rem 0.55rem", borderRadius: "999px", color: "#10B981", fontSize: "0.72rem", fontWeight: 800 }}>
+                          <span style={{ display: "inline-flex", alignItems: "center", gap: "0.25rem", background: "#DCFCE7", border: "1px solid #BBF7D0", padding: "0.2rem 0.55rem", borderRadius: "999px", color: "#15803D", fontSize: "0.72rem", fontWeight: 800 }}>
                             <ShieldCheck size={13} /> Verified Buyer
                           </span>
                         )}
                         <span style={{ fontSize: "0.82rem", color: "#64748B" }}>• {formattedDate}</span>
                       </div>
 
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", marginTop: "0.4rem", fontSize: "0.86rem", color: "#94A3B8" }}>
-                        <Package size={14} color="#00E5C9" />
-                        <span style={{ color: "#E2E8F0" }}>{rev.product_title}</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", marginTop: "0.4rem", fontSize: "0.86rem", color: "#64748B" }}>
+                        <Package size={14} color="#0D9488" />
+                        <span style={{ color: "#0F172A", fontWeight: 600 }}>{rev.product_title}</span>
                       </div>
                     </div>
 
                     {/* Star Rating */}
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", background: "#050B14", padding: "0.4rem 0.75rem", borderRadius: "10px", border: "1px solid #1E293B" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", background: "#FFFBEB", padding: "0.4rem 0.75rem", borderRadius: "10px", border: "1px solid #FEF3C7" }}>
                       {[1, 2, 3, 4, 5].map((star) => (
                         <Star
                           key={star}
                           size={15}
-                          color={star <= rev.rating ? "#F59E0B" : "#334155"}
-                          fill={star <= rev.rating ? "#F59E0B" : "transparent"}
+                          color={star <= rev.rating ? "#D97706" : "#E2E8F0"}
+                          fill={star <= rev.rating ? "#D97706" : "transparent"}
                         />
                       ))}
-                      <span style={{ marginLeft: "0.35rem", fontWeight: 900, color: "#FFFFFF", fontSize: "0.9rem" }}>
+                      <span style={{ marginLeft: "0.35rem", fontWeight: 900, color: "#92400E", fontSize: "0.9rem" }}>
                         {rev.rating}.0
                       </span>
                     </div>
                   </div>
 
                   {/* Customer Review Quote */}
-                  <div style={{ background: "#050B14", border: "1px solid #1E293B", borderRadius: "14px", padding: "1.1rem 1.35rem", fontSize: "0.95rem", lineHeight: 1.6, color: "#E2E8F0", marginBottom: "1.25rem" }}>
+                  <div style={{ background: "#F8FAFC", border: "1px solid #E2E8F0", borderRadius: "14px", padding: "1.1rem 1.35rem", fontSize: "0.95rem", lineHeight: 1.6, color: "#334155", marginBottom: "1.25rem" }}>
                     "{rev.comment}"
                   </div>
 
@@ -294,8 +305,8 @@ export default function VendorReviews() {
                   {rev.is_flagged && (
                     <div
                       style={{
-                        background: "rgba(239, 68, 68, 0.1)",
-                        border: "1px solid rgba(239, 68, 68, 0.35)",
+                        background: "#FEF2F2",
+                        border: "1px solid #FECACA",
                         borderRadius: "14px",
                         padding: "0.9rem 1.25rem",
                         marginBottom: "1rem",
@@ -304,8 +315,8 @@ export default function VendorReviews() {
                         gap: "0.75rem"
                       }}
                     >
-                      <AlertTriangle size={18} color="#EF4444" style={{ flexShrink: 0 }} />
-                      <div style={{ fontSize: "0.85rem", color: "#FCA5A5" }}>
+                      <AlertTriangle size={18} color="#DC2626" style={{ flexShrink: 0 }} />
+                      <div style={{ fontSize: "0.85rem", color: "#991B1B" }}>
                         <strong>Under Admin Moderation:</strong> You flagged this review as <em>"{rev.flag_reason}"</em>. SuperAdmin is reviewing this dispute.
                       </div>
                     </div>
@@ -315,8 +326,8 @@ export default function VendorReviews() {
                   {rev.vendor_reply ? (
                     <div
                       style={{
-                        background: "rgba(0, 229, 201, 0.05)",
-                        border: "1px solid rgba(0, 229, 201, 0.25)",
+                        background: "#F0FDFA",
+                        border: "1px solid #CCFBF1",
                         borderRadius: "14px",
                         padding: "1rem 1.25rem",
                         display: "flex",
@@ -325,17 +336,17 @@ export default function VendorReviews() {
                         marginBottom: "0.5rem"
                       }}
                     >
-                      <CornerDownRight size={18} color="#00E5C9" style={{ flexShrink: 0, marginTop: "2px" }} />
+                      <CornerDownRight size={18} color="#0D9488" style={{ flexShrink: 0, marginTop: "2px" }} />
                       <div style={{ flex: 1 }}>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.25rem" }}>
-                          <span style={{ fontSize: "0.8rem", fontWeight: 800, color: "#00E5C9", textTransform: "uppercase" }}>
+                          <span style={{ fontSize: "0.8rem", fontWeight: 800, color: "#0D9488", textTransform: "uppercase" }}>
                             Your Official Store Reply
                           </span>
                           <span style={{ fontSize: "0.75rem", color: "#64748B" }}>
                             {new Date(rev.vendor_reply.replied_at || Date.now()).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                           </span>
                         </div>
-                        <p style={{ margin: 0, fontSize: "0.9rem", color: "#E2E8F0", lineHeight: 1.5 }}>
+                        <p style={{ margin: 0, fontSize: "0.9rem", color: "#134E4A", lineHeight: 1.5 }}>
                           "{rev.vendor_reply.text}"
                         </p>
                       </div>
@@ -348,9 +359,9 @@ export default function VendorReviews() {
                           <button
                             onClick={() => setActiveReplyBox(rev.id)}
                             style={{
-                              background: "rgba(0, 229, 201, 0.12)",
-                              border: "1px solid rgba(0, 229, 201, 0.35)",
-                              color: "#00E5C9",
+                              background: "#F0FDFA",
+                              border: "1.5px solid #0D9488",
+                              color: "#0D9488",
                               padding: "0.5rem 1rem",
                               borderRadius: "10px",
                               fontWeight: 700,
@@ -373,7 +384,7 @@ export default function VendorReviews() {
                               style={{
                                 background: "transparent",
                                 border: "none",
-                                color: "#94A3B8",
+                                color: "#64748B",
                                 fontSize: "0.82rem",
                                 display: "inline-flex",
                                 alignItems: "center",
@@ -381,14 +392,14 @@ export default function VendorReviews() {
                                 cursor: "pointer"
                               }}
                             >
-                              <AlertTriangle size={14} color="#EF4444" /> Report Fake / Abusive Review
+                              <AlertTriangle size={14} color="#DC2626" /> Report Fake / Abusive Review
                             </button>
                           )}
                         </div>
                       ) : (
                         /* Open Reply Box */
-                        <div style={{ background: "#050B14", border: "1px solid rgba(0, 229, 201, 0.3)", borderRadius: "14px", padding: "1rem" }}>
-                          <div style={{ fontSize: "0.84rem", fontWeight: 700, color: "#00E5C9", marginBottom: "0.5rem" }}>
+                        <div style={{ background: "#F8FAFC", border: "1.5px solid #0D9488", borderRadius: "14px", padding: "1.25rem" }}>
+                          <div style={{ fontSize: "0.84rem", fontWeight: 700, color: "#0D9488", marginBottom: "0.5rem" }}>
                             Reply to {rev.author} (Publicly visible on Cayman Bazaar storefront):
                           </div>
                           <textarea
@@ -398,10 +409,10 @@ export default function VendorReviews() {
                             onChange={(e) => setReplyTextMap((prev) => ({ ...prev, [rev.id]: e.target.value }))}
                             style={{
                               width: "100%",
-                              background: "#0A1628",
-                              border: "1px solid #1E293B",
+                              background: "#FFFFFF",
+                              border: "1.5px solid #CBD5E1",
                               borderRadius: "10px",
-                              color: "#FFFFFF",
+                              color: "#0F172A",
                               padding: "0.75rem",
                               fontSize: "0.9rem",
                               outline: "none",
@@ -413,9 +424,9 @@ export default function VendorReviews() {
                             <button
                               onClick={() => setActiveReplyBox(null)}
                               style={{
-                                background: "transparent",
-                                border: "1px solid #1E293B",
-                                color: "#94A3B8",
+                                background: "#FFFFFF",
+                                border: "1px solid #CBD5E1",
+                                color: "#64748B",
                                 padding: "0.45rem 0.85rem",
                                 borderRadius: "8px",
                                 fontSize: "0.82rem",
@@ -427,9 +438,9 @@ export default function VendorReviews() {
                             <button
                               onClick={() => handleSendReply(rev.id)}
                               style={{
-                                background: "#00E5C9",
+                                background: "#0D9488",
                                 border: "none",
-                                color: "#050B14",
+                                color: "#FFFFFF",
                                 padding: "0.45rem 1rem",
                                 borderRadius: "8px",
                                 fontWeight: 800,
@@ -462,8 +473,8 @@ export default function VendorReviews() {
           style={{
             position: "fixed",
             inset: 0,
-            backgroundColor: "rgba(5, 11, 20, 0.8)",
-            backdropFilter: "blur(8px)",
+            backgroundColor: "rgba(15, 23, 42, 0.6)",
+            backdropFilter: "blur(4px)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -473,22 +484,22 @@ export default function VendorReviews() {
         >
           <div
             style={{
-              background: "#0B1526",
-              border: "1px solid rgba(239, 68, 68, 0.4)",
+              background: "#FFFFFF",
+              border: "1.5px solid #FCA5A5",
               borderRadius: "20px",
               padding: "1.75rem",
               maxWidth: "480px",
               width: "100%",
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.6)"
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", color: "#EF4444", marginBottom: "0.5rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", color: "#DC2626", marginBottom: "0.5rem" }}>
               <AlertTriangle size={20} />
-              <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#FFFFFF", margin: 0 }}>
+              <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#0F172A", margin: 0 }}>
                 Report Review to Admin
               </h3>
             </div>
-            <p style={{ color: "#94A3B8", fontSize: "0.88rem", lineHeight: 1.5, marginBottom: "1.25rem" }}>
+            <p style={{ color: "#64748B", fontSize: "0.88rem", lineHeight: 1.5, marginBottom: "1.25rem" }}>
               Please state why this customer review violates Cayman Bazaar standards (e.g. competitor spam, customer never visited store, inappropriate language). SuperAdmin will investigate and can delete it.
             </p>
 
@@ -501,10 +512,10 @@ export default function VendorReviews() {
                 onChange={(e) => setFlagReasonText(e.target.value)}
                 style={{
                   width: "100%",
-                  background: "#060D19",
-                  border: "1px solid #1E293B",
+                  background: "#F8FAFC",
+                  border: "1.5px solid #CBD5E1",
                   borderRadius: "12px",
-                  color: "#FFFFFF",
+                  color: "#0F172A",
                   padding: "0.85rem",
                   fontSize: "0.9rem",
                   outline: "none",
@@ -519,9 +530,9 @@ export default function VendorReviews() {
                   type="button"
                   onClick={() => setFlagModalReviewId(null)}
                   style={{
-                    background: "transparent",
-                    border: "1px solid #1E293B",
-                    color: "#94A3B8",
+                    background: "#F8FAFC",
+                    border: "1px solid #CBD5E1",
+                    color: "#64748B",
                     padding: "0.55rem 1rem",
                     borderRadius: "10px",
                     fontWeight: 700,
@@ -534,7 +545,7 @@ export default function VendorReviews() {
                 <button
                   type="submit"
                   style={{
-                    background: "#EF4444",
+                    background: "#DC2626",
                     border: "none",
                     color: "#FFFFFF",
                     padding: "0.55rem 1.2rem",
