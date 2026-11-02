@@ -23,7 +23,10 @@ import {
   Shirt,
   Laptop,
   Home,
-  Heart
+  Heart,
+  Sun,
+  Moon,
+  Monitor
 } from "lucide-react";
 
 // Helper to map category names to distinct Lucide icons
@@ -51,7 +54,10 @@ export default function AccountDrawer({ isOpen, onClose, setActiveTab, setSelect
     userRole,
     setUserRole,
     showToast,
-    CENTRAL_MARKETPLACE_WHATSAPP
+    CENTRAL_MARKETPLACE_WHATSAPP,
+    themeMode,
+    setThemeMode,
+    isDarkMode
   } = useMarketplace();
 
   // Close on Escape key press
@@ -117,14 +123,15 @@ export default function AccountDrawer({ isOpen, onClose, setActiveTab, setSelect
           width: "360px",
           maxWidth: "88vw",
           height: "100%",
-          background: "#FFFFFF",
+          background: isDarkMode ? "#0F172A" : "#FFFFFF",
           boxShadow: "6px 0 28px rgba(0, 0, 0, 0.22)",
           display: "flex",
           flexDirection: "column",
           zIndex: 100000,
           animation: "slideInFromLeft 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards",
           overflowY: "auto",
-          fontFamily: "var(--font-body, system-ui, sans-serif)"
+          fontFamily: "var(--font-body, system-ui, sans-serif)",
+          transition: "background 0.2s ease"
         }}
       >
         {/* Style tag for slide animation */}
@@ -266,6 +273,101 @@ export default function AccountDrawer({ isOpen, onClose, setActiveTab, setSelect
               </button>
             </div>
           )}
+
+          {/* Theme Appearance Pill (Mobile Friendly) */}
+          <div style={{
+            marginTop: "1rem",
+            paddingTop: "0.85rem",
+            borderTop: "1px solid rgba(255, 255, 255, 0.12)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between"
+          }}>
+            <span style={{ fontSize: "0.75rem", color: "#94A3B8", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              Theme Mode
+            </span>
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              background: "rgba(255, 255, 255, 0.08)",
+              borderRadius: "999px",
+              padding: "0.2rem 0.3rem",
+              gap: "0.25rem"
+            }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setThemeMode("light");
+                  if (showToast) showToast("☀️ Light mode activated");
+                }}
+                style={{
+                  background: themeMode === "light" ? "#B8EBD0" : "transparent",
+                  color: themeMode === "light" ? "#0B1E36" : "#CBD5E1",
+                  border: "none",
+                  borderRadius: "50%",
+                  width: "26px",
+                  height: "26px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  padding: 0,
+                  transition: "all 0.15s ease"
+                }}
+                title="Light mode"
+              >
+                <Sun size={13} strokeWidth={2.2} />
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setThemeMode("dark");
+                  if (showToast) showToast("🌙 Dark mode activated");
+                }}
+                style={{
+                  background: themeMode === "dark" ? "#00A896" : "transparent",
+                  color: themeMode === "dark" ? "#FFFFFF" : "#CBD5E1",
+                  border: "none",
+                  borderRadius: "50%",
+                  width: "26px",
+                  height: "26px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  padding: 0,
+                  transition: "all 0.15s ease"
+                }}
+                title="Dark mode"
+              >
+                <Moon size={13} strokeWidth={2.2} />
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setThemeMode("system");
+                  if (showToast) showToast("💻 System theme synchronized");
+                }}
+                style={{
+                  background: themeMode === "system" ? "rgba(255, 255, 255, 0.2)" : "transparent",
+                  color: themeMode === "system" ? "#FFFFFF" : "#CBD5E1",
+                  border: "none",
+                  borderRadius: "50%",
+                  width: "26px",
+                  height: "26px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  padding: 0,
+                  transition: "all 0.15s ease"
+                }}
+                title="System mode"
+              >
+                <Monitor size={13} strokeWidth={2.2} />
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* 📦 02. SECTION: YOUR SHORTCUTS (EE345 Pill Chips) */}

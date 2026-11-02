@@ -37,10 +37,82 @@ import {
 } from "lucide-react";
 
 export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSelectedProduct, selectedCategory = "all", setSelectedCategory }) {
-  const { userRole, setUserRole, cart, activeVendor, orders, reviews = [], products = [], categories = [], customerPhoneSession, isCustomerLoggedIn, customerDisplayName } = useMarketplace();
+  const {
+    userRole,
+    setUserRole,
+    cart,
+    activeVendor,
+    orders,
+    reviews = [],
+    products = [],
+    categories = [],
+    customerPhoneSession,
+    isCustomerLoggedIn,
+    customerDisplayName,
+    themeMode,
+    setThemeMode,
+    isDarkMode,
+    showToast
+  } = useMarketplace();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAccountDrawerOpen, setIsAccountDrawerOpen] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+
+  // 🎙️ Voice Search recognition handler
+  const handleVoiceSearch = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      if (showToast) {
+        showToast("Voice search is not supported in this browser. Please use Chrome or Edge.");
+      } else {
+        alert("Voice search is not supported in this browser. Please use Chrome or Edge.");
+      }
+      return;
+    }
+
+    try {
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.onstart = () => {
+        setIsListening(true);
+        if (showToast) showToast("🎙️ Listening... Speak your search query.");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results?.[0]?.[0]?.transcript;
+        if (transcript) {
+          setSearchQuery(transcript);
+          if (showToast) showToast(`🎙️ Voice Search: "${transcript}"`);
+          if (setActiveTab) setActiveTab("categories");
+        }
+        setIsListening(false);
+      };
+
+      recognition.onerror = (event) => {
+        console.warn("Speech recognition error:", event.error);
+        setIsListening(false);
+        if (event.error === "not-allowed") {
+          if (showToast) showToast("Microphone access blocked. Please allow mic permission in your browser.");
+        } else if (event.error === "no-speech") {
+          if (showToast) showToast("No speech detected. Please try speaking again.");
+        }
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognition.start();
+    } catch (err) {
+      console.error("Voice search error:", err);
+      setIsListening(false);
+    }
+  };
 
   const searchResults = searchQuery.trim().length >= 2
     ? products.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()) || (p.category_name && p.category_name.toLowerCase().includes(searchQuery.toLowerCase()))).slice(0, 5)
@@ -57,34 +129,36 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
 
   return (
     <header style={{
-      background: "#FFFFFF",
-      borderBottom: "1px solid #E5E7EB",
+      background: isDarkMode ? "#0F172A" : "#FFFFFF",
+      borderBottom: isDarkMode ? "1px solid #1E293B" : "1px solid #E5E7EB",
       position: "sticky",
       top: 0,
       zIndex: 100,
-      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.05)"
+      boxShadow: isDarkMode ? "0 4px 20px rgba(0, 0, 0, 0.4)" : "0 2px 10px rgba(0, 0, 0, 0.05)",
+      transition: "background 0.2s ease, border-color 0.2s ease"
     }}>
       {/* Top Island Trust & Delivery Bar */}
       {isCustomer && (
         <div style={{
-          background: "#F8FAFC",
-          borderBottom: "1px solid #E2E8F0",
+          background: isDarkMode ? "#0B1322" : "#F8FAFC",
+          borderBottom: isDarkMode ? "1px solid #1E293B" : "1px solid #E2E8F0",
           padding: "0.35rem 1rem",
           textAlign: "center",
           fontSize: "0.76rem",
           fontWeight: 700,
-          color: "#475569",
+          color: isDarkMode ? "#94A3B8" : "#475569",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           gap: "1.25rem",
-          flexWrap: "wrap"
+          flexWrap: "wrap",
+          transition: "background 0.2s ease"
         }}>
           <span>🌴 <strong style={{ color: "#00A896" }}>Grand Cayman</strong> Online Shopping</span>
           <span style={{ opacity: 0.4 }}>•</span>
           <span>⚡ <strong style={{ color: "#16A34A" }}>Fast Local Delivery</strong> across Cayman</span>
           <span style={{ opacity: 0.4 }}>•</span>
-          <span>🛡️ <strong style={{ color: "#0F172A" }}>100% Quality Items</strong></span>
+          <span>🛡️ <strong style={{ color: isDarkMode ? "#F8FAFC" : "#0F172A" }}>100% Quality Items</strong></span>
           <span style={{ opacity: 0.4 }}>•</span>
           <span>💎 <strong style={{ color: "#00A896" }}>0% Island Sales Tax</strong></span>
         </div>
@@ -102,22 +176,22 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                 id="header-hamburger-trigger"
                 onClick={() => setIsAccountDrawerOpen(true)}
                 style={{
-                  background: isAccountDrawerOpen ? "#F1F5F9" : "transparent",
+                  background: isAccountDrawerOpen ? (isDarkMode ? "#1E293B" : "#F1F5F9") : "transparent",
                   border: "none",
-                  color: "#0F172A",
+                  color: isDarkMode ? "#F8FAFC" : "#0F172A",
                   cursor: "pointer",
                   padding: "0.45rem",
                   borderRadius: "8px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  transition: "background 0.15s ease"
+                  transition: "background 0.15s ease, color 0.15s ease"
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "#F1F5F9")}
+                onMouseEnter={(e) => (e.currentTarget.style.background = isDarkMode ? "#1E293B" : "#F1F5F9")}
                 onMouseLeave={(e) => {
                   if (!isAccountDrawerOpen) e.currentTarget.style.background = "transparent";
                 }}
-                title="Toggle Menu"
+                title="Toggle Navigation Menu"
                 aria-label="Toggle Navigation Menu"
               >
                 <Menu size={24} strokeWidth={2.2} />
@@ -145,7 +219,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                     fontFamily: "var(--font-heading)",
                     fontSize: "1.35rem",
                     fontWeight: 900,
-                    color: isCustomer ? "#0F172A" : "#FFFFFF",
+                    color: isCustomer ? (isDarkMode ? "#F8FAFC" : "#0F172A") : "#FFFFFF",
                     lineHeight: 1,
                     letterSpacing: "-0.03em"
                   }}>
@@ -153,7 +227,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                   </div>
                   <div style={{
                     fontSize: "0.65rem",
-                    color: isCustomer ? "#64748B" : "#94A3B8",
+                    color: isCustomer ? (isDarkMode ? "#94A3B8" : "#64748B") : "#94A3B8",
                     fontWeight: 800,
                     letterSpacing: "0.08em",
                     textTransform: "uppercase"
@@ -173,14 +247,15 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
               <div style={{
                 display: "flex",
                 alignItems: "center",
-                background: "#F1F5F9",
+                background: isDarkMode ? "#1E293B" : "#F1F5F9",
                 borderRadius: "999px",
                 padding: "0.25rem 0.35rem 0.25rem 1rem",
-                border: "1.5px solid #CBD5E1"
+                border: isDarkMode ? "1.5px solid #334155" : "1.5px solid #CBD5E1",
+                transition: "all 0.2s ease"
               }}>
                 <input
                   type="text"
-                  placeholder="Search"
+                  placeholder={isListening ? "Listening... Speak now..." : "Search"}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => {
@@ -192,26 +267,30 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                     background: "transparent",
                     outline: "none",
                     fontSize: "0.9rem",
-                    color: "#0F172A",
+                    color: isDarkMode ? "#F8FAFC" : "#0F172A",
                     fontWeight: 500
                   }}
                 />
                 <button
                   type="button"
-                  title="Voice Search"
+                  onClick={handleVoiceSearch}
+                  title={isListening ? "Listening... Speak now" : "Voice Search (Click and speak)"}
                   style={{
-                    background: "transparent",
+                    background: isListening ? "#FEE2E2" : "transparent",
                     border: "none",
-                    color: "#64748B",
+                    color: isListening ? "#EF4444" : (isDarkMode ? "#94A3B8" : "#64748B"),
                     cursor: "pointer",
                     padding: "0.25rem",
+                    borderRadius: "8px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    marginRight: "0.35rem"
+                    marginRight: "0.35rem",
+                    animation: isListening ? "voicePulse 1.2s infinite" : "none",
+                    transition: "all 0.2s ease"
                   }}
                 >
-                  <Mic size={17} strokeWidth={2} />
+                  <Mic size={17} strokeWidth={2.2} />
                 </button>
                 <button
                   type="button"
@@ -317,62 +396,100 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                 <span>Support</span>
               </a>
 
-              {/* Theme Toggle Pill (EE345 style) */}
+              {/* Theme Toggle Pill (Light / Dark / System) */}
               <div
                 className="hide-on-mobile"
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  background: "#F1F5F9",
+                  background: isDarkMode ? "#1E293B" : "#F1F5F9",
                   borderRadius: "999px",
-                  padding: "0.2rem 0.35rem",
-                  border: "1px solid #E2E8F0",
-                  gap: "0.2rem"
+                  padding: "0.2rem 0.3rem",
+                  border: isDarkMode ? "1px solid #334155" : "1px solid #E2E8F0",
+                  gap: "0.2rem",
+                  transition: "all 0.2s ease"
                 }}
               >
-                <div
+                {/* Sun (Light Mode) */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setThemeMode("light");
+                    if (showToast) showToast("☀️ Light mode activated");
+                  }}
                   style={{
-                    background: "#D1FAE5",
+                    background: themeMode === "light" ? "#D1FAE5" : "transparent",
                     borderRadius: "50%",
                     width: "24px",
                     height: "24px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    color: "#065F46"
+                    color: themeMode === "light" ? "#065F46" : (isDarkMode ? "#94A3B8" : "#64748B"),
+                    border: "none",
+                    cursor: "pointer",
+                    padding: 0,
+                    transition: "all 0.15s ease"
                   }}
                   title="Light mode"
+                  aria-label="Light mode"
                 >
-                  <Sun size={13} />
-                </div>
-                <div
+                  <Sun size={13} strokeWidth={2.2} />
+                </button>
+
+                {/* Moon (Dark Mode) */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setThemeMode("dark");
+                    if (showToast) showToast("🌙 Dark mode activated");
+                  }}
                   style={{
+                    background: themeMode === "dark" ? (isDarkMode ? "#0F766E" : "#0F172A") : "transparent",
                     borderRadius: "50%",
                     width: "24px",
                     height: "24px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    color: "#64748B"
+                    color: themeMode === "dark" ? "#FFFFFF" : (isDarkMode ? "#94A3B8" : "#64748B"),
+                    border: "none",
+                    cursor: "pointer",
+                    padding: 0,
+                    transition: "all 0.15s ease"
                   }}
                   title="Dark mode"
+                  aria-label="Dark mode"
                 >
-                  <Moon size={13} />
-                </div>
-                <div
+                  <Moon size={13} strokeWidth={2.2} />
+                </button>
+
+                {/* Monitor (System Mode) */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setThemeMode("system");
+                    if (showToast) showToast("💻 System theme synchronized");
+                  }}
                   style={{
+                    background: themeMode === "system" ? (isDarkMode ? "#334155" : "#E2E8F0") : "transparent",
                     borderRadius: "50%",
                     width: "24px",
                     height: "24px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    color: "#64748B"
+                    color: themeMode === "system" ? (isDarkMode ? "#38BDF8" : "#0F172A") : (isDarkMode ? "#94A3B8" : "#64748B"),
+                    border: "none",
+                    cursor: "pointer",
+                    padding: 0,
+                    transition: "all 0.15s ease"
                   }}
-                  title="System mode"
+                  title="System mode (Auto-detect)"
+                  aria-label="System mode"
                 >
-                  <Monitor size={13} />
-                </div>
+                  <Monitor size={13} strokeWidth={2.2} />
+                </button>
               </div>
 
               {/* EE345 Account Pill Toggle */}
@@ -386,14 +503,14 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                   gap: "0.55rem",
                   padding: "0.35rem 0.85rem",
                   borderRadius: "999px",
-                  border: "1.5px solid #CBD5E1",
-                  background: isAccountDrawerOpen ? "#F1F5F9" : "#FFFFFF",
+                  border: isDarkMode ? "1.5px solid #334155" : "1.5px solid #CBD5E1",
+                  background: isAccountDrawerOpen ? (isDarkMode ? "#334155" : "#F1F5F9") : (isDarkMode ? "#1E293B" : "#FFFFFF"),
                   transition: "all 0.15s ease",
                   userSelect: "none"
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "#F8FAFC")}
+                onMouseEnter={(e) => (e.currentTarget.style.background = isDarkMode ? "#334155" : "#F8FAFC")}
                 onMouseLeave={(e) => {
-                  if (!isAccountDrawerOpen) e.currentTarget.style.background = "#FFFFFF";
+                  if (!isAccountDrawerOpen) e.currentTarget.style.background = isDarkMode ? "#1E293B" : "#FFFFFF";
                 }}
                 title="Hello, Sign in / Account Shortcuts"
               >
@@ -402,17 +519,17 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    color: "#0F172A",
+                    color: isDarkMode ? "#F8FAFC" : "#0F172A",
                     flexShrink: 0
                   }}
                 >
                   <User size={19} strokeWidth={2} />
                 </div>
                 <div className="hide-on-mobile" style={{ textAlign: "left", lineHeight: 1.15 }}>
-                  <div style={{ fontSize: "0.68rem", color: "#64748B", fontWeight: 500 }}>
+                  <div style={{ fontSize: "0.68rem", color: isDarkMode ? "#94A3B8" : "#64748B", fontWeight: 500 }}>
                     {isCustomerLoggedIn ? `Hello, ${customerDisplayName}` : "Hello, sign in"}
                   </div>
-                  <div style={{ fontSize: "0.82rem", fontWeight: 800, color: "#0F172A" }}>
+                  <div style={{ fontSize: "0.82rem", fontWeight: 800, color: isDarkMode ? "#F8FAFC" : "#0F172A" }}>
                     Account
                   </div>
                 </div>
@@ -424,19 +541,19 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                 style={{
                   background: "none",
                   border: "none",
-                  color: "#0F172A",
+                  color: isDarkMode ? "#F8FAFC" : "#0F172A",
                   cursor: "pointer",
                   padding: "0.45rem",
                   borderRadius: "8px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  transition: "transform 0.15s ease"
+                  transition: "transform 0.15s ease, color 0.15s ease"
                 }}
                 title="Wishlist"
                 aria-label="Wishlist"
               >
-                <Heart size={22} strokeWidth={1.8} color="#0F172A" />
+                <Heart size={22} strokeWidth={1.8} color={isDarkMode ? "#F8FAFC" : "#0F172A"} />
               </button>
 
               {/* Cart Icon with Red Counter Badge (EE345 style) */}
@@ -445,7 +562,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                 style={{
                   background: "none",
                   border: "none",
-                  color: "#0F172A",
+                  color: isDarkMode ? "#F8FAFC" : "#0F172A",
                   cursor: "pointer",
                   padding: "0.45rem",
                   borderRadius: "8px",
@@ -453,12 +570,12 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  transition: "transform 0.15s ease"
+                  transition: "transform 0.15s ease, color 0.15s ease"
                 }}
                 title="Shopping Cart"
                 aria-label="Shopping Cart"
               >
-                <ShoppingCart size={22} strokeWidth={1.8} color="#0F172A" />
+                <ShoppingCart size={22} strokeWidth={1.8} color={isDarkMode ? "#F8FAFC" : "#0F172A"} />
                 {totalCartCount > 0 && (
                   <span
                     style={{
@@ -492,11 +609,12 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
       {/* Clean Category & Shopping Sub-Bar */}
       {isCustomer && (
         <div style={{
-          background: "#FFFFFF",
-          borderTop: "1px solid #F1F5F9",
-          borderBottom: "1px solid #E5E7EB",
+          background: isDarkMode ? "#0F172A" : "#FFFFFF",
+          borderTop: isDarkMode ? "1px solid #1E293B" : "1px solid #F1F5F9",
+          borderBottom: isDarkMode ? "1px solid #1E293B" : "1px solid #E5E7EB",
           overflowX: "auto",
-          whiteSpace: "nowrap"
+          whiteSpace: "nowrap",
+          transition: "background 0.2s ease, border-color 0.2s ease"
         }}>
           <div
             className="container"
@@ -512,14 +630,15 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
             <button
               onClick={() => setActiveTab("home")}
               style={{
-                background: activeTab === "home" ? "#0F172A" : "transparent",
-                color: activeTab === "home" ? "#FFFFFF" : "#334155",
+                background: activeTab === "home" ? (isDarkMode ? "#00A896" : "#0F172A") : "transparent",
+                color: activeTab === "home" ? "#FFFFFF" : (isDarkMode ? "#94A3B8" : "#334155"),
                 padding: "0.35rem 0.85rem",
                 borderRadius: "999px",
                 fontSize: "0.82rem",
                 fontWeight: 700,
                 border: "none",
-                cursor: "pointer"
+                cursor: "pointer",
+                transition: "all 0.15s ease"
               }}
             >
               Home
@@ -531,20 +650,21 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                 setActiveTab("categories");
               }}
               style={{
-                background: activeTab === "categories" && selectedCategory === "all" ? "#0F172A" : "transparent",
-                color: activeTab === "categories" && selectedCategory === "all" ? "#FFFFFF" : "#334155",
+                background: activeTab === "categories" && selectedCategory === "all" ? (isDarkMode ? "#00A896" : "#0F172A") : "transparent",
+                color: activeTab === "categories" && selectedCategory === "all" ? "#FFFFFF" : (isDarkMode ? "#94A3B8" : "#334155"),
                 padding: "0.35rem 0.85rem",
                 borderRadius: "999px",
                 fontSize: "0.82rem",
                 fontWeight: 700,
                 border: "none",
-                cursor: "pointer"
+                cursor: "pointer",
+                transition: "all 0.15s ease"
               }}
             >
               All Products
             </button>
 
-            <span style={{ color: "#CBD5E1", margin: "0 0.25rem" }}>•</span>
+            <span style={{ color: isDarkMode ? "#334155" : "#CBD5E1", margin: "0 0.25rem" }}>•</span>
 
             {categories.map((cat) => {
               const isCatActive = activeTab === "categories" && selectedCategory === cat.id;
@@ -556,8 +676,8 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                     setActiveTab("categories");
                   }}
                   style={{
-                    background: isCatActive ? "#0F172A" : "transparent",
-                    color: isCatActive ? "#FFFFFF" : "#475569",
+                    background: isCatActive ? (isDarkMode ? "#00A896" : "#0F172A") : "transparent",
+                    color: isCatActive ? "#FFFFFF" : (isDarkMode ? "#94A3B8" : "#475569"),
                     padding: "0.35rem 0.85rem",
                     fontSize: "0.82rem",
                     fontWeight: isCatActive ? 700 : 600,
@@ -570,7 +690,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                     if (!isCatActive) e.currentTarget.style.color = "#00A896";
                   }}
                   onMouseLeave={(e) => {
-                    if (!isCatActive) e.currentTarget.style.color = "#475569";
+                    if (!isCatActive) e.currentTarget.style.color = isDarkMode ? "#94A3B8" : "#475569";
                   }}
                 >
                   {cat.name}

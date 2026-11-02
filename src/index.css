@@ -805,3 +805,103 @@ button:active {
   }
 }
 
+/* ==========================================================================
+   🌙 COMPREHENSIVE DARK MODE SYSTEM (Data-Theme & Class .dark)
+   ========================================================================== */
+html.dark {
+  color-scheme: dark;
+  --bg-deep: #050B14;
+  --bg-surface: #091322;
+  --bg-card: #1E293B;
+  --bg-light: #0B1322;
+  --bg-light-card: #1E293B;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-light: #64748B;
+  --border-light: #334155;
+  --border-glass: rgba(255, 255, 255, 0.08);
+}
+
+html.dark body {
+  background-color: #0B1322 !important;
+  color: #F8FAFC !important;
+}
+
+/* Common Containers and Cards in Dark Mode */
+html.dark main,
+html.dark footer {
+  background-color: #0B1322;
+  color: #F8FAFC;
+}
+
+/* Form controls in Dark Mode */
+html.dark input:not([type="checkbox"]):not([type="radio"]),
+html.dark select,
+html.dark textarea {
+  background-color: #1E293B !important;
+  color: #F8FAFC !important;
+  border-color: #334155 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748B !important;
+}
+
+/* White cards & panels in Dark Mode */
+html.dark .product-card,
+html.dark [style*="background: #FFFFFF"],
+html.dark [style*="background: rgb(255, 255, 255)"],
+html.dark [style*="background-color: #FFFFFF"],
+html.dark [style*="background-color: rgb(255, 255, 255)"] {
+  background-color: #1E293B !important;
+  border-color: #334155 !important;
+  color: #F8FAFC !important;
+}
+
+/* Secondary Surface backgrounds in Dark Mode */
+html.dark [style*="background: #F8FAFC"],
+html.dark [style*="background: #F1F5F9"],
+html.dark [style*="background-color: #F8FAFC"],
+html.dark [style*="background-color: #F1F5F9"] {
+  background-color: #0F172A !important;
+  border-color: #334155 !important;
+}
+
+/* Dark mode text overrides */
+html.dark [style*="color: #0F172A"],
+html.dark [style*="color: #111827"],
+html.dark [style*="color: rgb(15, 23, 42)"],
+html.dark [style*="color: rgb(17, 24, 39)"] {
+  color: #F8FAFC !important;
+}
+
+html.dark [style*="color: #475569"],
+html.dark [style*="color: #64748B"],
+html.dark [style*="color: #6B7280"] {
+  color: #94A3B8 !important;
+}
+
+/* Border overrides in Dark Mode */
+html.dark [style*="border: 1px solid #E2E8F0"],
+html.dark [style*="border: 1.5px solid #E2E8F0"],
+html.dark [style*="border: 1px solid #E5E7EB"],
+html.dark [style*="border: 1.5px solid #CBD5E1"],
+html.dark [style*="border-bottom: 1px solid #E2E8F0"],
+html.dark [style*="border-bottom: 1px solid #E5E7EB"] {
+  border-color: #334155 !important;
+}
+
+/* Badges and Chips in Dark Mode */
+html.dark [style*="background: #F1F5F9"][style*="color: #475569"] {
+  background-color: #334155 !important;
+  color: #CBD5E1 !important;
+}
+
+/* Pulsing Voice animation */
+@keyframes voicePulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
+  70% { transform: scale(1.08); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+

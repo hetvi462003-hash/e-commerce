@@ -226,6 +226,63 @@ export const MarketplaceProvider = ({ children }) => {
     setIsAuthModalOpen(false);
   };
 
+  // 🌙 Global Theme Mode System ('light' | 'dark' | 'system')
+  const [themeMode, setThemeModeState] = useState(() => {
+    try {
+      return localStorage.getItem("cb_theme_mode") || "light";
+    } catch (e) {
+      return "light";
+    }
+  });
+
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const setThemeMode = (mode) => {
+    setThemeModeState(mode);
+    try {
+      localStorage.setItem("cb_theme_mode", mode);
+    } catch (e) {}
+  };
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const mediaQuery = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+
+    const applyTheme = () => {
+      let darkActive = false;
+      if (themeMode === "dark") {
+        darkActive = true;
+      } else if (themeMode === "light") {
+        darkActive = false;
+      } else {
+        // system
+        darkActive = mediaQuery ? mediaQuery.matches : false;
+      }
+
+      setIsDarkMode(darkActive);
+      if (darkActive) {
+        root.classList.add("dark");
+        root.setAttribute("data-theme", "dark");
+      } else {
+        root.classList.remove("dark");
+        root.setAttribute("data-theme", "light");
+      }
+    };
+
+    applyTheme();
+
+    if (themeMode === "system" && mediaQuery) {
+      const handler = () => applyTheme();
+      if (mediaQuery.addEventListener) {
+        mediaQuery.addEventListener("change", handler);
+        return () => mediaQuery.removeEventListener("change", handler);
+      } else if (mediaQuery.addListener) {
+        mediaQuery.addListener(handler);
+        return () => mediaQuery.removeListener(handler);
+      }
+    }
+  }, [themeMode]);
+
   // Fetch live collections from MongoDB on mount
   useEffect(() => {
     const fetchMongoData = async () => {
@@ -1026,6 +1083,9 @@ export const MarketplaceProvider = ({ children }) => {
         authModalRole,
         openAuthModal,
         closeAuthModal,
+        themeMode,
+        setThemeMode,
+        isDarkMode,
         categories: CATEGORIES,
         ORDER_STATUSES,
         PAYMENT_STATUSES,
