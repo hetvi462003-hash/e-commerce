@@ -43,7 +43,9 @@ export const INITIAL_VENDORS = [
     verified: true,
     status: "active",
     wallet_balance: 145.50, // KYD
-    commission_rate: 0.10, // 10%
+    commission_rate: 0.00, // 0% Marketplace Commission
+    product_limit: 25,
+    whatsapp_verified: true,
     bio: "Authentic hand-carved Caymanite jewelry, woven palm art, and locally crafted island souvenirs.",
     policies: {
       return_policy: "7-day return policy for unused items with original receipt.",
@@ -77,7 +79,9 @@ export const INITIAL_VENDORS = [
     verified: true,
     status: "active",
     wallet_balance: 210.00, // KYD
-    commission_rate: 0.10,
+    commission_rate: 0.00,
+    product_limit: 30,
+    whatsapp_verified: true,
     bio: "Premium snorkeling gear, eco-friendly beachwear, reef-safe sunscreen, and paddleboard accessories.",
     policies: {
       return_policy: "14-day exchange policy for unworn apparel & sealed gear.",
@@ -111,7 +115,9 @@ export const INITIAL_VENDORS = [
     verified: true,
     status: "active",
     wallet_balance: 88.00, // KYD
-    commission_rate: 0.10,
+    commission_rate: 0.00,
+    product_limit: 40,
+    whatsapp_verified: true,
     bio: "Famous Cayman Tortuga rum cakes, artisanal Scotch Bonnet hot sauces, gourmet sea salt, and Caribbean spice rubs.",
     policies: {
       return_policy: "All food items are final sale. Replacement offered for damaged goods.",
@@ -145,7 +151,9 @@ export const INITIAL_VENDORS = [
     verified: true,
     status: "active",
     wallet_balance: 340.00, // KYD
-    commission_rate: 0.10,
+    commission_rate: 0.00,
+    product_limit: 50,
+    whatsapp_verified: true,
     bio: "Duty-free Swiss timepieces, fine Larimar silver jewelry, custom nautical pendants, and luxury sunglasses.",
     policies: {
       return_policy: "30-day international warranty and 7-day money back guarantee.",
@@ -179,7 +187,9 @@ export const INITIAL_VENDORS = [
     verified: false,
     status: "active",
     wallet_balance: 15.00, // KYD - Low wallet balance test
-    commission_rate: 0.10,
+    commission_rate: 0.00,
+    product_limit: 15,
+    whatsapp_verified: true,
     bio: "Handmade seashell ornaments, eco-printed canvas tote bags, and hand-poured coconut soy candles.",
     policies: {
       return_policy: "Exchanges accepted within 7 days.",

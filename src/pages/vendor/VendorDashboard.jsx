@@ -132,11 +132,19 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
               </span>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-              <span style={{ color: "#94A3B8", fontSize: "0.82rem" }}>Platform Commission:</span>
-              <strong style={{ color: "#00E5C9", fontSize: "0.86rem" }}>
-                {Number((activeVendor?.commission_rate || 0.1) * 100).toFixed(0)}% Flat Take-Rate
-              </strong>
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                <span style={{ color: "#94A3B8", fontSize: "0.82rem" }}>Platform Commission:</span>
+                <strong style={{ color: "#10B981", fontSize: "0.86rem" }}>
+                  0% Direct Sales
+                </strong>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                <span style={{ color: "#94A3B8", fontSize: "0.82rem" }}>Upload Quota:</span>
+                <strong style={{ color: "#F59E0B", fontSize: "0.86rem" }}>
+                  {vendorProducts.length} / {activeVendor.product_limit || 25} Products
+                </strong>
+              </div>
             </div>
           </div>
 

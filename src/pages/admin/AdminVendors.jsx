@@ -11,12 +11,27 @@ import {
   PlusCircle,
   X,
   Building2,
-  Sparkles
+  Sparkles,
+  Edit,
+  Phone,
+  Package,
+  Layers
 } from "lucide-react";
 
 export default function AdminVendors() {
-  const { vendors, toggleVendorVerification, registerVendor, approveVendor, rejectVendor } = useMarketplace();
+  const {
+    vendors,
+    products = [],
+    toggleVendorVerification,
+    registerVendor,
+    approveVendor,
+    rejectVendor,
+    updateVendorProfile,
+    showToast
+  } = useMarketplace();
   const [isOnboardModalOpen, setIsOnboardModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingVendor, setEditingVendor] = useState(null);
 
   const pendingVendors = vendors.filter((v) => v.status === "pending_approval");
 
@@ -30,8 +45,58 @@ export default function AdminVendors() {
     address: "",
     specialty: "",
     bio: "",
-    wallet_balance: 100
+    product_limit: 25,
+    wallet_balance: 0
   });
+
+  const [editFormData, setEditFormData] = useState({
+    store_name: "",
+    owner_name: "",
+    phone: "",
+    email: "",
+    district: "Georgetown",
+    address: "",
+    store_type: "",
+    specialty: "",
+    bio: "",
+    product_limit: 25,
+    status: "active",
+    verified: true
+  });
+
+  const openEditModal = (vendor) => {
+    setEditingVendor(vendor);
+    setEditFormData({
+      store_name: vendor.store_name || "",
+      owner_name: vendor.owner_name || "",
+      phone: vendor.phone || vendor.whatsapp_number || "",
+      email: vendor.email || "",
+      district: vendor.district || "Georgetown",
+      address: vendor.address || "",
+      store_type: vendor.store_type || "Island Boutique",
+      specialty: vendor.specialty || "",
+      bio: vendor.bio || "",
+      product_limit: vendor.product_limit || 25,
+      status: vendor.status || "active",
+      verified: Boolean(vendor.verified)
+    });
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    if (!editingVendor) return;
+
+    updateVendorProfile(editingVendor.id, {
+      ...editFormData,
+      product_limit: parseInt(editFormData.product_limit) || 25,
+      whatsapp_number: editFormData.phone
+    });
+
+    setIsEditModalOpen(false);
+    setEditingVendor(null);
+    showToast(`Updated "${editFormData.store_name}" profile & product limits!`, "success");
+  };
 
   const handleOnboardSubmit = (e) => {
     e.preventDefault();
@@ -39,6 +104,7 @@ export default function AdminVendors() {
 
     registerVendor({
       ...formData,
+      product_limit: parseInt(formData.product_limit) || 25,
       store_type: formData.store_type || "Island Boutique",
       address: formData.address || `${formData.district} Commercial Promenade, Grand Cayman`
     });
@@ -54,7 +120,8 @@ export default function AdminVendors() {
       address: "",
       specialty: "",
       bio: "",
-      wallet_balance: 100
+      product_limit: 25,
+      wallet_balance: 0
     });
   };
 
@@ -187,16 +254,20 @@ export default function AdminVendors() {
           <thead>
             <tr style={{ background: "#F8FAFC", borderBottom: "1px solid #E2E8F0", color: "#64748B" }}>
               <th style={{ padding: "1rem" }}>Vendor Store</th>
-              <th style={{ padding: "1rem" }}>Owner / Contact</th>
+              <th style={{ padding: "1rem" }}>Owner / WhatsApp</th>
               <th style={{ padding: "1rem" }}>District</th>
-              <th style={{ padding: "1rem" }}>Commission Rate</th>
+              <th style={{ padding: "1rem" }}>Product Upload Limit</th>
               <th style={{ padding: "1rem" }}>Status</th>
-              <th style={{ padding: "1rem", textAlign: "right" }}>Actions / Verification</th>
+              <th style={{ padding: "1rem", textAlign: "right" }}>Management & Actions</th>
             </tr>
           </thead>
           <tbody>
             {vendors.map((v) => {
               const isPending = v.status === "pending_approval";
+              const vendorProdCount = products.filter((p) => p.vendor_id === v.id).length;
+              const limit = v.product_limit || 25;
+              const isLimitReached = vendorProdCount >= limit;
+
               return (
                 <tr key={v.id} style={{ borderBottom: "1px solid #F1F5F9" }}>
                   <td style={{ padding: "1rem" }}>
@@ -210,16 +281,34 @@ export default function AdminVendors() {
                   </td>
 
                   <td style={{ padding: "1rem" }}>
-                    <div>{v.owner_name}</div>
-                    <div style={{ fontSize: "0.78rem", color: "#94A3B8" }}>{v.phone}</div>
+                    <div style={{ fontWeight: 600, color: "#0F172A" }}>{v.owner_name}</div>
+                    <div style={{ fontSize: "0.78rem", color: "#00A896", display: "inline-flex", alignItems: "center", gap: "0.25rem", marginTop: "2px", fontWeight: 700 }}>
+                      <Phone size={12} /> {v.phone || v.whatsapp_number || "Not specified"}
+                    </div>
                   </td>
 
                   <td style={{ padding: "1rem", color: "#475569" }}>
                     <MapPin size={13} color="#00A896" style={{ marginRight: "4px" }} /> {v.district}
                   </td>
 
-                  <td style={{ padding: "1rem", fontWeight: 800, color: "#00A896" }}>
-                    {Number((v.commission_rate || 0.1) * 100).toFixed(0)}% Flat Take
+                  <td style={{ padding: "1rem" }}>
+                    <div style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "0.4rem",
+                      background: isLimitReached ? "#FEF2F2" : "#F0FDFA",
+                      border: `1px solid ${isLimitReached ? "#FCA5A5" : "#CCFBF1"}`,
+                      color: isLimitReached ? "#DC2626" : "#0F766E",
+                      padding: "0.25rem 0.65rem",
+                      borderRadius: "8px",
+                      fontWeight: 800,
+                      fontSize: "0.82rem"
+                    }}>
+                      <Package size={13} /> {vendorProdCount} / {limit} Listed
+                    </div>
+                    <div style={{ fontSize: "0.72rem", color: "#64748B", marginTop: "2px" }}>
+                      Max Allowed: {limit}
+                    </div>
                   </td>
 
                   <td style={{ padding: "1rem" }}>
@@ -261,19 +350,41 @@ export default function AdminVendors() {
                         </button>
                       </div>
                     ) : (
-                      <button
-                        onClick={() => toggleVendorVerification(v.id)}
-                        className={v.verified ? "btn-outline" : "btn-gold"}
-                        style={{ padding: "0.35rem 0.8rem", fontSize: "0.8rem", borderRadius: "8px", cursor: "pointer" }}
-                      >
-                        {v.verified ? (
-                          <>
-                            <CheckCircle2 size={14} color="#0284C7" /> Verified
-                          </>
-                        ) : (
-                          "Verify Merchant"
-                        )}
-                      </button>
+                      <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
+                        <button
+                          onClick={() => openEditModal(v)}
+                          style={{
+                            background: "#F8FAFC",
+                            border: "1.5px solid #CBD5E1",
+                            color: "#0F172A",
+                            padding: "0.35rem 0.75rem",
+                            fontSize: "0.8rem",
+                            borderRadius: "8px",
+                            cursor: "pointer",
+                            fontWeight: 700,
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.35rem"
+                          }}
+                          title="Edit Store Profile, WhatsApp & Upload Limit"
+                        >
+                          <Edit size={13} /> Edit Store
+                        </button>
+
+                        <button
+                          onClick={() => toggleVendorVerification(v.id)}
+                          className={v.verified ? "btn-outline" : "btn-gold"}
+                          style={{ padding: "0.35rem 0.8rem", fontSize: "0.8rem", borderRadius: "8px", cursor: "pointer" }}
+                        >
+                          {v.verified ? (
+                            <>
+                              <CheckCircle2 size={14} color="#0284C7" /> Verified
+                            </>
+                          ) : (
+                            "Verify"
+                          )}
+                        </button>
+                      </div>
                     )}
                   </td>
                 </tr>
@@ -444,6 +555,51 @@ export default function AdminVendors() {
                 </div>
               </div>
 
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
+                    Store WhatsApp Number *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="+1 (345) 949-0000"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    style={{
+                      width: "100%",
+                      background: "#050B14",
+                      border: "1px solid rgba(255, 255, 255, 0.15)",
+                      color: "#FFFFFF",
+                      padding: "0.7rem 0.9rem",
+                      borderRadius: "10px",
+                      fontSize: "0.88rem"
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
+                    Contact Email
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="merchant@caymanbazaar.ky"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    style={{
+                      width: "100%",
+                      background: "#050B14",
+                      border: "1px solid rgba(255, 255, 255, 0.15)",
+                      color: "#FFFFFF",
+                      padding: "0.7rem 0.9rem",
+                      borderRadius: "10px",
+                      fontSize: "0.88rem"
+                    }}
+                  />
+                </div>
+              </div>
+
               <div style={{ marginBottom: "1rem" }}>
                 <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
                   Specialty
@@ -467,12 +623,14 @@ export default function AdminVendors() {
 
               <div style={{ marginBottom: "1.5rem" }}>
                 <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
-                  Platform Commission Rate (%)
+                  Product Upload Limit (Max Products)
                 </label>
                 <input
                   type="number"
-                  value={formData.commission_rate ? formData.commission_rate * 100 : 10}
-                  onChange={(e) => setFormData({ ...formData, commission_rate: Number(e.target.value) / 100 })}
+                  min="1"
+                  max="1000"
+                  value={formData.product_limit || 25}
+                  onChange={(e) => setFormData({ ...formData, product_limit: parseInt(e.target.value) || 25 })}
                   style={{
                     width: "100%",
                     background: "#050B14",
@@ -499,6 +657,311 @@ export default function AdminVendors() {
                 }}
               >
                 Approve & Add Store to Platform
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Admin Edit Vendor Profile & Limit Modal */}
+      {isEditModalOpen && editingVendor && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(3, 7, 18, 0.75)",
+            backdropFilter: "blur(8px)",
+            WebkitBackdropFilter: "blur(8px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+            padding: "1rem"
+          }}
+          onClick={() => setIsEditModalOpen(false)}
+        >
+          <div
+            style={{
+              background: "#081325",
+              border: "1.5px solid rgba(0, 168, 150, 0.4)",
+              borderRadius: "24px",
+              width: "100%",
+              maxWidth: "600px",
+              maxHeight: "90vh",
+              overflowY: "auto",
+              boxShadow: "0 25px 60px rgba(0, 0, 0, 0.7)",
+              color: "#FFFFFF"
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              style={{
+                padding: "1.5rem 1.75rem",
+                borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between"
+              }}
+            >
+              <div>
+                <span style={{ fontSize: "0.75rem", color: "#00E5C9", fontWeight: 700, textTransform: "uppercase" }}>
+                  Platform Admin Merchant Governance
+                </span>
+                <h3 style={{ fontSize: "1.3rem", fontWeight: 800, marginTop: "0.2rem", color: "#FFFFFF" }}>
+                  Edit Store Profile & Product Limits
+                </h3>
+              </div>
+              <button
+                onClick={() => setIsEditModalOpen(false)}
+                style={{
+                  background: "rgba(255, 255, 255, 0.06)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  color: "#94A3B8",
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer"
+                }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handleEditSubmit} style={{ padding: "1.75rem" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
+                    Store Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editFormData.store_name}
+                    onChange={(e) => setEditFormData({ ...editFormData, store_name: e.target.value })}
+                    style={{
+                      width: "100%",
+                      background: "#050B14",
+                      border: "1px solid rgba(255, 255, 255, 0.15)",
+                      color: "#FFFFFF",
+                      padding: "0.7rem 0.9rem",
+                      borderRadius: "10px",
+                      fontSize: "0.88rem"
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
+                    Owner Full Name
+                  </label>
+                  <input
+                    type="text"
+                    value={editFormData.owner_name}
+                    onChange={(e) => setEditFormData({ ...editFormData, owner_name: e.target.value })}
+                    style={{
+                      width: "100%",
+                      background: "#050B14",
+                      border: "1px solid rgba(255, 255, 255, 0.15)",
+                      color: "#FFFFFF",
+                      padding: "0.7rem 0.9rem",
+                      borderRadius: "10px",
+                      fontSize: "0.88rem"
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
+                    Dedicated WhatsApp Number *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editFormData.phone}
+                    onChange={(e) => setEditFormData({ ...editFormData, phone: e.target.value })}
+                    style={{
+                      width: "100%",
+                      background: "#050B14",
+                      border: "1px solid rgba(255, 255, 255, 0.15)",
+                      color: "#00E5C9",
+                      fontWeight: 700,
+                      padding: "0.7rem 0.9rem",
+                      borderRadius: "10px",
+                      fontSize: "0.88rem"
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
+                    Contact Email
+                  </label>
+                  <input
+                    type="email"
+                    value={editFormData.email}
+                    onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
+                    style={{
+                      width: "100%",
+                      background: "#050B14",
+                      border: "1px solid rgba(255, 255, 255, 0.15)",
+                      color: "#FFFFFF",
+                      padding: "0.7rem 0.9rem",
+                      borderRadius: "10px",
+                      fontSize: "0.88rem"
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
+                    Island District
+                  </label>
+                  <select
+                    value={editFormData.district}
+                    onChange={(e) => setEditFormData({ ...editFormData, district: e.target.value })}
+                    style={{
+                      width: "100%",
+                      background: "#050B14",
+                      border: "1px solid rgba(255, 255, 255, 0.15)",
+                      color: "#FFFFFF",
+                      padding: "0.7rem 0.9rem",
+                      borderRadius: "10px",
+                      fontSize: "0.88rem"
+                    }}
+                  >
+                    {CAYMAN_DISTRICTS.map((d) => (
+                      <option key={d} value={d}>
+                        {d}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
+                    Store Category / Specialty
+                  </label>
+                  <input
+                    type="text"
+                    value={editFormData.specialty}
+                    onChange={(e) => setEditFormData({ ...editFormData, specialty: e.target.value })}
+                    style={{
+                      width: "100%",
+                      background: "#050B14",
+                      border: "1px solid rgba(255, 255, 255, 0.15)",
+                      color: "#FFFFFF",
+                      padding: "0.7rem 0.9rem",
+                      borderRadius: "10px",
+                      fontSize: "0.88rem"
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ marginBottom: "1rem" }}>
+                <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
+                  Physical Address
+                </label>
+                <input
+                  type="text"
+                  value={editFormData.address}
+                  onChange={(e) => setEditFormData({ ...editFormData, address: e.target.value })}
+                  style={{
+                    width: "100%",
+                    background: "#050B14",
+                    border: "1px solid rgba(255, 255, 255, 0.15)",
+                    color: "#FFFFFF",
+                    padding: "0.7rem 0.9rem",
+                    borderRadius: "10px",
+                    fontSize: "0.88rem"
+                  }}
+                />
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1.2rem" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 700 }}>
+                    Product Upload Limit (Max Products)
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    max="1000"
+                    value={editFormData.product_limit}
+                    onChange={(e) => setEditFormData({ ...editFormData, product_limit: parseInt(e.target.value) || 1 })}
+                    style={{
+                      width: "100%",
+                      background: "#050B14",
+                      border: "1.5px solid #00E5C9",
+                      color: "#00E5C9",
+                      fontWeight: 800,
+                      padding: "0.7rem 0.9rem",
+                      borderRadius: "10px",
+                      fontSize: "1rem"
+                    }}
+                  />
+                  <small style={{ color: "#94A3B8", fontSize: "0.74rem" }}>
+                    Sets max items vendor can add or bulk import.
+                  </small>
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
+                    Store Operating Status
+                  </label>
+                  <select
+                    value={editFormData.status}
+                    onChange={(e) => setEditFormData({ ...editFormData, status: e.target.value })}
+                    style={{
+                      width: "100%",
+                      background: "#050B14",
+                      border: "1px solid rgba(255, 255, 255, 0.15)",
+                      color: "#FFFFFF",
+                      padding: "0.7rem 0.9rem",
+                      borderRadius: "10px",
+                      fontSize: "0.88rem"
+                    }}
+                  >
+                    <option value="active">Active (Visible)</option>
+                    <option value="inactive">Inactive (Hidden)</option>
+                    <option value="pending_approval">Pending Approval</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.5rem", background: "rgba(255, 255, 255, 0.05)", padding: "0.8rem 1rem", borderRadius: "12px", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
+                <input
+                  type="checkbox"
+                  id="verified-checkbox"
+                  checked={editFormData.verified}
+                  onChange={(e) => setEditFormData({ ...editFormData, verified: e.target.checked })}
+                  style={{ width: "18px", height: "18px", accentColor: "#00A896" }}
+                />
+                <label htmlFor="verified-checkbox" style={{ fontSize: "0.86rem", color: "#FFFFFF", fontWeight: 600, cursor: "pointer" }}>
+                  Verified Cayman Islands Merchant (Display Blue Verification Badge)
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                className="btn-primary"
+                style={{
+                  width: "100%",
+                  padding: "0.85rem",
+                  borderRadius: "12px",
+                  fontSize: "0.95rem",
+                  fontWeight: 800,
+                  cursor: "pointer"
+                }}
+              >
+                Save Store Profile & Limit Changes
               </button>
             </form>
           </div>

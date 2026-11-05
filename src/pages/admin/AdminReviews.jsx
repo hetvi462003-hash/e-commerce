@@ -14,7 +14,9 @@ import {
   TrendingUp,
   Clock,
   Sparkles,
-  ExternalLink
+  ExternalLink,
+  Edit,
+  X
 } from "lucide-react";
 
 export default function AdminReviews() {
@@ -23,12 +25,49 @@ export default function AdminReviews() {
     vendors = [],
     adminDeleteReview,
     adminDismissFlag,
+    adminUpdateReview,
     showToast
   } = useMarketplace();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedVendorFilter, setSelectedVendorFilter] = useState("all");
   const [ratingFilter, setRatingFilter] = useState("all"); // 'all' | 'flagged' | '5' | 'low'
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingReview, setEditingReview] = useState(null);
+  const [reviewFormData, setReviewFormData] = useState({
+    author: "",
+    rating: 5,
+    comment: "",
+    verified_purchase: true
+  });
+
+  const openEditModal = (rev) => {
+    setEditingReview(rev);
+    setReviewFormData({
+      author: rev.author || "Shopper",
+      rating: rev.rating || 5,
+      comment: rev.comment || "",
+      verified_purchase: Boolean(rev.verified_purchase)
+    });
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    if (!editingReview) return;
+
+    if (adminUpdateReview) {
+      adminUpdateReview(editingReview.id, {
+        author: reviewFormData.author.trim(),
+        rating: parseInt(reviewFormData.rating) || 5,
+        comment: reviewFormData.comment.trim(),
+        verified_purchase: reviewFormData.verified_purchase
+      });
+    }
+
+    setIsEditModalOpen(false);
+    setEditingReview(null);
+  };
 
   // Metric stats
   const totalReviews = reviews.length;
@@ -383,27 +422,50 @@ export default function AdminReviews() {
                         </span>
                       </div>
 
-                      {/* Admin Delete Action */}
-                      <button
-                        onClick={() => handleDelete(rev)}
-                        title="Delete Review & Recalculate Rating"
-                        style={{
-                          background: "#FEF2F2",
-                          border: "1px solid #FECACA",
-                          color: "#DC2626",
-                          padding: "0.5rem 0.85rem",
-                          borderRadius: "10px",
-                          fontWeight: 700,
-                          fontSize: "0.82rem",
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "0.35rem",
-                          cursor: "pointer",
-                          transition: "all 0.2s ease"
-                        }}
-                      >
-                        <Trash2 size={15} /> Delete Review
-                      </button>
+                      {/* Admin Actions */}
+                      <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+                        <button
+                          onClick={() => openEditModal(rev)}
+                          title="Edit Review Details & Rating"
+                          style={{
+                            background: "#F8FAFC",
+                            border: "1.5px solid #CBD5E1",
+                            color: "#0F172A",
+                            padding: "0.5rem 0.85rem",
+                            borderRadius: "10px",
+                            fontWeight: 700,
+                            fontSize: "0.82rem",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.35rem",
+                            cursor: "pointer",
+                            transition: "all 0.2s ease"
+                          }}
+                        >
+                          <Edit size={14} /> Edit Review
+                        </button>
+
+                        <button
+                          onClick={() => handleDelete(rev)}
+                          title="Delete Review & Recalculate Rating"
+                          style={{
+                            background: "#FEF2F2",
+                            border: "1px solid #FECACA",
+                            color: "#DC2626",
+                            padding: "0.5rem 0.85rem",
+                            borderRadius: "10px",
+                            fontWeight: 700,
+                            fontSize: "0.82rem",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.35rem",
+                            cursor: "pointer",
+                            transition: "all 0.2s ease"
+                          }}
+                        >
+                          <Trash2 size={15} /> Delete Review
+                        </button>
+                      </div>
                     </div>
 
                   </div>
@@ -520,6 +582,181 @@ export default function AdminReviews() {
         )}
 
       </div>
+
+      {/* Admin Edit Review Modal */}
+      {isEditModalOpen && editingReview && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(3, 7, 18, 0.75)",
+            backdropFilter: "blur(8px)",
+            WebkitBackdropFilter: "blur(8px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+            padding: "1rem"
+          }}
+          onClick={() => setIsEditModalOpen(false)}
+        >
+          <div
+            style={{
+              background: "#081325",
+              border: "1.5px solid rgba(245, 158, 11, 0.4)",
+              borderRadius: "24px",
+              width: "100%",
+              maxWidth: "520px",
+              maxHeight: "90vh",
+              overflowY: "auto",
+              boxShadow: "0 25px 60px rgba(0, 0, 0, 0.7)",
+              color: "#FFFFFF"
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              style={{
+                padding: "1.5rem 1.75rem",
+                borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between"
+              }}
+            >
+              <div>
+                <span style={{ fontSize: "0.75rem", color: "#F59E0B", fontWeight: 700, textTransform: "uppercase" }}>
+                  Platform Moderation Console
+                </span>
+                <h3 style={{ fontSize: "1.3rem", fontWeight: 800, marginTop: "0.2rem", color: "#FFFFFF" }}>
+                  Edit Customer Review
+                </h3>
+              </div>
+              <button
+                onClick={() => setIsEditModalOpen(false)}
+                style={{
+                  background: "rgba(255, 255, 255, 0.06)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  color: "#94A3B8",
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer"
+                }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handleEditSubmit} style={{ padding: "1.75rem" }}>
+              <div style={{ marginBottom: "1rem" }}>
+                <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
+                  Customer Author Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={reviewFormData.author}
+                  onChange={(e) => setReviewFormData({ ...reviewFormData, author: e.target.value })}
+                  style={{
+                    width: "100%",
+                    background: "#050B14",
+                    border: "1px solid rgba(255, 255, 255, 0.15)",
+                    color: "#FFFFFF",
+                    padding: "0.7rem 0.9rem",
+                    borderRadius: "10px",
+                    fontSize: "0.88rem"
+                  }}
+                />
+              </div>
+
+              <div style={{ marginBottom: "1rem" }}>
+                <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
+                  Rating Score (1 - 5 Stars) *
+                </label>
+                <div style={{ display: "flex", gap: "0.5rem" }}>
+                  {[1, 2, 3, 4, 5].map((starVal) => (
+                    <button
+                      type="button"
+                      key={starVal}
+                      onClick={() => setReviewFormData({ ...reviewFormData, rating: starVal })}
+                      style={{
+                        flex: 1,
+                        padding: "0.6rem 0",
+                        borderRadius: "10px",
+                        background: reviewFormData.rating === starVal ? "#F59E0B" : "#050B14",
+                        color: reviewFormData.rating === starVal ? "#000000" : "#CBD5E1",
+                        border: reviewFormData.rating === starVal ? "1.5px solid #F59E0B" : "1px solid rgba(255,255,255,0.15)",
+                        fontWeight: 800,
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "0.25rem"
+                      }}
+                    >
+                      <Star size={14} fill={reviewFormData.rating === starVal ? "#000000" : "transparent"} /> {starVal}★
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ marginBottom: "1.2rem" }}>
+                <label style={{ display: "block", fontSize: "0.8rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 600 }}>
+                  Review Comment *
+                </label>
+                <textarea
+                  rows={4}
+                  required
+                  value={reviewFormData.comment}
+                  onChange={(e) => setReviewFormData({ ...reviewFormData, comment: e.target.value })}
+                  style={{
+                    width: "100%",
+                    background: "#050B14",
+                    border: "1px solid rgba(255, 255, 255, 0.15)",
+                    color: "#FFFFFF",
+                    padding: "0.7rem 0.9rem",
+                    borderRadius: "10px",
+                    fontSize: "0.88rem",
+                    lineHeight: 1.5
+                  }}
+                />
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.5rem", background: "rgba(255, 255, 255, 0.05)", padding: "0.8rem 1rem", borderRadius: "12px", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
+                <input
+                  type="checkbox"
+                  id="rev-verified-checkbox"
+                  checked={reviewFormData.verified_purchase}
+                  onChange={(e) => setReviewFormData({ ...reviewFormData, verified_purchase: e.target.checked })}
+                  style={{ width: "18px", height: "18px", accentColor: "#00A896" }}
+                />
+                <label htmlFor="rev-verified-checkbox" style={{ fontSize: "0.86rem", color: "#FFFFFF", fontWeight: 600, cursor: "pointer" }}>
+                  Verified Buyer Purchase (Displays Green Badge)
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                className="btn-gold"
+                style={{
+                  width: "100%",
+                  padding: "0.85rem",
+                  borderRadius: "12px",
+                  fontSize: "0.95rem",
+                  fontWeight: 800,
+                  cursor: "pointer"
+                }}
+              >
+                Save Review Updates
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

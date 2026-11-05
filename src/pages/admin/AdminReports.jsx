@@ -45,12 +45,12 @@ export default function AdminReports() {
 
   const handleExport = (type) => {
     if (type === "CSV") {
-      const headers = ["District", "Sales Volume ($KYD)", "Completed Orders", "10% Platform Commission ($KYD)"];
+      const headers = ["District", "Sales Volume ($KYD)", "Completed Orders", "Commission Rate"];
       const rows = districtData.map((d) => [
         d.district,
         d.sales.toFixed(2),
         d.orders,
-        d.comm.toFixed(2)
+        "0% (Waived)"
       ]);
       downloadCsv(`CaymanBazaar_Financial_Report_${reportMonth.replace(/\s+/g, "_")}`, headers, rows);
       showToast(`Exported ${reportMonth} Cayman Marketplace Financial Summary (CSV)`, "success");
@@ -68,9 +68,9 @@ export default function AdminReports() {
           <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "#F59E0B", fontSize: "0.85rem", fontWeight: 700, textTransform: "uppercase" }}>
             <TrendingUp size={16} /> Financial Analytics
           </div>
-          <h1 style={{ fontSize: "2.2rem", color: "#0F172A", marginBottom: "0.2rem" }}>Revenue & Commission Reports</h1>
+          <h1 style={{ fontSize: "2.2rem", color: "#0F172A", marginBottom: "0.2rem" }}>Sales & Financial Analytics</h1>
           <p style={{ color: "#64748B", fontSize: "0.95rem" }}>
-            Audit marketplace gross merchandise volume (GMV), automated 10% commission ledgers, and district performance.
+            Audit marketplace gross merchandise volume (GMV), direct vendor WhatsApp sales, and district performance.
           </p>
         </div>
 
@@ -108,12 +108,12 @@ export default function AdminReports() {
         </div>
 
         <div style={{ background: "#FFFFFF", padding: "1.5rem", borderRadius: "20px", border: "1px solid #E2E8F0", boxShadow: "var(--shadow-sm)" }}>
-          <div style={{ fontSize: "0.8rem", color: "#64748B", fontWeight: 600, textTransform: "uppercase" }}>10% Platform Revenue</div>
+          <div style={{ fontSize: "0.8rem", color: "#64748B", fontWeight: 600, textTransform: "uppercase" }}>Platform Commission</div>
           <div style={{ fontSize: "2rem", fontWeight: 900, color: "#00A896", marginTop: "0.2rem" }}>
-            ${platformCommissions.toFixed(2)} KYD
+            0% ($0.00)
           </div>
           <div style={{ fontSize: "0.78rem", color: "#00A896", marginTop: "0.4rem" }}>
-            Earned from fulfilled orders
+            100% direct revenue retained by stores
           </div>
         </div>
 
@@ -148,7 +148,7 @@ export default function AdminReports() {
               <th style={{ padding: "0.85rem 1rem" }}>District</th>
               <th style={{ padding: "0.85rem 1rem" }}>Gross Merchandise Value (GMV)</th>
               <th style={{ padding: "0.85rem 1rem" }}>Orders Fulfilled</th>
-              <th style={{ padding: "0.85rem 1rem" }}>Marketplace 10% Commission</th>
+              <th style={{ padding: "0.85rem 1rem" }}>Platform Commission</th>
               <th style={{ padding: "0.85rem 1rem", textAlign: "right" }}>Share of Island Volume</th>
             </tr>
           </thead>
@@ -160,7 +160,7 @@ export default function AdminReports() {
                   <td style={{ padding: "1rem", fontWeight: 700, color: "#0F172A" }}>📍 {d.district}</td>
                   <td style={{ padding: "1rem", fontWeight: 700 }}>${d.sales.toFixed(2)} KYD</td>
                   <td style={{ padding: "1rem", color: "#64748B" }}>{d.orders} orders</td>
-                  <td style={{ padding: "1rem", color: "#00A896", fontWeight: 700 }}>+${d.comm.toFixed(2)} KYD</td>
+                  <td style={{ padding: "1rem", color: "#059669", fontWeight: 700 }}>0% ($0.00)</td>
                   <td style={{ padding: "1rem", textAlign: "right" }}>
                     <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
                       <div style={{ width: "80px", height: "8px", background: "#E2E8F0", borderRadius: "999px", overflow: "hidden" }}>

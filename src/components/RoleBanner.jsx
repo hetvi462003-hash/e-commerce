@@ -17,6 +17,7 @@ export default function RoleBanner({ setActiveTab }) {
     activeVendorId,
     setActiveVendorId,
     vendors,
+    products = [],
     activeVendor,
     currency,
     setCurrency,
@@ -285,7 +286,10 @@ export default function RoleBanner({ setActiveTab }) {
           {/* Right: Balance & Actions */}
           <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
             <div style={{ fontSize: "0.78rem", color: "#94A3B8" }}>
-              Take-Rate: <strong style={{ color: "#00E5C9" }}>{Number((activeVendor?.commission_rate || 0.1) * 100).toFixed(0)}% Flat</strong>
+              Upload Quota: <strong style={{ color: "#00E5C9" }}>{products.filter((p) => p.vendor_id === activeVendor?.id).length} / {activeVendor?.product_limit || 25}</strong>
+            </div>
+            <div style={{ fontSize: "0.78rem", color: "#94A3B8" }}>
+              Commission: <strong style={{ color: "#10B981" }}>0%</strong>
             </div>
 
             <button

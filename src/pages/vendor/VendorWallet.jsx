@@ -1,24 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { useMarketplace } from "../../context/MarketplaceContext";
-import { Wallet, PlusCircle, ArrowDownRight, ArrowUpRight, Download, AlertCircle, FileText } from "lucide-react";
+import { Wallet, ArrowDownRight, ArrowUpRight, Download, CheckCircle2, ShieldCheck, Sparkles } from "lucide-react";
 import { downloadCsv } from "../../utils/exportCsv";
 
 export default function VendorWallet() {
-  const { activeVendor, ledger, topupVendorWallet, formatPrice, showToast } = useMarketplace();
-  const [topupAmount, setTopupAmount] = useState(100);
-  const [isTopupOpen, setIsTopupOpen] = useState(false);
+  const { activeVendor, ledger, formatPrice, showToast } = useMarketplace();
 
   if (!activeVendor) return null;
 
   const vendorLedger = ledger.filter((l) => l.vendor_id === activeVendor.id);
-  const isSuspended = activeVendor.wallet_balance <= 0;
-  const isNearDepletion = activeVendor.wallet_balance > 0 && activeVendor.wallet_balance < 25;
-
-  const handleTopupSubmit = (e) => {
-    e.preventDefault();
-    topupVendorWallet(activeVendor.id, topupAmount);
-    setIsTopupOpen(false);
-  };
 
   const handleExportCsv = () => {
     const headers = ["Transaction ID", "Date", "Type", "Description", "Amount (KYD)", "Order Reference"];
@@ -43,11 +33,11 @@ export default function VendorWallet() {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "2rem" }}>
         <div>
           <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "#00A896", fontSize: "0.85rem", fontWeight: 700, textTransform: "uppercase" }}>
-            <Wallet size={16} /> Financial Control
+            <Wallet size={16} /> Direct Sales & Financial Ledger
           </div>
-          <h1 style={{ fontSize: "2.2rem", color: "#0F172A", marginBottom: "0.2rem" }}>Wallet & Platform Ledger</h1>
+          <h1 style={{ fontSize: "2.2rem", color: "#0F172A", marginBottom: "0.2rem" }}>Store Settlement & Ledger</h1>
           <p style={{ color: "#64748B", fontSize: "0.95rem" }}>
-            Pre-paid wallet credit balance, completed order commission deductions, and monthly billing invoices.
+            Direct customer WhatsApp transactions, 0% platform commission policy, and financial audit reports.
           </p>
         </div>
 
@@ -55,13 +45,10 @@ export default function VendorWallet() {
           <button onClick={handleExportCsv} className="btn-outline" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
             <Download size={16} /> Export Statement (.CSV)
           </button>
-          <button onClick={() => setIsTopupOpen(true)} className="btn-gold">
-            <PlusCircle size={16} /> Top-Up Wallet Balance
-          </button>
         </div>
       </div>
 
-      {/* Wallet Card */}
+      {/* 0% Commission & No Credit Required Card */}
       <div
         style={{
           background: "linear-gradient(135deg, #0F172A 0%, #0F4C81 100%)",
@@ -78,33 +65,37 @@ export default function VendorWallet() {
         }}
       >
         <div>
-          <div style={{ fontSize: "0.82rem", color: "#CBD5E1", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.4rem" }}>
-            Current Wallet Credit Balance
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", background: "rgba(16, 185, 129, 0.2)", border: "1px solid rgba(16, 185, 129, 0.4)", padding: "0.25rem 0.75rem", borderRadius: "999px", color: "#34D399", fontSize: "0.8rem", fontWeight: 800, textTransform: "uppercase", marginBottom: "0.75rem" }}>
+            <CheckCircle2 size={14} /> 0% Platform Commission
           </div>
-          <div style={{ fontSize: "2.8rem", fontWeight: 900, color: isSuspended ? "#FF6B6B" : "#F59E0B" }}>
-            ${activeVendor.wallet_balance.toFixed(2)} KYD
+          <div style={{ fontSize: "2.8rem", fontWeight: 900, color: "#F59E0B", lineHeight: 1.1 }}>
+            100% Direct Sales
           </div>
-          <div style={{ fontSize: "0.85rem", color: "#CBD5E1", marginTop: "0.4rem" }}>
-            Platform Commission Rate: <strong>{(activeVendor.commission_rate * 100).toFixed(0)}%</strong> per completed sale
+          <div style={{ fontSize: "0.9rem", color: "#CBD5E1", marginTop: "0.6rem" }}>
+            Store Credit Policy: <strong style={{ color: "#34D399" }}>Waived</strong> (No wallet pre-payment or deposit required)
           </div>
         </div>
 
-        <div style={{ background: "rgba(255,255,255,0.1)", backdropFilter: "blur(8px)", padding: "1.25rem", borderRadius: "16px", border: "1px solid rgba(255,255,255,0.15)", maxWidth: "340px" }}>
-          <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#FFFFFF", marginBottom: "0.3rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-            <AlertCircle size={16} color="#F59E0B" /> Wallet Auto-Hide Policy Rule
+        <div style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(8px)", padding: "1.25rem 1.5rem", borderRadius: "16px", border: "1px solid rgba(255,255,255,0.15)", maxWidth: "380px" }}>
+          <div style={{ fontSize: "0.9rem", fontWeight: 800, color: "#FFFFFF", marginBottom: "0.4rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+            <Sparkles size={16} color="#F59E0B" /> Direct Merchant Payment Policy
           </div>
-          <p style={{ fontSize: "0.78rem", color: "#CBD5E1", lineHeight: 1.45 }}>
-            Because customers pay cash offline, commission is automatically deducted from your wallet balance upon order completion. If wallet balance falls to $0 or lower, store products are auto-hidden.
+          <p style={{ fontSize: "0.82rem", color: "#E2E8F0", lineHeight: 1.5, margin: 0 }}>
+            Cayman Bazaar operates with <strong>0% take-rate commissions</strong> and <strong>no credit deduction fees</strong>. Customers place orders directly via WhatsApp and pay your store via Cash-on-Delivery, in-store pickup, or direct bank transfer.
           </p>
         </div>
       </div>
 
       {/* Wallet Ledger Table */}
       <div style={{ background: "#FFFFFF", borderRadius: "20px", border: "1.5px solid #E2E8F0", boxShadow: "var(--shadow-sm)", padding: "1.5rem" }}>
-        <h3 style={{ fontSize: "1.2rem", color: "#0F172A", marginBottom: "1.25rem" }}>Wallet Transaction History</h3>
+        <h3 style={{ fontSize: "1.2rem", color: "#0F172A", marginBottom: "1.25rem" }}>Financial Transaction History</h3>
 
         {vendorLedger.length === 0 ? (
-          <div style={{ padding: "2rem", textAlign: "center", color: "#94A3B8" }}>No ledger transactions recorded yet.</div>
+          <div style={{ padding: "3rem 1.5rem", textAlign: "center", color: "#94A3B8" }}>
+            <Wallet size={36} style={{ margin: "0 auto 0.75rem", opacity: 0.5 }} />
+            <div style={{ fontWeight: 700, color: "#475569", fontSize: "1rem" }}>No fee transactions or commission deductions</div>
+            <div style={{ fontSize: "0.85rem", marginTop: "0.25rem" }}>All customer orders are paid directly to your store with 100% revenue retention.</div>
+          </div>
         ) : (
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.88rem", textAlign: "left" }}>
             <thead>
@@ -125,9 +116,9 @@ export default function VendorWallet() {
                     <td style={{ padding: "0.85rem 1rem", color: "#64748B" }}>{new Date(tx.created_at).toLocaleDateString()}</td>
                     <td style={{ padding: "0.85rem 1rem" }}>
                       {isDeposit ? (
-                        <span className="badge badge-stock"><ArrowUpRight size={12} /> Deposit</span>
+                        <span className="badge badge-stock"><ArrowUpRight size={12} /> Revenue</span>
                       ) : (
-                        <span className="badge badge-out-stock"><ArrowDownRight size={12} /> Commission</span>
+                        <span className="badge badge-out-stock"><ArrowDownRight size={12} /> Direct Settlement</span>
                       )}
                     </td>
                     <td style={{ padding: "0.85rem 1rem", color: "#334155" }}>{tx.description}</td>
@@ -142,57 +133,9 @@ export default function VendorWallet() {
         )}
       </div>
 
-      {/* Top-Up Modal */}
-      {isTopupOpen && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(15,23,42,0.6)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
-          <div className="animate-fade-in" style={{ background: "#FFFFFF", borderRadius: "20px", maxWidth: "420px", width: "100%", padding: "2rem", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)" }}>
-            <h3 style={{ fontSize: "1.3rem", color: "#0F172A", marginBottom: "0.5rem" }}>Top-Up Vendor Wallet Credit</h3>
-            <p style={{ fontSize: "0.85rem", color: "#64748B", marginBottom: "1.5rem" }}>
-              Add credit to maintain active product listings and pay platform commissions.
-            </p>
-
-            <form onSubmit={handleTopupSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.2rem" }}>
-              <div>
-                <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.4rem", display: "block" }}>Select Preset Credit Amount ($KYD)</label>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.5rem", marginBottom: "1rem" }}>
-                  {[50, 100, 250].map((amt) => (
-                    <button
-                      key={amt}
-                      type="button"
-                      onClick={() => setTopupAmount(amt)}
-                      style={{
-                        background: topupAmount === amt ? "#00A896" : "#F8FAFC",
-                        color: topupAmount === amt ? "#FFFFFF" : "#0F172A",
-                        border: topupAmount === amt ? "1.5px solid #00A896" : "1.5px solid #CBD5E1",
-                        padding: "0.6rem",
-                        borderRadius: "10px",
-                        fontWeight: 700,
-                        fontSize: "0.9rem"
-                      }}
-                    >
-                      ${amt} KYD
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.3rem", display: "block" }}>Custom Top-Up Amount</label>
-                <input type="number" required value={topupAmount} onChange={(e) => setTopupAmount(Number(e.target.value))} />
-              </div>
-
-              <div style={{ display: "flex", gap: "0.6rem", marginTop: "0.5rem" }}>
-                <button type="button" onClick={() => setIsTopupOpen(false)} className="btn-outline" style={{ flex: 1 }}>
-                  Cancel
-                </button>
-                <button type="submit" className="btn-gold" style={{ flex: 1 }}>
-                  Confirm Deposit
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+    </div>
+  );
+}
 
     </div>
   );

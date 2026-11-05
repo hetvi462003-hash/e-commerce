@@ -35,7 +35,7 @@ export default function AdminWalletLedger() {
           </div>
           <h1 style={{ fontSize: "2.2rem", color: "#0F172A", marginBottom: "0.2rem" }}>Global Platform Wallet Ledger</h1>
           <p style={{ color: "#64748B", fontSize: "0.95rem" }}>
-            Complete audit trail of merchant top-up deposits and platform order commission deductions.
+            Complete audit trail of merchant revenue transactions, direct WhatsApp settlements, and platform statements.
           </p>
         </div>
 
@@ -75,7 +75,7 @@ export default function AdminWalletLedger() {
                     {isDeposit ? (
                       <span className="badge badge-stock"><ArrowUpRight size={12} /> Deposit</span>
                     ) : (
-                      <span className="badge badge-out-stock"><ArrowDownRight size={12} /> Commission</span>
+                      <span className="badge badge-stock"><ArrowDownRight size={12} /> Direct Settlement</span>
                     )}
                   </td>
                   <td style={{ padding: "1rem", color: "#334155" }}>{tx.description}</td>

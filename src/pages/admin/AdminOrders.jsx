@@ -198,9 +198,9 @@ export default function AdminOrders() {
               <div style={{ fontSize: "0.74rem", color: "#94A3B8", fontWeight: 700, textTransform: "uppercase" }}>Total Gross Volume</div>
               <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#FFFFFF" }}>${totalGrossVolume.toFixed(2)} KYD</div>
             </div>
-            <div style={{ background: "rgba(245, 158, 11, 0.12)", border: "1px solid rgba(245, 158, 11, 0.35)", padding: "0.75rem 1.25rem", borderRadius: "14px", textAlign: "right" }}>
-              <div style={{ fontSize: "0.74rem", color: "#FDE68A", fontWeight: 700, textTransform: "uppercase" }}>10% Platform Take</div>
-              <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#FBBF24" }}>+${totalCommissions.toFixed(2)} KYD</div>
+            <div style={{ background: "rgba(16, 185, 129, 0.12)", border: "1px solid rgba(16, 185, 129, 0.35)", padding: "0.75rem 1.25rem", borderRadius: "14px", textAlign: "right" }}>
+              <div style={{ fontSize: "0.74rem", color: "#A7F3D0", fontWeight: 700, textTransform: "uppercase" }}>Commission Model</div>
+              <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#34D399" }}>0% Direct Sales</div>
             </div>
           </div>
         </div>
@@ -258,16 +258,16 @@ export default function AdminOrders() {
           <div style={{ fontSize: "0.76rem", color: "#15803D", marginTop: "0.4rem" }}>Delivered or picked up successfully</div>
         </div>
 
-        {/* Card 4: 10% Platform Revenue */}
+        {/* Card 4: 0% Platform Commission */}
         <div style={{ background: "#FFFFFF", borderRadius: "16px", border: "1.5px solid #E2E8F0", padding: "1.35rem 1.25rem", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem" }}>
-            <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.04em" }}>10% Platform Revenue</span>
-            <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "#FEF3C7", color: "#D97706", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <DollarSign size={18} />
+            <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.04em" }}>Platform Commission</span>
+            <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "#ECFDF5", color: "#059669", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <CheckCircle2 size={18} />
             </div>
           </div>
-          <div style={{ fontSize: "1.85rem", fontWeight: 900, color: "#0F172A", lineHeight: 1 }}>${totalCommissions.toFixed(2)}</div>
-          <div style={{ fontSize: "0.76rem", color: "#64748B", marginTop: "0.4rem" }}>Automated 10% Flat Take-Rate</div>
+          <div style={{ fontSize: "1.85rem", fontWeight: 900, color: "#059669", lineHeight: 1 }}>0% Flat</div>
+          <div style={{ fontSize: "0.76rem", color: "#64748B", marginTop: "0.4rem" }}>100% Direct Store Revenue</div>
         </div>
       </div>
 
@@ -642,7 +642,7 @@ export default function AdminOrders() {
                           </div>
                           <div style={{ marginTop: "3px" }}>
                             <span style={{ fontSize: "0.72rem", background: "#DCFCE7", color: "#15803D", padding: "0.15rem 0.45rem", borderRadius: "5px", fontWeight: 800, display: "inline-block" }}>
-                              +${orderCommission.toFixed(2)} KYD (10%)
+                              0% Commission (Direct Sale)
                             </span>
                           </div>
                           <div style={{ fontSize: "0.72rem", color: "#64748B", marginTop: "3px" }}>

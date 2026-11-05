@@ -68,6 +68,34 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
 
+  // 📲 Compulsory WhatsApp OTP Verification States for Vendor Self-Registration
+  const [otpSent, setOtpSent] = useState(false);
+  const [generatedOtp, setGeneratedOtp] = useState("");
+  const [enteredOtp, setEnteredOtp] = useState("");
+  const [isPhoneVerified, setIsPhoneVerified] = useState(false);
+
+  const handleSendOtp = () => {
+    const cleanDigits = regPhone.replace(/\D/g, "");
+    if (!cleanDigits || cleanDigits.length < 7) {
+      showToast("Please enter a valid WhatsApp phone number (minimum 7 digits).", "warning");
+      return;
+    }
+    const code = Math.floor(1000 + Math.random() * 9000).toString();
+    setGeneratedOtp(code);
+    setOtpSent(true);
+    setEnteredOtp("");
+    showToast(`📲 WhatsApp OTP: ${code} (Sent to ${regPhone})`, "info");
+  };
+
+  const handleVerifyOtp = () => {
+    if (enteredOtp.trim() === generatedOtp) {
+      setIsPhoneVerified(true);
+      showToast("✓ WhatsApp Number Verified Successfully!", "success");
+    } else {
+      showToast("Invalid OTP code. Please enter the correct 4-digit code.", "warning");
+    }
+  };
+
   if (!isOpen) return null;
 
   // Existing Merchant / Shopper / Admin Login
@@ -153,15 +181,23 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
       return;
     }
 
+    if (!isPhoneVerified) {
+      showToast("Compulsory: Please verify your Store WhatsApp Number with OTP before registering.", "warning");
+      return;
+    }
+
     const newVendor = registerVendor({
       store_name: regStoreName.trim(),
       owner_name: regOwnerName.trim() || "Artisan Merchant",
       district: regDistrict,
       address: regAddress.trim() || `${regDistrict}, Grand Cayman`,
       specialty: regSpecialty.trim() || "Local Island Crafts & Goods",
-      phone: regPhone.trim() || "+1 (345) 949-0000",
+      phone: regPhone.trim(),
+      whatsapp_number: regPhone.trim(),
+      whatsapp_verified: true,
       email: regEmail.trim() || `${regStoreName.toLowerCase().replace(/[^a-z0-9]/g, "")}@caymanbazaar.ky`,
-      password: regPassword.trim() || "merchant123"
+      password: regPassword.trim() || "merchant123",
+      product_limit: 15
     });
 
     setUserRole("vendor");
@@ -461,51 +497,143 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
               />
             </div>
 
-            {/* Phone & Business Email */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.85rem", marginBottom: "1.25rem" }}>
-              <div>
-                <label style={{ display: "block", fontSize: "0.78rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 700 }}>
-                  Business Phone (SMS/WhatsApp) *
+            {/* Dedicated Store WhatsApp Number & Verification (Compulsory) */}
+            <div style={{ marginBottom: "1rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.35rem" }}>
+                <label style={{ fontSize: "0.78rem", color: "#CBD5E1", fontWeight: 700 }}>
+                  Store Dedicated WhatsApp Number * (Direct Orders)
                 </label>
+                {isPhoneVerified && (
+                  <span style={{ fontSize: "0.72rem", color: "#10B981", fontWeight: 800, display: "flex", alignItems: "center", gap: "0.25rem" }}>
+                    <CheckCircle2 size={13} /> WhatsApp Verified
+                  </span>
+                )}
+              </div>
+
+              <div style={{ display: "flex", gap: "0.5rem" }}>
                 <input
                   type="text"
                   required
-                  placeholder="+1 (345) 949-XXXX"
+                  placeholder="+1 (345) 949-XXXX or 919876543210"
                   value={regPhone}
-                  onChange={(e) => setRegPhone(e.target.value)}
+                  onChange={(e) => {
+                    setRegPhone(e.target.value);
+                    if (isPhoneVerified) setIsPhoneVerified(false);
+                  }}
                   style={{
-                    width: "100%",
-                    background: "#050B14",
-                    border: "1px solid rgba(255, 255, 255, 0.15)",
+                    flex: 1,
+                    background: isPhoneVerified ? "rgba(16, 185, 129, 0.1)" : "#050B14",
+                    border: isPhoneVerified ? "1.5px solid #10B981" : "1px solid rgba(255, 255, 255, 0.15)",
                     color: "#FFFFFF",
                     padding: "0.65rem 0.85rem",
                     borderRadius: "10px",
                     fontSize: "0.85rem"
                   }}
                 />
+
+                {!isPhoneVerified && (
+                  <button
+                    type="button"
+                    onClick={handleSendOtp}
+                    style={{
+                      background: "#00E5C9",
+                      color: "#051424",
+                      border: "none",
+                      borderRadius: "10px",
+                      padding: "0.65rem 0.95rem",
+                      fontSize: "0.78rem",
+                      fontWeight: 800,
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.35rem"
+                    }}
+                  >
+                    <span>{otpSent ? "Resend OTP" : "Verify WhatsApp"}</span>
+                  </button>
+                )}
               </div>
 
-              <div>
-                <label style={{ display: "block", fontSize: "0.78rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 700 }}>
-                  Merchant Email *
-                </label>
-                <input
-                  type="email"
-                  required
-                  placeholder="owner@islandcrafts.ky"
-                  value={regEmail}
-                  onChange={(e) => setRegEmail(e.target.value)}
-                  style={{
-                    width: "100%",
-                    background: "#050B14",
-                    border: "1px solid rgba(255, 255, 255, 0.15)",
-                    color: "#FFFFFF",
-                    padding: "0.65rem 0.85rem",
-                    borderRadius: "10px",
-                    fontSize: "0.85rem"
-                  }}
-                />
-              </div>
+              {/* OTP Input Card when OTP is Sent */}
+              {otpSent && !isPhoneVerified && (
+                <div style={{
+                  marginTop: "0.65rem",
+                  background: "rgba(0, 229, 201, 0.08)",
+                  border: "1px solid rgba(0, 229, 201, 0.25)",
+                  borderRadius: "10px",
+                  padding: "0.75rem 0.85rem"
+                }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.4rem" }}>
+                    <span style={{ fontSize: "0.74rem", color: "#94A3B8" }}>
+                      📲 Enter 4-digit code sent to WhatsApp:
+                    </span>
+                    <span style={{ fontSize: "0.74rem", color: "#00E5C9", fontWeight: 800, background: "rgba(0, 229, 201, 0.15)", padding: "0.1rem 0.45rem", borderRadius: "4px" }}>
+                      Code: {generatedOtp}
+                    </span>
+                  </div>
+                  <div style={{ display: "flex", gap: "0.5rem" }}>
+                    <input
+                      type="text"
+                      maxLength={4}
+                      placeholder="e.g. 4829"
+                      value={enteredOtp}
+                      onChange={(e) => setEnteredOtp(e.target.value.replace(/\D/g, ""))}
+                      style={{
+                        flex: 1,
+                        background: "#050B14",
+                        border: "1px solid rgba(255, 255, 255, 0.2)",
+                        color: "#FFFFFF",
+                        padding: "0.5rem 0.75rem",
+                        borderRadius: "8px",
+                        fontSize: "0.95rem",
+                        letterSpacing: "0.2em",
+                        fontWeight: 800,
+                        textAlign: "center"
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={handleVerifyOtp}
+                      style={{
+                        background: "#10B981",
+                        color: "#FFFFFF",
+                        border: "none",
+                        borderRadius: "8px",
+                        padding: "0.5rem 1rem",
+                        fontSize: "0.8rem",
+                        fontWeight: 800,
+                        cursor: "pointer"
+                      }}
+                    >
+                      Verify Code
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Merchant Business Email */}
+            <div style={{ marginBottom: "1rem" }}>
+              <label style={{ display: "block", fontSize: "0.78rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 700 }}>
+                Merchant Account Email *
+              </label>
+              <input
+                type="email"
+                required
+                placeholder="owner@islandcrafts.ky"
+                value={regEmail}
+                onChange={(e) => setRegEmail(e.target.value)}
+                style={{
+                  width: "100%",
+                  background: "#050B14",
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
+                  color: "#FFFFFF",
+                  padding: "0.65rem 0.85rem",
+                  borderRadius: "10px",
+                  fontSize: "0.85rem"
+                }}
+              />
             </div>
 
             {/* Set Merchant Account Password */}
@@ -543,10 +671,12 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: "0.5rem"
+                gap: "0.5rem",
+                opacity: isPhoneVerified ? 1 : 0.65,
+                cursor: isPhoneVerified ? "pointer" : "pointer"
               }}
             >
-              <span>Register Stall & Open Storefront</span>
+              <span>{isPhoneVerified ? "Register Stall & Open Storefront" : "Verify WhatsApp to Complete Registration"}</span>
               <ArrowRight size={18} />
             </button>
 

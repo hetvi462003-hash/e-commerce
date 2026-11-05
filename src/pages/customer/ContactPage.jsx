@@ -116,7 +116,7 @@ export default function ContactPage({ setActiveTab }) {
             </div>
             <h4 style={{ fontSize: "1.15rem", marginBottom: "0.6rem" }}>Check our Pickup & COD FAQ</h4>
             <p style={{ color: "#94A3B8", fontSize: "0.88rem", lineHeight: 1.5, marginBottom: "1.25rem" }}>
-              Find complete guidelines on convenient store pickup, direct WhatsApp ordering, island delivery schedules, and vendor commission rules.
+              Find complete guidelines on convenient store pickup, direct WhatsApp ordering, island delivery schedules, and store onboarding.
             </p>
             <button
               onClick={() => setActiveTab && setActiveTab("faq")}
@@ -210,7 +210,7 @@ export default function ContactPage({ setActiveTab }) {
                     <option value="order_pickup">WhatsApp Order & Store Pickup</option>
                     <option value="cod_delivery">Island Courier Delivery</option>
                     <option value="vendor_onboarding">Register as Cayman Store Vendor</option>
-                    <option value="vendor_invoicing">Vendor Commissions & Invoicing</option>
+                    <option value="vendor_invoicing">Vendor Onboarding & Tier Inquiries</option>
                     <option value="general">General Support / Feedback</option>
                   </select>
                 </div>

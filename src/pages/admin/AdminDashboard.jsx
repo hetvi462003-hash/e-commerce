@@ -202,7 +202,7 @@ export default function AdminDashboard({ setActiveTab }) {
             </div>
           </div>
 
-          {/* Card 2: Platform Commission Earned */}
+          {/* Card 2: 0% Platform Commission Policy */}
           <div
             style={{
               background: "#FFFFFF",
@@ -213,18 +213,18 @@ export default function AdminDashboard({ setActiveTab }) {
             }}
           >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
-              <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "#B45309", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                10% Take-Rate Revenue
+              <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "#059669", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                Commission Policy
               </span>
-              <div style={{ background: "#FFFBEB", color: "#D97706", width: "42px", height: "42px", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid #FEF3C7" }}>
-                <DollarSign size={22} />
+              <div style={{ background: "#ECFDF5", color: "#059669", width: "42px", height: "42px", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid #A7F3D0" }}>
+                <CheckCircle2 size={22} />
               </div>
             </div>
-            <div style={{ fontSize: "2.2rem", fontWeight: 900, color: "#B45309", letterSpacing: "-0.02em" }}>
-              {formatPrice(totalCommissionsEarned)}
+            <div style={{ fontSize: "2.2rem", fontWeight: 900, color: "#059669", letterSpacing: "-0.02em" }}>
+              0% Take-Rate
             </div>
             <div style={{ marginTop: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.78rem", color: "#64748B" }}>
-              <span>Platform take-rate earned from fulfilled customer orders</span>
+              <span>100% of order revenue is received directly by vendors</span>
             </div>
           </div>
 
@@ -502,7 +502,7 @@ export default function AdminDashboard({ setActiveTab }) {
                   <th style={{ padding: "0.85rem 1rem" }}>Store</th>
                   <th style={{ padding: "0.85rem 1rem" }}>Customer</th>
                   <th style={{ padding: "0.85rem 1rem" }}>Total</th>
-                  <th style={{ padding: "0.85rem 1rem" }}>Platform 10%</th>
+                  <th style={{ padding: "0.85rem 1rem" }}>Commission</th>
                   <th style={{ padding: "0.85rem 1rem", textAlign: "right" }}>Status</th>
                 </tr>
               </thead>
@@ -526,7 +526,7 @@ export default function AdminDashboard({ setActiveTab }) {
                     <td style={{ padding: "0.85rem 1rem", color: "#334155", fontWeight: 600 }}>{o.vendor_name}</td>
                     <td style={{ padding: "0.85rem 1rem", color: "#64748B" }}>{o.customer_name}</td>
                     <td style={{ padding: "0.85rem 1rem", fontWeight: 800, color: "#0F172A" }}>${(o.total_amount || 0).toFixed(2)} KYD</td>
-                    <td style={{ padding: "0.85rem 1rem", color: "#15803D", fontWeight: 700 }}>+${(o.commission_amount || (o.total_amount * 0.1) || 0).toFixed(2)} KYD</td>
+                    <td style={{ padding: "0.85rem 1rem", color: "#059669", fontWeight: 700 }}>$0.00 (0%)</td>
                     <td style={{ padding: "0.85rem 1rem", textAlign: "right" }}>
                       <span style={{
                         background: o.status === "Completed" ? "#DCFCE7" : "#FEF3C7",

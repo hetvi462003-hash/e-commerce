@@ -426,8 +426,8 @@ export const MarketplaceProvider = ({ children }) => {
       const subOrderId = Object.keys(vendorGrouped).length > 1 ? `${orderId}-${idx + 1}` : orderId;
 
       const subTotal = itemsList.reduce((acc, curr) => acc + curr.product.price * curr.qty, 0);
-      const commRate = vendorObj?.commission_rate || 0.10;
-      const commissionAmount = Number((subTotal * commRate).toFixed(2));
+      const commRate = 0.00; // 0% Marketplace Commission as requested
+      const commissionAmount = 0.00;
 
       const formattedItems = itemsList.map((ci) => ({
         product_id: ci.product.id,
@@ -684,12 +684,14 @@ export const MarketplaceProvider = ({ children }) => {
       rating: 5.0,
       review_count: 0,
       verified: false,
+      whatsapp_verified: Boolean(newVendorData.whatsapp_verified),
+      product_limit: Number(newVendorData.product_limit) || 20,
       bio: newVendorData.bio || "Locally crafted Caribbean goods and island souvenirs.",
       specialty: newVendorData.specialty || "Artisanal Island Crafts",
       photo: newVendorData.photo || "/cayman_stall_artisan.jpg",
       logo: newVendorData.logo || "https://images.unsplash.com/photo-1541643600914-78b084683601?w=150&auto=format&fit=crop&q=80",
-      wallet_balance: 100.0,
-      commission_rate: 0.10,
+      wallet_balance: 0.0,
+      commission_rate: 0.00,
       status: "pending_approval",
       operating_hours: newVendorData.operating_hours || "Mon - Sat (9:00 AM - 6:00 PM)",
       accepts_pickup: true,
@@ -1009,6 +1011,39 @@ export const MarketplaceProvider = ({ children }) => {
     showToast("Dispute resolved: Review kept active.", "success");
   };
 
+  // Admin: Update / Edit Customer Review
+  const adminUpdateReview = (reviewId, updatedData) => {
+    setReviews((prev) =>
+      prev.map((r) => {
+        if (r.id === reviewId) {
+          return {
+            ...r,
+            ...updatedData
+          };
+        }
+        return r;
+      })
+    );
+    showToast("Review updated successfully by Admin.", "success");
+  };
+
+  // Bulk Product Import for Vendors
+  const saveBulkProducts = (productsList) => {
+    if (!productsList || !productsList.length) return 0;
+    const newProds = productsList.map((p, idx) => ({
+      ...p,
+      id: p.id || `p-${Date.now()}-${idx}`,
+      price_usd: Number(((Number(p.price) || 0) * KYD_TO_USD_RATE).toFixed(2)),
+      price: Number(p.price) || 0,
+      stock_count: Number(p.stock_count) || 1,
+      status: (Number(p.stock_count) || 1) > 0 ? "active" : "out-of-stock",
+      created_at: new Date().toISOString()
+    }));
+    setProducts((prev) => [...newProds, ...prev]);
+    showToast(`Successfully bulk imported ${newProds.length} products!`, "success");
+    return newProds.length;
+  };
+
   // Toggle Vendor Verified Status (Admin)
   const toggleVendorVerification = async (vId) => {
     let nextVerified = true;
@@ -1077,6 +1112,8 @@ export const MarketplaceProvider = ({ children }) => {
         vendorReportReview,
         adminDeleteReview,
         adminDismissFlag,
+        adminUpdateReview,
+        saveBulkProducts,
         toast,
         showToast,
         isAuthModalOpen,

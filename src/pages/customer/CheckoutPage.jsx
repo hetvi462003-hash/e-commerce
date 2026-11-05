@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMarketplace } from "../../context/MarketplaceContext";
 import {
   ShoppingBag,
@@ -16,7 +16,8 @@ import {
   ExternalLink,
   ShieldCheck,
   Clock,
-  ArrowLeft
+  ArrowLeft,
+  Lock
 } from "lucide-react";
 
 export default function CheckoutPage({ setActiveTab }) {
@@ -28,6 +29,9 @@ export default function CheckoutPage({ setActiveTab }) {
     showToast,
     customerPhoneSession,
     customerProfile,
+    isCustomerLoggedIn,
+    customerDisplayName,
+    openAuthModal,
     CENTRAL_MARKETPLACE_PHONE_DISPLAY
   } = useMarketplace();
 
@@ -59,6 +63,27 @@ export default function CheckoutPage({ setActiveTab }) {
       setCustomerPhone(`${trimmed.slice(0, 3)}-${trimmed.slice(3)}`);
     }
   };
+
+  // Pre-fill registered customer details
+  useEffect(() => {
+    if (isCustomerLoggedIn) {
+      if (!customerName && (customerProfile?.name || (customerDisplayName && customerDisplayName !== "Shopper"))) {
+        setCustomerName(customerProfile?.name || customerDisplayName);
+      }
+      if (!customerPhone) {
+        const rawNum = customerProfile?.phone || customerPhoneSession || "";
+        const cleanDigits = rawNum.replace(/\D/g, "").slice(-7);
+        if (cleanDigits.length === 7) {
+          setCustomerPhone(`${cleanDigits.slice(0, 3)}-${cleanDigits.slice(3)}`);
+        } else if (cleanDigits) {
+          setCustomerPhone(cleanDigits);
+        }
+      }
+      if (!customerEmail && customerProfile?.email) {
+        setCustomerEmail(customerProfile.email);
+      }
+    }
+  }, [isCustomerLoggedIn, customerProfile, customerDisplayName, customerPhoneSession]);
 
   if (cart.length === 0 && !confirmedOrder) {
     return (
@@ -103,6 +128,12 @@ export default function CheckoutPage({ setActiveTab }) {
 
   const handleSubmitOrder = (e) => {
     e.preventDefault();
+
+    if (!isCustomerLoggedIn) {
+      showToast("Mandatory Registration: Please sign in or register to complete your order.", "warning");
+      if (openAuthModal) openAuthModal("customer");
+      return;
+    }
 
     if (!customerName.trim()) {
       showToast("Please enter your full name.", "warning");
@@ -444,9 +475,83 @@ export default function CheckoutPage({ setActiveTab }) {
 
             {/* 2. Customer Contact & Address */}
             <form onSubmit={handleSubmitOrder} style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "16px", padding: "1.75rem", marginBottom: "1.5rem", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.03)" }}>
-              <h2 style={{ fontSize: "1.1rem", fontWeight: 800, color: "#0F172A", marginBottom: "1.25rem" }}>
-                2. Contact & Delivery Address
-              </h2>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem", flexWrap: "wrap", gap: "0.75rem" }}>
+                <h2 style={{ fontSize: "1.1rem", fontWeight: 800, color: "#0F172A", margin: 0 }}>
+                  2. Contact & Delivery Address
+                </h2>
+                {!isCustomerLoggedIn && (
+                  <span style={{ fontSize: "0.76rem", fontWeight: 800, color: "#DC2626", background: "#FEF2F2", border: "1px solid #FECACA", padding: "0.25rem 0.65rem", borderRadius: "999px" }}>
+                    🔒 Mandatory Registration Required
+                  </span>
+                )}
+              </div>
+
+              {/* Mandatory Registration Banner for Guest Shoppers */}
+              {!isCustomerLoggedIn ? (
+                <div style={{
+                  background: "#FFFBEB",
+                  border: "1.5px solid #FCD34D",
+                  borderRadius: "12px",
+                  padding: "1rem 1.25rem",
+                  marginBottom: "1.25rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "1rem",
+                  flexWrap: "wrap"
+                }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                    <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "#FEF3C7", display: "flex", alignItems: "center", justifyContent: "center", color: "#D97706", flexShrink: 0 }}>
+                      <Lock size={18} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: "0.88rem", fontWeight: 800, color: "#92400E" }}>
+                        Sign In or Register to Checkout
+                      </div>
+                      <div style={{ fontSize: "0.78rem", color: "#B45309" }}>
+                        Account registration is required before your WhatsApp order can be confirmed.
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => openAuthModal && openAuthModal("customer")}
+                    style={{
+                      background: "#0F172A",
+                      color: "#FFFFFF",
+                      border: "none",
+                      borderRadius: "999px",
+                      padding: "0.55rem 1.15rem",
+                      fontSize: "0.82rem",
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "0.4rem"
+                    }}
+                  >
+                    <User size={14} />
+                    <span>Sign In / Register</span>
+                  </button>
+                </div>
+              ) : (
+                <div style={{
+                  background: "#F0FDF4",
+                  border: "1.5px solid #BBF7D0",
+                  borderRadius: "12px",
+                  padding: "0.65rem 1rem",
+                  marginBottom: "1.25rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.6rem"
+                }}>
+                  <CheckCircle2 size={17} color="#16A34A" />
+                  <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "#166534" }}>
+                    Logged In As: <strong>{customerDisplayName}</strong> ({customerPhoneSession || customerProfile?.phone || "Registered Shopper"})
+                  </span>
+                </div>
+              )}
 
               <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem" }}>
                 
@@ -720,7 +825,7 @@ export default function CheckoutPage({ setActiveTab }) {
                 }}
               >
                 <MessageSquare size={19} />
-                <span>COMPLETE ORDER VIA WHATSAPP</span>
+                <span>{isCustomerLoggedIn ? "COMPLETE ORDER VIA WHATSAPP" : "SIGN IN & COMPLETE ORDER VIA WHATSAPP"}</span>
                 <ArrowRight size={17} />
               </button>
 
