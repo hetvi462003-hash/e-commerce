@@ -291,7 +291,7 @@ export default function VendorProducts() {
 
   return (
     <div className="container" style={{ padding: "2.5rem 1.5rem", paddingBottom: "5rem" }}>
-      
+
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "1.5rem" }}>
         <div>
@@ -482,7 +482,7 @@ export default function VendorProducts() {
       {isBulkModalOpen && (
         <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(15,23,42,0.65)", backdropFilter: "blur(6px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
           <div className="animate-fade-in" style={{ background: "#FFFFFF", borderRadius: "24px", maxWidth: "680px", width: "100%", padding: "2rem", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)", position: "relative", maxHeight: "90vh", overflowY: "auto" }}>
-            
+
             <button onClick={() => setIsBulkModalOpen(false)} style={{ position: "absolute", top: "18px", right: "18px", background: "#F1F5F9", border: "none", borderRadius: "50%", width: "34px", height: "34px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
               <X size={18} color="#64748B" />
             </button>
@@ -662,7 +662,7 @@ export default function VendorProducts() {
       {isModalOpen && (
         <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(15,23,42,0.6)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
           <div className="animate-fade-in" style={{ background: "#FFFFFF", borderRadius: "20px", maxWidth: "560px", width: "100%", padding: "2rem", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)", position: "relative", maxHeight: "90vh", overflowY: "auto" }}>
-            
+
             <button onClick={() => setIsModalOpen(false)} style={{ position: "absolute", top: "16px", right: "16px", background: "#F1F5F9", border: "none", borderRadius: "50%", width: "32px", height: "32px", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <X size={18} color="#64748B" />
             </button>
@@ -672,7 +672,7 @@ export default function VendorProducts() {
             </h3>
 
             <form onSubmit={handleFormSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              
+
               <div>
                 <label style={{ fontSize: "0.82rem", fontWeight: 700, color: "#475569", marginBottom: "0.2rem", display: "block" }}>Product Title *</label>
                 <input type="text" required value={title} onChange={(e) => setTitle(e.target.value)} />

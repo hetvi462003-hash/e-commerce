@@ -60,7 +60,7 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
 
   return (
     <div style={{ background: "#FFFFFF", minHeight: "100vh", paddingBottom: "2.5rem" }}>
-      
+
       {/* 🌴 01. EE345-STYLE PROMOTIONAL HERO BANNER (Clean, Light & Vibrant) */}
       <section style={{ paddingTop: "1.25rem", marginBottom: "2rem" }}>
         <div className="container">
@@ -298,7 +298,7 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
       {/* 🛡️ 06. WHY SHOP WITH US (High-converting Trust Section) */}
       <section style={{ padding: "3.5rem 0", background: "#F8FAFC", borderTop: "1px solid #E2E8F0", borderBottom: "1px solid #E2E8F0", marginBottom: "3rem" }}>
         <div className="container">
-          
+
           {/* Section Header */}
           <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", marginBottom: "2.25rem" }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", fontSize: "0.78rem", fontWeight: 800, color: "#00A896", textTransform: "uppercase", letterSpacing: "0.08em" }}>
@@ -316,7 +316,7 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
 
           {/* 6 Balanced Feature Cards (3x2 Grid on desktop) */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.25rem", marginBottom: "2.5rem" }}>
-            
+
             {/* Card 1: Shop Local */}
             <div
               style={{

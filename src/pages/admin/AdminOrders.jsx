@@ -158,7 +158,7 @@ export default function AdminOrders() {
 
   return (
     <div className="container" style={{ padding: "2.5rem 1.5rem", paddingBottom: "5rem" }}>
-      
+
       {/* Printable Slip Modal */}
       {selectedPrintOrder && (
         <PrintReceiptModal
@@ -396,7 +396,7 @@ export default function AdminOrders() {
 
         {/* Dropdown Filters & Search */}
         <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
-          
+
           {/* Vendor Filter */}
           <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
             <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "#64748B" }}>Store:</span>
@@ -549,7 +549,7 @@ export default function AdminOrders() {
                         onMouseEnter={(e) => (e.currentTarget.style.background = "#F8FAFC")}
                         onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                       >
-                        
+
                         {/* 1. Order Ref & Valid Date */}
                         <td style={{ padding: "1.15rem 1.25rem", verticalAlign: "middle", whiteSpace: "nowrap" }}>
                           <span

@@ -39,9 +39,9 @@ export default function AdminReports() {
   const districtData = Object.values(districtMap).length > 0
     ? Object.values(districtMap)
     : [
-        { district: "Seven Mile Beach", sales: 0, orders: 0, comm: 0 },
-        { district: "Georgetown", sales: 0, orders: 0, comm: 0 }
-      ];
+      { district: "Seven Mile Beach", sales: 0, orders: 0, comm: 0 },
+      { district: "Georgetown", sales: 0, orders: 0, comm: 0 }
+    ];
 
   const handleExport = (type) => {
     if (type === "CSV") {
@@ -61,7 +61,7 @@ export default function AdminReports() {
 
   return (
     <div className="container" style={{ padding: "2.5rem 1.5rem", paddingBottom: "5rem" }}>
-      
+
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "2rem" }}>
         <div>
@@ -96,7 +96,7 @@ export default function AdminReports() {
 
       {/* Primary KPI Cards */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem", marginBottom: "2.5rem" }}>
-        
+
         <div style={{ background: "#FFFFFF", padding: "1.5rem", borderRadius: "20px", border: "1px solid #E2E8F0", boxShadow: "var(--shadow-sm)" }}>
           <div style={{ fontSize: "0.8rem", color: "#64748B", fontWeight: 600, textTransform: "uppercase" }}>Monthly Platform GMV</div>
           <div style={{ fontSize: "2rem", fontWeight: 900, color: "#0F172A", marginTop: "0.2rem" }}>
