@@ -41,7 +41,7 @@ export default function VendorAds() {
           </div>
           <h1 style={{ fontSize: "2.2rem", color: "#0F172A", marginBottom: "0.2rem" }}>Sponsored Ads Manager</h1>
           <p style={{ color: "#64748B", fontSize: "0.95rem" }}>
-            Promote your store on the CaymanBazaar home page carousel or feature products at top of search results.
+            Promote your store on the Cayman Marketplace home page carousel or feature products at top of search results.
           </p>
         </div>
 

@@ -60,7 +60,7 @@ export default function Footer({ setActiveTab }) {
               </li>
               <li>
                 <a
-                  href="https://wa.me/13459492299?text=Hello%20CaymanBazaar%2C%20I%20need%20assistance."
+                  href="https://wa.me/13459492299?text=Hello%20Cayman%20Marketplace%2C%20I%20need%20assistance."
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ color: "#94A3B8", textDecoration: "none" }}
@@ -84,7 +84,7 @@ export default function Footer({ setActiveTab }) {
                     }
                   }}
                 >
-                  🏪 Sell on CaymanBazaar
+                  🏪 Sell on Cayman Marketplace
                 </span>
               </li>
             </ul>
@@ -97,7 +97,7 @@ export default function Footer({ setActiveTab }) {
             </h4>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", fontSize: "0.88rem", color: "#94A3B8" }}>
               <a
-                href="https://wa.me/13459492299?text=Hello%20CaymanBazaar%2C%20I%20need%20assistance."
+                href="https://wa.me/13459492299?text=Hello%20Cayman%20Marketplace%2C%20I%20need%20assistance."
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ color: "#25D366", textDecoration: "none", display: "flex", alignItems: "center", gap: "0.4rem", fontWeight: 600 }}
@@ -108,7 +108,7 @@ export default function Footer({ setActiveTab }) {
                 <Phone size={15} color="#94A3B8" /> +1 (345) 949-2299
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                <Mail size={15} color="#94A3B8" /> support@caymanbazaar.ky
+                <Mail size={15} color="#94A3B8" /> support@caymanmarketplace.ky
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "#64748B" }}>
                 <Clock size={15} /> Mon - Sat: 9:00am - 7:00pm
@@ -122,7 +122,7 @@ export default function Footer({ setActiveTab }) {
               Follow Us
             </h4>
             <a
-              href="https://wa.me/13459492299?text=Hello%20CaymanBazaar%2C%20I%20would%20like%20to%20follow%20your%20updates!"
+              href="https://wa.me/13459492299?text=Hello%20Cayman%20Marketplace%2C%20I%20would%20like%20to%20follow%20your%20updates!"
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -162,7 +162,7 @@ export default function Footer({ setActiveTab }) {
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.65rem", fontSize: "0.88rem", color: "#94A3B8" }}>
               <li>
                 <span style={{ cursor: "pointer" }} onClick={() => setActiveTab("contact")}>
-                  About CaymanBazaar
+                  About Cayman Marketplace
                 </span>
               </li>
               <li>
@@ -197,7 +197,7 @@ export default function Footer({ setActiveTab }) {
 
         <div style={{ borderTop: "1px solid #1E293B", paddingTop: "1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", fontSize: "0.82rem", color: "#64748B" }}>
           <div>
-            © 2026 CaymanBazaar. All rights reserved. Grand Cayman, Cayman Islands.
+            © 2026 Cayman Marketplace. All rights reserved. Grand Cayman, Cayman Islands.
           </div>
 
           {/* Discreet Portals (For Merchants & SuperAdmin) */}

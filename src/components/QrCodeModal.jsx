@@ -267,7 +267,7 @@ export default function QrCodeModal({ order, onClose }) {
               </svg>
 
               <div style={{ fontSize: "0.74rem", color: "#64748B", fontWeight: 700, marginTop: "0.5rem" }}>
-                Scan at Stall Counter or Present 4-Digit PIN
+                Scan at Store Counter or Present 4-Digit PIN
               </div>
             </div>
 
@@ -285,7 +285,7 @@ export default function QrCodeModal({ order, onClose }) {
               <div style={{ display: "flex", gap: "0.6rem", color: "#1E293B", marginBottom: "0.5rem" }}>
                 <MapPin size={17} color="#00B49F" style={{ flexShrink: 0, marginTop: "2px" }} />
                 <span>
-                  <strong>Pickup Location:</strong> {order.pickup_location || "Physical Artisan Stall, Grand Cayman"}
+                  <strong>Pickup Location:</strong> {order.pickup_location || "Physical Artisan Store, Grand Cayman"}
                 </span>
               </div>
               <div style={{ display: "flex", gap: "0.6rem", color: "#B45309" }}>

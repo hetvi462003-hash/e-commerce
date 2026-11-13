@@ -79,7 +79,7 @@ export const formatWhatsAppOrderMessage = ({
     .map((item) => `• ${item.qty}x ${item.title} ($${Number(item.price * item.qty).toFixed(2)} KYD)`)
     .join("\n");
 
-  return `*New Order Request - Cayman Bazaar*
+  return `*New Order Request - Cayman Marketplace*
 Order Ref: #${orderId}
 Store: ${vendorName || "Cayman Island Marketplace"}
 
@@ -677,7 +677,7 @@ export const MarketplaceProvider = ({ children }) => {
       store_type: newVendorData.store_type || "Island Boutique",
       owner_name: newVendorData.owner_name || "Artisan Merchant",
       phone: newVendorData.phone || "+1 (345) 949-0000",
-      email: newVendorData.email || `${(newVendorData.store_name || "store").toLowerCase().replace(/[^a-z0-9]/g, "")}@caymanbazaar.ky`,
+      email: newVendorData.email || `${(newVendorData.store_name || "store").toLowerCase().replace(/[^a-z0-9]/g, "")}@caymanmarketplace.ky`,
       password: newVendorData.password || "merchant123",
       district: newVendorData.district || "Georgetown",
       address: newVendorData.address || `${newVendorData.district || "Georgetown"}, Grand Cayman`,
@@ -688,7 +688,7 @@ export const MarketplaceProvider = ({ children }) => {
       product_limit: Number(newVendorData.product_limit) || 20,
       bio: newVendorData.bio || "Locally crafted Caribbean goods and island souvenirs.",
       specialty: newVendorData.specialty || "Artisanal Island Crafts",
-      photo: newVendorData.photo || "/cayman_stall_artisan.jpg",
+      photo: newVendorData.photo || "/cayman_market_promenade.jpg",
       logo: newVendorData.logo || "https://images.unsplash.com/photo-1541643600914-78b084683601?w=150&auto=format&fit=crop&q=80",
       wallet_balance: 0.0,
       commission_rate: 0.00,

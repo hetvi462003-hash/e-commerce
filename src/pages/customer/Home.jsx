@@ -591,10 +591,10 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
               </div>
               <div style={{ flex: 1 }}>
                 <h4 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#FFFFFF", margin: "0 0 0.4rem 0" }}>
-                  CaymanBazaar • Grand Cayman's Premier Local Marketplace
+                  Cayman Marketplace • Grand Cayman's Premier Local Stores
                 </h4>
                 <p style={{ margin: 0, color: "#94A3B8", fontSize: "0.9rem", lineHeight: 1.6 }}>
-                  CaymanBazaar is a locally owned online store in Grand Cayman offering a thoughtfully selected range of everyday essentials, artisan jewelry, Caymanite stones, gourmet rum treats, beach accessories, and island home finds. Shop securely online with convenient pickup and island-wide delivery.
+                  Cayman Marketplace is a locally owned online platform in Grand Cayman offering a thoughtfully selected range of everyday essentials, artisan jewelry, Caymanite stones, gourmet rum treats, beach accessories, and island home finds. Shop securely online with convenient store pickup and island-wide delivery.
                 </p>
                 <div style={{ marginTop: "0.5rem", fontWeight: 700, color: "#00E5C9", fontSize: "0.92rem" }}>
                   Shop local. Support Cayman Islands business.
@@ -639,11 +639,11 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
         </div>
       </section>
 
-      {/* 💬 07. KEEP UP WITH CAYMANBAZAAR (Matching EE345) */}
+      {/* 💬 07. KEEP UP WITH CAYMAN MARKETPLACE (Matching EE345) */}
       <section className="container" style={{ marginBottom: "3rem" }}>
         <div style={{ maxWidth: "600px", margin: "0 auto", textAlign: "center" }}>
           <h2 style={{ fontSize: "1.6rem", fontWeight: 800, color: "#111827", marginBottom: "0.5rem" }}>
-            Keep up with CaymanBazaar
+            Keep up with Cayman Marketplace
           </h2>
           <p style={{ color: "#6B7280", fontSize: "0.95rem", marginBottom: "1.75rem" }}>
             Get new finds, store news and current offers in your inbox.
@@ -651,7 +651,7 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
 
           {newsletterSubscribed ? (
             <div style={{ background: "#D1FAE5", color: "#065F46", padding: "0.85rem", borderRadius: "8px", fontWeight: 700 }}>
-              ✓ Thank you for subscribing to CaymanBazaar updates!
+              ✓ Thank you for subscribing to Cayman Marketplace updates!
             </div>
           ) : (
             <form
@@ -698,7 +698,7 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
           {/* Follow on WhatsApp Channel Button */}
           <div style={{ marginTop: "1rem" }}>
             <a
-              href="https://wa.me/13459492299?text=Hello%20CaymanBazaar%2C%20I%20would%20like%20to%20follow%20your%20WhatsApp%20updates!"
+              href="https://wa.me/13459492299?text=Hello%20Cayman%20Marketplace%2C%20I%20would%20like%20to%20follow%20your%20WhatsApp%20updates!"
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -714,7 +714,7 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
                 textDecoration: "none"
               }}
             >
-              <MessageCircle size={18} /> Follow CaymanBazaar on WhatsApp
+              <MessageCircle size={18} /> Follow Cayman Marketplace on WhatsApp
             </a>
           </div>
         </div>

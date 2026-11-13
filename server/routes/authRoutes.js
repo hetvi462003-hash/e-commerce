@@ -57,7 +57,7 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     // Check pre-configured admin demo login
-    if (email === "admin@caymanbazaar.ky" && password === "admin123") {
+    if ((email === "admin@caymanmarketplace.ky" || email === "admin@caymanbazaar.ky") && password === "admin123") {
       const token = jwt.sign(
         { id: "admin-platform", role: "admin", email },
         JWT_SECRET,

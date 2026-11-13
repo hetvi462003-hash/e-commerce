@@ -735,7 +735,7 @@ export default function VendorProfile({ setActiveTab, setSelectedVendor }) {
                 </div>
 
                 <div style={{ marginTop: "1rem", textAlign: "center", fontSize: "0.76rem", color: "#94A3B8" }}>
-                  Changes saved here immediately update your listing on the CaymanBazaar homepage and directory.
+                  Changes saved here immediately update your listing on the Cayman Marketplace homepage and directory.
                 </div>
 
               </div>

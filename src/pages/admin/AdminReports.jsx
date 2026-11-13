@@ -52,7 +52,7 @@ export default function AdminReports() {
         d.orders,
         "0% (Waived)"
       ]);
-      downloadCsv(`CaymanBazaar_Financial_Report_${reportMonth.replace(/\s+/g, "_")}`, headers, rows);
+      downloadCsv(`CaymanMarketplace_Financial_Report_${reportMonth.replace(/\s+/g, "_")}`, headers, rows);
       showToast(`Exported ${reportMonth} Cayman Marketplace Financial Summary (CSV)`, "success");
     } else {
       window.print();

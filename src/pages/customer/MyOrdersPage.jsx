@@ -244,7 +244,7 @@ export default function MyOrdersPage({ setActiveTab }) {
             const badgeStyle = getStatusBadgeStyle(ord.status);
 
             const whatsappInquiryUrl = `https://wa.me/${CENTRAL_MARKETPLACE_WHATSAPP}?text=${encodeURIComponent(
-              `Hello Cayman Bazaar! I am inquiring about my Order #${ord.id || ord.order_id} (${ord.customer_name}). Could you provide an update on status? Thank you!`
+              `Hello Cayman Marketplace! I am inquiring about my Order #${ord.id || ord.order_id} (${ord.customer_name}). Could you provide an update on status? Thank you!`
             )}`;
 
             return (

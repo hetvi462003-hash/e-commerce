@@ -649,7 +649,7 @@ export default function AccountDrawer({ isOpen, onClose, setActiveTab, setSelect
 
             {/* WhatsApp Support */}
             <a
-              href={`https://wa.me/${CENTRAL_MARKETPLACE_WHATSAPP || "13459492299"}?text=Hello%20CaymanBazaar%2C%20I%20have%20an%20inquiry.`}
+              href={`https://wa.me/${CENTRAL_MARKETPLACE_WHATSAPP || "13459492299"}?text=Hello%20Cayman%20Marketplace%2C%20I%20have%20an%20inquiry.`}
               target="_blank"
               rel="noopener noreferrer"
               style={{

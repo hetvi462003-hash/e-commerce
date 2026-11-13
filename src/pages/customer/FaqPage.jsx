@@ -93,7 +93,7 @@ export default function FaqPage() {
             <div>
               <h3 style={{ fontSize: "1.15rem", color: "#0F172A", marginBottom: "0.5rem" }}>Are products guaranteed authentic?</h3>
               <p style={{ color: "#475569", fontSize: "0.92rem", lineHeight: 1.6 }}>
-                Yes! Every vendor registered on CaymanBazaar undergoes review and approval by our platform administrator. 
+                Yes! Every vendor registered on Cayman Marketplace undergoes review and approval by our platform administrator. 
                 Verified merchants display the "Verified Cayman Merchant" badge. All artisanal crafts, Caymanite mineral jewellery, Tortuga rum cakes, and duty-free goods are sourced locally within the Cayman Islands.
               </p>
             </div>

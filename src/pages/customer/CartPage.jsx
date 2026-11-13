@@ -635,7 +635,7 @@ export default function CartPage({ setActiveTab, setSelectedProduct }) {
                     Need help with your cart?
                   </div>
                   <a
-                    href="https://wa.me/13459492299?text=Hello%20CaymanBazaar%2C%20I%20need%20help%20with%20my%20shopping%20cart."
+                    href="https://wa.me/13459492299?text=Hello%20Cayman%20Marketplace%2C%20I%20need%20help%20with%20my%20shopping%20cart."
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{

@@ -38,7 +38,7 @@ app.use("/api/disputes", disputeRoutes);
 app.get("/api/health", (req, res) => {
   res.json({
     status: "ok",
-    marketplace: "CaymanBazaar Grand Cayman Multi-Vendor API",
+    marketplace: "Cayman Marketplace Grand Cayman Multi-Vendor API",
     timestamp: new Date().toISOString()
   });
 });

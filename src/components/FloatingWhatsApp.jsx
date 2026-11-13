@@ -5,7 +5,7 @@ import { CENTRAL_MARKETPLACE_WHATSAPP, CENTRAL_MARKETPLACE_PHONE_DISPLAY } from 
 export default function FloatingWhatsApp() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const defaultMessage = "Hello CaymanBazaar team! I am browsing the island marketplace and would like some assistance.";
+  const defaultMessage = "Hello Cayman Marketplace team! I am browsing the island marketplace and would like some assistance.";
   const waUrl = `https://wa.me/${CENTRAL_MARKETPLACE_WHATSAPP}?text=${encodeURIComponent(defaultMessage)}`;
 
   return (
@@ -62,7 +62,7 @@ export default function FloatingWhatsApp() {
               </div>
               <div>
                 <div style={{ fontWeight: 800, fontSize: "0.92rem", lineHeight: 1.2 }}>
-                  CaymanBazaar Concierge
+                  Cayman Marketplace Concierge
                 </div>
                 <div style={{ fontSize: "0.72rem", color: "#E0F2FE", display: "flex", alignItems: "center", gap: "0.3rem" }}>
                   <span

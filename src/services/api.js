@@ -1,4 +1,4 @@
-// CaymanBazaar Backend API Service
+// Cayman Marketplace Backend API Service
 const API_BASE = import.meta.env.VITE_API_URL || (typeof window !== "undefined" && window.location.hostname === "localhost" ? "http://localhost:5000/api" : "/api");
 
 const request = async (endpoint, options = {}) => {

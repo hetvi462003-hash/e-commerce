@@ -59,7 +59,7 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
   return (
     <div style={{ background: "#F8FAFC", minHeight: "100vh", color: "#0F172A", paddingBottom: "5rem" }}>
 
-      {/* 1. LUXURY STALL COMMAND HERO */}
+      {/* 1. LUXURY STORE COMMAND HERO */}
       <div
         style={{
           background: "linear-gradient(135deg, #07182E 0%, #0D2847 100%)",
@@ -248,7 +248,7 @@ export default function VendorDashboard({ setActiveTab, setSelectedVendor }) {
           </div>
         )}
 
-        {/* 2. CLEAN STALL METRICS */}
+        {/* 2. CLEAN STORE METRICS */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem", marginBottom: "2.5rem" }}>
 
           {/* Total Sales */}

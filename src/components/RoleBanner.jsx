@@ -263,7 +263,7 @@ export default function RoleBanner({ setActiveTab }) {
             gap: "1rem"
           }}
         >
-          {/* Left: Merchant Stall Identity */}
+          {/* Left: Merchant Store Identity */}
           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: "0.45rem", color: "#00E5C9", fontWeight: 800 }}>
               <Store size={16} />
@@ -271,9 +271,9 @@ export default function RoleBanner({ setActiveTab }) {
             </div>
 
             <div style={{ display: "inline-flex", alignItems: "center", gap: "0.45rem", background: "rgba(0, 229, 201, 0.08)", border: "1px solid rgba(0, 229, 201, 0.25)", padding: "0.25rem 0.75rem", borderRadius: "8px" }}>
-              <span style={{ color: "#94A3B8", fontSize: "0.76rem" }}>My Stall:</span>
+              <span style={{ color: "#94A3B8", fontSize: "0.76rem" }}>Active Store:</span>
               <span style={{ color: "#FFFFFF", fontSize: "0.78rem", fontWeight: 700 }}>
-                {activeVendor?.stall_number ? `${activeVendor.stall_number} • ` : ""}{activeVendor?.store_name} ({activeVendor?.district})
+                {activeVendor?.store_name} ({activeVendor?.district})
               </span>
               {activeVendor?.status === "pending_approval" && (
                 <span style={{ background: "#F59E0B", color: "#000", fontSize: "0.68rem", fontWeight: 800, padding: "0.1rem 0.4rem", borderRadius: "4px" }}>

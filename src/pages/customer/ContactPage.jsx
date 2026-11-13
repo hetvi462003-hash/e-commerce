@@ -47,7 +47,7 @@ export default function ContactPage({ setActiveTab }) {
           <MessageCircle size={18} /> Concierge & Merchant Support
         </div>
         <h1 style={{ fontFamily: "Playfair Display, serif", fontSize: "2.8rem", color: "#0F172A", marginBottom: "0.8rem", fontWeight: 800 }}>
-          Contact CaymanBazaar
+          Contact Cayman Marketplace
         </h1>
         <p style={{ color: "#64748B", fontSize: "1.05rem", maxWidth: "620px", margin: "0 auto", lineHeight: 1.6 }}>
           Have questions regarding WhatsApp order requests, store pickup, courier delivery, or vendor onboarding? Our island concierge team is here to assist.
@@ -102,7 +102,7 @@ export default function ContactPage({ setActiveTab }) {
                 </div>
                 <div>
                   <div style={{ fontSize: "0.82rem", textTransform: "uppercase", fontWeight: 700, color: "#64748B" }}>Official Email Support</div>
-                  <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#0F172A", marginTop: "0.15rem" }}>concierge@caymanbazaar.ky</div>
+                  <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#0F172A", marginTop: "0.15rem" }}>concierge@caymanmarketplace.ky</div>
                   <div style={{ fontSize: "0.85rem", color: "#64748B" }}>Response typically within 2-4 hours</div>
                 </div>
               </div>
@@ -142,7 +142,7 @@ export default function ContactPage({ setActiveTab }) {
               <CheckCircle size={52} color="#00A896" style={{ margin: "0 auto 1rem auto" }} />
               <h4 style={{ fontSize: "1.25rem", color: "#0F172A", fontWeight: 800, marginBottom: "0.5rem" }}>Inquiry Dispatched!</h4>
               <p style={{ color: "#64748B", fontSize: "0.92rem", marginBottom: "1.5rem", lineHeight: 1.5 }}>
-                Your request has been logged with CaymanBazaar Concierge. If urgent, contact us via WhatsApp at +1 (345) 926-PASS.
+                Your request has been logged with Cayman Marketplace Concierge. If urgent, contact us via WhatsApp at +1 (345) 926-PASS.
               </p>
               <button
                 onClick={() => setSubmitted(false)}

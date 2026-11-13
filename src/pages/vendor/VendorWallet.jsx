@@ -22,7 +22,7 @@ export default function VendorWallet() {
     ]);
 
     const sanitizedStoreName = activeVendor.store_name.replace(/[^a-zA-Z0-9]/g, "_");
-    downloadCsv(`CaymanBazaar_${sanitizedStoreName}_Ledger_Statement`, headers, rows);
+    downloadCsv(`CaymanMarketplace_${sanitizedStoreName}_Ledger_Statement`, headers, rows);
     showToast(`Exported ${vendorLedger.length} ledger transactions to CSV!`, "success");
   };
 
@@ -81,7 +81,7 @@ export default function VendorWallet() {
             <Sparkles size={16} color="#F59E0B" /> Direct Merchant Payment Policy
           </div>
           <p style={{ fontSize: "0.82rem", color: "#E2E8F0", lineHeight: 1.5, margin: 0 }}>
-            Cayman Bazaar operates with <strong>0% take-rate commissions</strong> and <strong>no credit deduction fees</strong>. Customers place orders directly via WhatsApp and pay your store via Cash-on-Delivery, in-store pickup, or direct bank transfer.
+            Cayman Marketplace operates with <strong>0% take-rate commissions</strong> and <strong>no credit deduction fees</strong>. Customers place orders directly via WhatsApp and pay your store via Cash-on-Delivery, in-store pickup, or direct bank transfer.
           </p>
         </div>
       </div>

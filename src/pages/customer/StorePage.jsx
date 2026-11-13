@@ -178,7 +178,7 @@ export default function StorePage({ vendor, setActiveTab, setSelectedProduct }) 
               <button
                 onClick={() => {
                   const cleanPhone = (currentVendor.phone || "+13459491234").replace(/\D/g, "");
-                  const msg = encodeURIComponent(`Hi ${currentVendor.store_name}, I saw your store on CaymanBazaar and would like to ask about your products!`);
+                  const msg = encodeURIComponent(`Hi ${currentVendor.store_name}, I saw your store on Cayman Marketplace and would like to ask about your products!`);
                   window.open(`https://wa.me/${cleanPhone}?text=${msg}`, "_blank");
                 }}
                 style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", background: "#DCFCE7", color: "#15803D", padding: "0.4rem 0.95rem", borderRadius: "999px", fontSize: "0.8rem", fontWeight: 800, cursor: "pointer", border: "1px solid #BBF7D0" }}

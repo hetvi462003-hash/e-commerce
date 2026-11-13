@@ -26,7 +26,7 @@ export default function VendorReviews() {
   } = useMarketplace();
 
   // Filter reviews strictly for this vendor
-  const stallReviews = reviews.filter((r) => {
+  const storeReviews = reviews.filter((r) => {
     return (
       r.vendor_id === activeVendorId ||
       r.vendor_id === activeVendor?.id ||
@@ -41,14 +41,14 @@ export default function VendorReviews() {
   const [flagReasonText, setFlagReasonText] = useState("");
 
   // Metrics
-  const totalCount = stallReviews.length;
+  const totalCount = storeReviews.length;
   const avgRating = totalCount > 0
-    ? (stallReviews.reduce((sum, r) => sum + r.rating, 0) / totalCount).toFixed(1)
+    ? (storeReviews.reduce((sum, r) => sum + r.rating, 0) / totalCount).toFixed(1)
     : Number(activeVendor?.rating || 5.0).toFixed(1);
-  const awaitingReplyCount = stallReviews.filter((r) => !r.vendor_reply).length;
-  const fiveStarCount = stallReviews.filter((r) => r.rating === 5).length;
+  const awaitingReplyCount = storeReviews.filter((r) => !r.vendor_reply).length;
+  const fiveStarCount = storeReviews.filter((r) => r.rating === 5).length;
 
-  const filteredReviews = stallReviews.filter((r) => {
+  const filteredReviews = storeReviews.filter((r) => {
     if (activeTabFilter === "needs_reply") return !r.vendor_reply;
     if (activeTabFilter === "flagged") return r.is_flagged;
     return true;
@@ -120,7 +120,7 @@ export default function VendorReviews() {
 
       <div className="container" style={{ paddingTop: "2rem" }}>
         
-        {/* 2. Stall Feedback Metrics */}
+        {/* 2. Store Feedback Metrics */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.25rem", marginBottom: "2rem" }}>
           
           <div style={{ background: "#FFFFFF", border: "1.5px solid #E2E8F0", borderRadius: "18px", padding: "1.25rem 1.5rem", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
@@ -187,7 +187,7 @@ export default function VendorReviews() {
                 boxShadow: activeTabFilter === "all" ? "0 2px 6px rgba(13,148,136,0.25)" : "none"
               }}
             >
-              All Store Feedback ({stallReviews.length})
+              All Store Feedback ({storeReviews.length})
             </button>
 
             <button
@@ -227,7 +227,7 @@ export default function VendorReviews() {
           </div>
         </div>
 
-        {/* 4. Stall Reviews Feed */}
+        {/* 4. Store Reviews Feed */}
         {filteredReviews.length === 0 ? (
           <div style={{ background: "#FFFFFF", border: "1.5px dashed #CBD5E1", borderRadius: "24px", padding: "4rem 2rem", textAlign: "center" }}>
             <MessageSquare size={44} color="#94A3B8" style={{ margin: "0 auto 1rem", opacity: 0.6 }} />
@@ -400,7 +400,7 @@ export default function VendorReviews() {
                         /* Open Reply Box */
                         <div style={{ background: "#F8FAFC", border: "1.5px solid #0D9488", borderRadius: "14px", padding: "1.25rem" }}>
                           <div style={{ fontSize: "0.84rem", fontWeight: 700, color: "#0D9488", marginBottom: "0.5rem" }}>
-                            Reply to {rev.author} (Publicly visible on Cayman Bazaar storefront):
+                            Reply to {rev.author} (Publicly visible on Cayman Marketplace storefront):
                           </div>
                           <textarea
                             rows={3}
@@ -500,7 +500,7 @@ export default function VendorReviews() {
               </h3>
             </div>
             <p style={{ color: "#64748B", fontSize: "0.88rem", lineHeight: 1.5, marginBottom: "1.25rem" }}>
-              Please state why this customer review violates Cayman Bazaar standards (e.g. competitor spam, customer never visited store, inappropriate language). SuperAdmin will investigate and can delete it.
+              Please state why this customer review violates Cayman Marketplace standards (e.g. competitor spam, customer never visited store, inappropriate language). SuperAdmin will investigate and can delete it.
             </p>
 
             <form onSubmit={handleReportSubmit}>

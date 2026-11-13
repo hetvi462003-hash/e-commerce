@@ -325,7 +325,7 @@ export default function VendorOrders() {
                   const custDigits = toWhatsAppWaMeNumber ? toWhatsAppWaMeNumber(ord.customer_phone) : cleanDigits(ord.customer_phone);
 
                   const directWhatsAppUrl = `https://wa.me/${custDigits}?text=${encodeURIComponent(
-                    `Hello ${ord.customer_name}! This is ${activeVendor.store_name} regarding your Cayman Bazaar Order #${ord.id || ord.order_id}.`
+                    `Hello ${ord.customer_name}! This is ${activeVendor.store_name} regarding your Cayman Marketplace Order #${ord.id || ord.order_id}.`
                   )}`;
 
                   return (

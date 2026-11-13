@@ -223,7 +223,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                     lineHeight: 1,
                     letterSpacing: "-0.03em"
                   }}>
-                    CAYMAN<span style={{ color: "#00A896" }}>BAZAAR</span>
+                    CAYMAN<span style={{ color: "#00A896" }}> MARKETPLACE</span>
                   </div>
                   <div style={{
                     fontSize: "0.65rem",
@@ -376,7 +376,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
               
               {/* Support WhatsApp Pill */}
               <a
-                href="https://wa.me/13459492299?text=Hello%20CaymanBazaar%2C%20I%20need%20some%20assistance."
+                href="https://wa.me/13459492299?text=Hello%20Cayman%20Marketplace%2C%20I%20need%20some%20assistance."
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -760,7 +760,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                     lineHeight: 1,
                     letterSpacing: "-0.03em"
                   }}>
-                    CAYMAN<span style={{ color: "#00A896" }}>BAZAAR</span>
+                    CAYMAN<span style={{ color: "#00A896" }}> MARKETPLACE</span>
                   </div>
                   <div style={{
                     fontSize: "0.65rem",

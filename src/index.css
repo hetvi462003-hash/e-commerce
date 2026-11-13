@@ -375,8 +375,9 @@ input:focus, select:focus, textarea:focus {
   -webkit-text-fill-color: transparent;
 }
 
-/* Digital Stall Card Component */
-.virtual-stall-card {
+/* Digital Store Card Component */
+.virtual-stall-card,
+.virtual-store-card {
   background: #FFFFFF;
   border-radius: 24px;
   overflow: hidden;
@@ -388,13 +389,15 @@ input:focus, select:focus, textarea:focus {
   position: relative;
 }
 
-.virtual-stall-card:hover {
+.virtual-stall-card:hover,
+.virtual-store-card:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-hover);
   border-color: rgba(0, 229, 201, 0.6);
 }
 
-.stall-awning {
+.stall-awning,
+.store-awning {
   height: 8px;
   background: linear-gradient(90deg, #F59E0B 0%, #00E5C9 50%, #F59E0B 100%);
   position: relative;
@@ -610,7 +613,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 /* 5. Interactive Card Lift & Dynamic Hover Zoom */
-.luxury-product-card, .virtual-stall-card, .category-card {
+.luxury-product-card, .virtual-stall-card, .virtual-store-card, .category-card {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
   will-change: transform, box-shadow;
 }
@@ -622,7 +625,7 @@ input:focus, select:focus, textarea:focus {
   z-index: 10;
 }
 
-.virtual-stall-card:hover {
+.virtual-stall-card:hover, .virtual-store-card:hover {
   transform: translateY(-10px) scale(1.045);
   box-shadow: 0 30px 60px -10px rgba(0, 229, 201, 0.38), 0 14px 28px -4px rgba(10, 28, 54, 0.18);
   border-color: rgba(0, 229, 201, 0.7);
@@ -645,7 +648,7 @@ input:focus, select:focus, textarea:focus {
   transform: scale(1.15) !important;
 }
 
-.virtual-stall-card:hover img {
+.virtual-stall-card:hover img, .virtual-store-card:hover img {
   transform: scale(1.12) !important;
 }
 

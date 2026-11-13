@@ -21,7 +21,7 @@ export default function AdminWalletLedger() {
       ];
     });
 
-    downloadCsv("CaymanBazaar_Global_Platform_Ledger", headers, rows);
+    downloadCsv("CaymanMarketplace_Global_Platform_Ledger", headers, rows);
     showToast(`Exported ${ledger.length} global platform transactions to CSV!`, "success");
   };
 

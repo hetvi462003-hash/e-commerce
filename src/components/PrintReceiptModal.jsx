@@ -8,7 +8,7 @@ export default function PrintReceiptModal({ order, onClose }) {
   if (!order) return null;
 
   const vendor = vendors.find((v) => v.id === order.vendor_id) || {
-    store_name: order.vendor_name || "Cayman Stall",
+    store_name: order.vendor_name || "Cayman Store",
     district: "Grand Cayman",
     phone: "+1 (345) 949-0000"
   };
@@ -138,15 +138,15 @@ export default function PrintReceiptModal({ order, onClose }) {
                 <Compass size={18} />
               </div>
               <span style={{ fontSize: "1.25rem", fontWeight: 900, letterSpacing: "-0.03em", color: "#0F172A" }}>
-                CAYMAN<span style={{ color: "#00A896" }}>BAZAAR</span>
+                CAYMAN<span style={{ color: "#00A896" }}> MARKETPLACE</span>
               </span>
             </div>
             <div style={{ fontSize: "0.72rem", color: "#64748B", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700 }}>
-              Grand Cayman Virtual Island Stalls
+              Grand Cayman Island Stores & Boutiques
             </div>
           </div>
 
-          {/* Stall / Vendor Details */}
+          {/* Store / Vendor Details */}
           <div style={{ marginBottom: "1.25rem", textAlign: "center" }}>
             <div style={{ fontSize: "1.1rem", fontWeight: 800, color: "#0F172A" }}>
               {vendor.store_name}
@@ -284,7 +284,7 @@ export default function PrintReceiptModal({ order, onClose }) {
             <div style={{ fontWeight: 700, color: "#64748B", marginBottom: "0.2rem" }}>
               Thank you for supporting Grand Cayman Local Artisans!
             </div>
-            <div>CaymanBazaar Island Commerce • www.caymanbazaar.ky</div>
+            <div>Cayman Marketplace Island Commerce • www.caymanmarketplace.ky</div>
           </div>
 
         </div>

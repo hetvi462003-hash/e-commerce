@@ -40,7 +40,7 @@ app.use("/api/disputes", disputeRoutes);
 app.get("/api/health", (req, res) => {
   res.json({
     status: "ok",
-    marketplace: "CaymanBazaar Grand Cayman Multi-Vendor API (Serverless Vercel)",
+    marketplace: "Cayman Marketplace Grand Cayman Multi-Vendor API (Serverless Vercel)",
     timestamp: new Date().toISOString()
   });
 });

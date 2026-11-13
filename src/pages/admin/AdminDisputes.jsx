@@ -73,7 +73,7 @@ export default function AdminDisputes() {
           </div>
           <h1 style={{ fontSize: "2.2rem", color: "#0F172A", marginBottom: "0.2rem" }}>Disputes & Claims Center</h1>
           <p style={{ color: "#64748B", fontSize: "0.95rem" }}>
-            Live customer claims and resolutions synced directly with CaymanBazaar dispute backend.
+            Live customer claims and resolutions synced directly with Cayman Marketplace dispute backend.
           </p>
         </div>
 

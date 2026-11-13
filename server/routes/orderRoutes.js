@@ -120,15 +120,15 @@ router.post("/", async (req, res) => {
         .join("\n");
 
       const waText = 
-`*New Order Request - Cayman Bazaar*
+`*New Order Request - Cayman Marketplace*
 Order Ref: #${subOrderId}
-Store: ${vendor?.store_name || "Cayman Island Stall"}
+Store: ${vendor?.store_name || "Cayman Island Store"}
 
 *Customer Details:*
 Name: ${customer_name}
 Phone: ${customer_phone}
 ${customer_email ? `Email: ${customer_email}\n` : ""}Fulfillment: ${effectiveFulfillment}
-${effectiveFulfillment === "Island Courier Delivery" ? `Delivery Address: ${delivery_address || "Provided via chat"}\n` : `Pickup Stall: ${vendor?.address || vendor?.store_name}\n`}
+${effectiveFulfillment === "Island Courier Delivery" ? `Delivery Address: ${delivery_address || "Provided via chat"}\n` : `Pickup Location: ${vendor?.address || vendor?.store_name}\n`}
 *Items Ordered:*
 ${itemsListText}
 

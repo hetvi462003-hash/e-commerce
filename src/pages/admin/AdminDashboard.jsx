@@ -299,7 +299,7 @@ export default function AdminDashboard({ setActiveTab }) {
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.25rem" }}>
             
-            {/* Action 1: Stalls & Licensing */}
+            {/* Action 1: Stores & Licensing */}
             <div
               onClick={() => setActiveTab("admin-vendors")}
               style={{

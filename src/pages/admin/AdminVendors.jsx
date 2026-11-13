@@ -584,7 +584,7 @@ export default function AdminVendors() {
                   </label>
                   <input
                     type="email"
-                    placeholder="merchant@caymanbazaar.ky"
+                    placeholder="merchant@caymanmarketplace.ky"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     style={{

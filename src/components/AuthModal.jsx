@@ -111,7 +111,7 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
         return;
       }
 
-      // Find vendor by registered email, store name, slug, or stall ID (flexible & case-insensitive)
+      // Find vendor by registered email, store name, slug, or store ID (flexible & case-insensitive)
       const inputStr = email.toLowerCase().trim();
       const matchedVendor = vendors.find(
         (vend) =>
@@ -123,7 +123,7 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
       );
 
       if (!matchedVendor) {
-        showToast(`No registered island stall found for "${email.trim()}". Enter registered email or store name.`, "warning");
+        showToast(`No registered island store found for "${email.trim()}". Enter registered email or store name.`, "warning");
         return;
       }
 
@@ -139,7 +139,7 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
       if (setActiveTab) setActiveTab("vendor-dashboard");
 
       if (matchedVendor.status === "pending_approval") {
-        showToast(`Welcome, ${matchedVendor.store_name}! Your stall is currently awaiting SuperAdmin review.`, "info");
+        showToast(`Welcome, ${matchedVendor.store_name}! Your store is currently awaiting SuperAdmin review.`, "info");
       } else {
         showToast(`Welcome back, ${matchedVendor.store_name}! Logged into Merchant Workspace.`);
       }
@@ -172,12 +172,12 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
     onClose();
   };
 
-  // Register New Vendor Stall
+  // Register New Vendor Store
   const handleRegisterVendor = (e) => {
     e.preventDefault();
 
     if (!regStoreName.trim()) {
-      showToast("Please enter your Store or Stall Name.", "warning");
+      showToast("Please enter your Store or Boutique Name.", "warning");
       return;
     }
 
@@ -195,7 +195,7 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
       phone: regPhone.trim(),
       whatsapp_number: regPhone.trim(),
       whatsapp_verified: true,
-      email: regEmail.trim() || `${regStoreName.toLowerCase().replace(/[^a-z0-9]/g, "")}@caymanbazaar.ky`,
+      email: regEmail.trim() || `${regStoreName.toLowerCase().replace(/[^a-z0-9]/g, "")}@caymanmarketplace.ky`,
       password: regPassword.trim() || "merchant123",
       product_limit: 15
     });
@@ -269,7 +269,7 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
                 <>
                   <Store size={16} color="#00E5C9" />
                   <span style={{ fontSize: "0.75rem", color: "#00E5C9", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
-                    CaymanBazaar Merchant Workspace
+                    Cayman Marketplace Merchant Workspace
                   </span>
                 </>
               ) : (
@@ -287,7 +287,7 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
                 ? "SuperAdmin Console Access"
                 : selectedRole === "vendor"
                 ? vendorMode === "register"
-                  ? "Register New Island Stall"
+                ? "Register New Island Store"
                   : "Merchant Portal Sign In"
                 : "Shopper Sign In"}
             </h3>
@@ -295,8 +295,8 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
               {selectedRole === "admin"
                 ? "Restricted security portal for marketplace administrators."
                 : selectedRole === "vendor"
-                ? "Manage your island stall catalog, inventory & WhatsApp orders."
-                : "Track your island orders, stall collections & delivery status."}
+                ? "Manage your island store catalog, inventory & WhatsApp orders."
+                : "Track your island orders, store collections & delivery status."}
             </p>
           </div>
 
@@ -320,7 +320,7 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
           </button>
         </div>
 
-        {/* 1. VENDOR SUB-TOGGLE (Existing Login vs Register New Stall) */}
+        {/* 1. VENDOR SUB-TOGGLE (Existing Login vs Register New Store) */}
         {selectedRole === "vendor" && (
           <div style={{ padding: "1rem 1.75rem 0.25rem" }}>
             <div
@@ -348,7 +348,7 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
                   cursor: "pointer"
                 }}
               >
-                🔑 Existing Stall Login
+                🔑 Existing Store Login
               </button>
               <button
                 type="button"
@@ -364,13 +364,13 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
                   cursor: "pointer"
                 }}
               >
-                ✨ Register New Stall
+                ✨ Register New Store
               </button>
             </div>
           </div>
         )}
 
-        {/* VIEW A: REGISTER NEW VENDOR STALL */}
+        {/* VIEW A: REGISTER NEW VENDOR STORE */}
         {selectedRole === "vendor" && vendorMode === "register" ? (
           <form onSubmit={handleRegisterVendor} style={{ padding: "1.25rem 1.75rem 1.75rem" }}>
             <div style={{ background: "rgba(0, 229, 201, 0.08)", border: "1px solid rgba(0, 229, 201, 0.25)", padding: "0.75rem 1rem", borderRadius: "12px", marginBottom: "1.25rem", fontSize: "0.82rem", color: "#E0F2FE" }}>
@@ -381,7 +381,7 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.85rem", marginBottom: "1rem" }}>
               <div>
                 <label style={{ display: "block", fontSize: "0.78rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 700 }}>
-                  Store / Stall Name *
+                  Store / Boutique Name *
                 </label>
                 <input
                   type="text"
@@ -424,7 +424,7 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
               </div>
             </div>
 
-            {/* District & Physical Stall Address */}
+            {/* District & Physical Store Address */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.85rem", marginBottom: "1rem" }}>
               <div>
                 <label style={{ display: "block", fontSize: "0.78rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 700 }}>
@@ -453,12 +453,12 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
 
               <div>
                 <label style={{ display: "block", fontSize: "0.78rem", color: "#CBD5E1", marginBottom: "0.35rem", fontWeight: 700 }}>
-                  Physical Location / Stall # *
+                  Physical Location / Suite or Unit # *
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Craft Market Stall #14"
+                  placeholder="e.g. Harbour Drive, Suite #14"
                   value={regAddress}
                   onChange={(e) => setRegAddress(e.target.value)}
                   style={{
@@ -676,7 +676,7 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
                 cursor: isPhoneVerified ? "pointer" : "pointer"
               }}
             >
-              <span>{isPhoneVerified ? "Register Stall & Open Storefront" : "Verify WhatsApp to Complete Registration"}</span>
+              <span>{isPhoneVerified ? "Register Store & Open Storefront" : "Verify WhatsApp to Complete Registration"}</span>
               <ArrowRight size={18} />
             </button>
 
@@ -687,7 +687,7 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
                 onClick={() => setVendorMode("login")}
                 style={{ background: "transparent", border: "none", color: "#00E5C9", fontWeight: 700, cursor: "pointer", textDecoration: "underline" }}
               >
-                Sign In to Existing Stall
+                Sign In to Existing Store
               </button>
             </div>
           </form>
@@ -744,7 +744,7 @@ export default function AuthModal({ isOpen, onClose, defaultRole = "customer", s
                   required={selectedRole !== "admin"}
                   placeholder={
                     selectedRole === "admin"
-                      ? "admin@caymanbazaar.ky"
+                      ? "admin@caymanmarketplace.ky"
                       : selectedRole === "vendor"
                       ? "e.g. elena@georgetowngems.ky"
                       : "e.g. +1 (345) 949-0000 or shopper@gmail.com"
