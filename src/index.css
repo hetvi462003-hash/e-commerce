@@ -55,12 +55,14 @@
 .gold-foil-text {
   background: linear-gradient(135deg, #FFF3BF 0%, #F59E0B 40%, #D97706 75%, #FDE68A 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .teal-foil-text {
   background: linear-gradient(135deg, #CCFBF1 0%, #00E5C9 40%, #0D9488 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -366,12 +368,14 @@ input:focus, select:focus, textarea:focus {
 .teal-gradient-text {
   background: linear-gradient(135deg, #00E5C9 0%, #00B49F 50%, #38BDF8 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gold-gradient-text {
   background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 50%, #D97706 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
