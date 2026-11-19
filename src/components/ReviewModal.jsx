@@ -92,7 +92,7 @@ export default function ReviewModal({ order, onClose }) {
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} style={{ padding: "1.75rem" }}>
-          
+
           {/* Order Details Mini Banner */}
           <div
             style={{
@@ -226,3 +226,4 @@ export default function ReviewModal({ order, onClose }) {
     </div>
   );
 }
+

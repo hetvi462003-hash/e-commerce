@@ -297,7 +297,7 @@ export default function AdminDashboard({ setActiveTab }) {
             <span style={{ fontSize: "0.8rem", color: "#64748B" }}>Select a module to govern and audit</span>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.25rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "1.25rem" }}>
             
             {/* Action 1: Stores & Licensing */}
             <div

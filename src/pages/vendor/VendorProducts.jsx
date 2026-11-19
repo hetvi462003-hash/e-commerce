@@ -378,7 +378,8 @@ export default function VendorProducts() {
 
       {/* Products Table */}
       <div style={{ background: "#FFFFFF", borderRadius: "20px", border: "1.5px solid #E2E8F0", boxShadow: "var(--shadow-sm)", overflow: "hidden" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.88rem", textAlign: "left" }}>
+        <div className="table-responsive-wrapper">
+          <table style={{ width: "100%", minWidth: "680px", borderCollapse: "collapse", fontSize: "0.88rem", textAlign: "left" }}>
           <thead>
             <tr style={{ background: "#F8FAFC", borderBottom: "1px solid #E2E8F0", color: "#64748B" }}>
               <th style={{ padding: "1rem" }}>Product Info</th>
@@ -476,6 +477,7 @@ export default function VendorProducts() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Bulk Upload Modal */}

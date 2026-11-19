@@ -174,7 +174,7 @@ export default function VendorProfile({ setActiveTab, setSelectedVendor }) {
       <div className="container" style={{ padding: "2.5rem 1.5rem" }}>
         
         <form onSubmit={handleSave}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))", gap: "2rem", alignItems: "start" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))", gap: "2rem", alignItems: "start" }}>
             
             {/* LEFT COLUMN: SPACIOUS ORGANIZED SETTINGS CARDS */}
             <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>

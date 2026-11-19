@@ -143,13 +143,8 @@ export default function CartPage({ setActiveTab, setSelectedProduct }) {
             </button>
           </div>
         ) : (
-          /* Main 2-Column Layout matching EE345 */
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 360px",
-            gap: "2rem",
-            alignItems: "flex-start"
-          }}>
+          /* Main 2-Column Responsive Layout */
+          <div className="responsive-cart-grid">
             
             {/* Left Column: Cart Items List */}
             <div>

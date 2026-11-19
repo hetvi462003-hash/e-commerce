@@ -166,8 +166,8 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
 
       {/* Customer Header Row (EE345 style) */}
       {isCustomer && (
-        <div className="container" style={{ padding: "0.75rem 1.5rem" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1.25rem" }}>
+        <div className="container" style={{ padding: "0.75rem 1rem" }}>
+          <div className="navbar-customer-header">
             
             {/* 3-Line Hamburger Menu & Brand Logo (EE345 style) */}
             <div style={{ display: "flex", alignItems: "center", gap: "0.85rem", flexShrink: 0 }}>
@@ -204,18 +204,19 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
               >
                 <div style={{
                   background: "#0F172A",
-                  width: "38px",
-                  height: "38px",
+                  width: "36px",
+                  height: "36px",
                   borderRadius: "10px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  color: "#00E5C9"
+                  color: "#00E5C9",
+                  flexShrink: 0
                 }}>
-                  <ShoppingBag size={22} />
+                  <ShoppingBag size={20} />
                 </div>
                 <div>
-                  <div style={{
+                  <div className="navbar-brand-logo-text" style={{
                     fontFamily: "var(--font-heading)",
                     fontSize: "1.35rem",
                     fontWeight: 900,
@@ -225,7 +226,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
                   }}>
                     CAYMAN<span style={{ color: "#00A896" }}> MARKETPLACE</span>
                   </div>
-                  <div style={{
+                  <div className="navbar-brand-subtext" style={{
                     fontSize: "0.65rem",
                     color: isCustomer ? (isDarkMode ? "#94A3B8" : "#64748B") : "#94A3B8",
                     fontWeight: 800,
@@ -239,11 +240,7 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
             </div>
 
             {/* Centered Search Bar (EE345 style) with Live Search Dropdown */}
-            <div style={{
-              flex: 1,
-              maxWidth: "620px",
-              position: "relative"
-            }}>
+            <div className="navbar-search-container">
               <div style={{
                 display: "flex",
                 alignItems: "center",
@@ -372,13 +369,14 @@ export default function Navbar({ activeTab, setActiveTab, setIsCartOpen, setSele
             </div>
 
             {/* Customer Navigation Icons (EE345 style: Support, Account, Wishlist, Cart) */}
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexShrink: 0 }}>
               
               {/* Support WhatsApp Pill */}
               <a
                 href="https://wa.me/13459492299?text=Hello%20Cayman%20Marketplace%2C%20I%20need%20some%20assistance."
                 target="_blank"
                 rel="noopener noreferrer"
+                className="hide-on-mobile"
                 style={{
                   background: "#0F172A",
                   color: "#FFFFFF",

@@ -373,7 +373,7 @@ export default function CheckoutPage({ setActiveTab }) {
           Checkout & Order Placement
         </h1>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "2rem", alignItems: "flex-start" }}>
+        <div className="responsive-checkout-grid">
           
           {/* 📝 Left Column: Form Details */}
           <div>
@@ -384,7 +384,7 @@ export default function CheckoutPage({ setActiveTab }) {
                 1. Delivery or Pickup
               </h2>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+              <div className="fulfillment-toggle-grid">
                 
                 {/* Courier Delivery */}
                 <div

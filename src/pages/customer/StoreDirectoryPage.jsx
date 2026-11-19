@@ -92,7 +92,7 @@ export default function StoreDirectoryPage({ setActiveTab, setSelectedVendor }) 
           <p style={{ color: "#94A3B8" }}>Try selecting another district or clearing your search filter.</p>
         </div>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "1.75rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))", gap: "1.75rem" }}>
           {filteredVendors.map((vendor) => (
             <StoreCard
               key={vendor.id}

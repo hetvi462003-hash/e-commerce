@@ -206,7 +206,7 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
           </h2>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.25rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 260px), 1fr))", gap: "1.25rem" }}>
           {caymansChoice.map((prod) => (
             <ProductCard
               key={prod.id}
@@ -245,7 +245,7 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
           </button>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.25rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 260px), 1fr))", gap: "1.25rem" }}>
           {newArrivals.map((prod) => (
             <ProductCard
               key={prod.id}
@@ -284,7 +284,7 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
           </button>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.25rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 260px), 1fr))", gap: "1.25rem" }}>
           {specialOffers.map((prod) => (
             <ProductCard
               key={prod.id}
@@ -315,7 +315,7 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
           </div>
 
           {/* 6 Balanced Feature Cards (3x2 Grid on desktop) */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.25rem", marginBottom: "2.5rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "1.25rem", marginBottom: "2.5rem" }}>
 
             {/* Card 1: Shop Local */}
             <div
@@ -770,7 +770,7 @@ export default function Home({ setActiveTab, setSelectedProduct, setSelectedCate
               <X size={16} />
             </button>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))" }}>
               <div style={{ height: "320px", background: "#FFFFFF", display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
                 <img
                   src={quickViewProduct.images[0]}

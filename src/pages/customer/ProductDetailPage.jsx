@@ -94,7 +94,7 @@ export default function ProductDetailPage({ product, setActiveTab, setSelectedVe
       </div>
 
       <div className="container" style={{ paddingTop: "2.5rem" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "3.5rem", alignItems: "flex-start", marginBottom: "4rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))", gap: "2.5rem", alignItems: "flex-start", marginBottom: "4rem" }}>
           
           {/* 🖼️ Left: Product Image Gallery */}
           <div>
@@ -519,7 +519,7 @@ export default function ProductDetailPage({ product, setActiveTab, setSelectedVe
             </div>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "1rem" }}>
             {[
               { author: "Sarah M.", date: "Grand Cayman", text: "Ordered for local delivery, arrived right at my hotel in Seven Mile Beach within 3 hours. Outstanding quality!" },
               { author: "David K.", date: "George Town", text: "Authentic Cayman items at reasonable prices. The pickup was so fast and hassle-free." },

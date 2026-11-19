@@ -54,7 +54,7 @@ export default function ContactPage({ setActiveTab }) {
         </p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2.5rem" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))", gap: "2.5rem" }}>
         {/* Contact Info Channels */}
         <div>
           <div style={{ background: "#FFFFFF", borderRadius: "24px", border: "1.5px solid #E2E8F0", padding: "2.25rem", boxShadow: "var(--shadow-sm)", marginBottom: "2rem" }}>

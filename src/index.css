@@ -765,6 +765,39 @@ button:active {
 }
 
 /* 11. Responsive Mobile & Tablet Layout System */
+.responsive-cart-grid,
+.responsive-checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.fulfillment-toggle-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.table-responsive-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+.navbar-customer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.navbar-search-container {
+  flex: 1;
+  max-width: 620px;
+  position: relative;
+}
+
 @media (max-width: 991px) {
   .desktop-nav-links {
     display: none !important;
@@ -787,6 +820,41 @@ button:active {
   }
 }
 
+@media (max-width: 900px) {
+  .responsive-cart-grid,
+  .responsive-checkout-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+
+  .navbar-customer-header {
+    flex-wrap: wrap !important;
+    gap: 0.65rem !important;
+  }
+
+  .navbar-search-container {
+    order: 3 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 1 1 100% !important;
+    margin-top: 0.25rem !important;
+  }
+
+  .navbar-brand-logo-text {
+    font-size: 1.12rem !important;
+  }
+
+  .navbar-brand-subtext {
+    display: none !important;
+  }
+}
+
 @media (min-width: 992px) {
   .desktop-nav-links {
     display: flex !important;
@@ -805,6 +873,9 @@ button:active {
   }
   .role-banner-hide-mobile {
     display: none !important;
+  }
+  .fulfillment-toggle-grid {
+    grid-template-columns: 1fr !important;
   }
 }
 

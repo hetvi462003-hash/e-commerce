@@ -97,12 +97,12 @@ export default function RoleBanner({ setActiveTab }) {
                 <span>Grand Cayman Island Marketplace</span>
               </div>
 
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", color: "#64748B" }}>
+              <div className="role-banner-hide-mobile" style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", color: "#64748B" }}>
                 <Clock size={12} color="#F59E0B" />
                 <span>Island Time: <strong style={{ color: "#E2E8F0" }}>{caymanTime || "11:35 AM EST"}</strong></span>
               </div>
 
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", color: "#64748B" }}>
+              <div className="role-banner-hide-mobile" style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", color: "#64748B" }}>
                 <span>☀️ 29°C Seven Mile Beach</span>
               </div>
             </div>

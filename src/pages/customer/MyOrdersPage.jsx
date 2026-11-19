@@ -438,37 +438,39 @@ export default function MyOrdersPage({ setActiveTab }) {
                       Fulfillment Milestone: <span style={{ color: "#00A896" }}>{ord.status}</span>
                     </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: `repeat(${milestoneSteps.length}, 1fr)`, gap: "0.5rem" }}>
-                      {milestoneSteps.map((stepName, sIdx) => {
-                        const isDone = currentLevel >= sIdx;
-                        const isCurrent = currentLevel === sIdx;
+                    <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", paddingBottom: "0.35rem" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: `repeat(${milestoneSteps.length}, minmax(75px, 1fr))`, gap: "0.5rem", minWidth: "380px" }}>
+                        {milestoneSteps.map((stepName, sIdx) => {
+                          const isDone = currentLevel >= sIdx;
+                          const isCurrent = currentLevel === sIdx;
 
-                        return (
-                          <div key={stepName} style={{ textAlign: "center" }}>
-                            <div
-                              style={{
-                                width: "32px",
-                                height: "32px",
-                                borderRadius: "50%",
-                                margin: "0 auto 0.4rem auto",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                fontSize: "0.8rem",
-                                fontWeight: 800,
-                                background: isDone ? "#00A896" : "#E2E8F0",
-                                color: isDone ? "#FFFFFF" : "#64748B",
-                                boxShadow: isCurrent ? "0 0 10px rgba(0, 168, 150, 0.5)" : "none"
-                              }}
-                            >
-                              {isDone ? <CheckCircle2 size={16} /> : sIdx + 1}
+                          return (
+                            <div key={stepName} style={{ textAlign: "center" }}>
+                              <div
+                                style={{
+                                  width: "32px",
+                                  height: "32px",
+                                  borderRadius: "50%",
+                                  margin: "0 auto 0.4rem auto",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  fontSize: "0.8rem",
+                                  fontWeight: 800,
+                                  background: isDone ? "#00A896" : "#E2E8F0",
+                                  color: isDone ? "#FFFFFF" : "#64748B",
+                                  boxShadow: isCurrent ? "0 0 10px rgba(0, 168, 150, 0.5)" : "none"
+                                }}
+                              >
+                                {isDone ? <CheckCircle2 size={16} /> : sIdx + 1}
+                              </div>
+                              <div style={{ fontSize: "0.72rem", fontWeight: isCurrent ? 800 : 600, color: isCurrent ? "#0A192F" : "#64748B", lineHeight: 1.2 }}>
+                                {stepName}
+                              </div>
                             </div>
-                            <div style={{ fontSize: "0.72rem", fontWeight: isCurrent ? 800 : 600, color: isCurrent ? "#0A192F" : "#64748B", lineHeight: 1.2 }}>
-                              {stepName}
-                            </div>
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                 )}
